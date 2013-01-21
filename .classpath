@@ -2,9 +2,8 @@
 <classpath>
 	<classpathentry excluding="views/**" kind="src" path="app"/>
 	<classpathentry kind="src" path="test"/>
-	
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/zhangbohan/play-1.2.2/framework/play-1.2.2.jar" sourcepath="/home/zhangbohan/play-1.2.2/framework/src" />
+	<classpathentry kind="lib" path="/home/zhangbohan/play-1.2.2/framework/play-1.2.2.jar" sourcepath="/home/zhangbohan/play-1.2.2/framework/src"/>
 	<classpathentry kind="lib" path="/home/zhangbohan/play-1.2.2/framework/lib/javassist-3.9.0.GA.jar"/>
 	<classpathentry kind="lib" path="/home/zhangbohan/play-1.2.2/framework/lib/commons-email-1.2.jar"/>
 	<classpathentry kind="lib" path="/home/zhangbohan/play-1.2.2/framework/lib/jamon-2.7.jar"/>
@@ -78,6 +77,9 @@
 			<attribute name="javadoc_location" value="http://docs.jboss.org/hibernate/core/3.6/javadocs/"/>
 		</attributes>
 	</classpathentry>
-	
+	<classpathentry kind="lib" path="lib/gson-1.7.1.jar"/>
+	<classpathentry kind="lib" path="lib/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/junit.jar"/>
 	<classpathentry kind="output" path="eclipse/classes"/>
 </classpath>

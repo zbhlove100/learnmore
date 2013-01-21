@@ -2,15 +2,195 @@
 
 <html>
     <head>
-        <title>#{get 'title' /}</title>
-        <meta charset="${_response_encoding}">
+        <title>Learn more Console</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9"> 
+    	<!--[if IE]><script src="/public/javascripts/excanvas.js"></script><![endif]-->
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
         #{get 'moreStyles' /}
         <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
-        <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+        <script src="@{'/public/javascripts/jquery.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
         #{get 'moreScripts' /}
+		<link href="@{'/public/themes/default/style.css'}" rel="stylesheet" type="text/css" />
+		<link href="@{'/public/themes/css/core.css'}" rel="stylesheet" type="text/css" />
+		<link href="@{'/public/uploadify/css/uploadify.css'}" rel="stylesheet" type="text/css" />
+		<link href="@{'/public/stylesheets/jquery.tooltip.css'}" rel="stylesheet" type="text/css" />
+		<!--[if IE]>
+		<link href="@{'/public/themes/css/ieHack.css'}" rel="stylesheet" type="text/css" />
+		<![endif]-->
+		
+		<script src="@{'/public/javascripts/speedup.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/jquery.cookie.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/jquery.validate.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/jquery.bgiframe.js'}" type="text/javascript"></script>
+		<script src="@{'/public/uploadify/scripts/swfobject.js'}" type="text/javascript"></script>
+		<script src="@{'/public/uploadify/scripts/jquery.uploadify.v2.1.0.js'}" type="text/javascript"></script>
+		<script src="@{'/public/xheditor/xheditor-1.1.14-zh-cn.min.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.core.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.util.date.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.validate.method.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.regional.zh.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.barDrag.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.drag.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.tree.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.accordion.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.ui.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.theme.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.switchEnv.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.alertMsg.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.contextmenu.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.navTab.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.tab.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.resize.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.dialog.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.dialogDrag.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.cssTable.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.stable.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.taskBar.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.ajax.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.pagination.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.database.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.datepicker.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.effects.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.panel.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.checkbox.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.history.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dwz.combox.js'}" type="text/javascript"></script>
+
+		<script src="@{'/public/javascripts/dwz.regional.zh.js'}" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+			$(function(){
+				DWZ.init("@{'public/dwz.frag.xml'}", {
+					loginUrl:"login.html",	// 跳到登录页面
+					statusCode:{ok:200, error:300, timeout:301}, //【可选】
+					pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderDirection"}, //【可选】
+					debug:false,	// 调试模式 【true|false】
+					callback:function(){
+						initEnv();
+						$("#themeList").theme({themeBase:"@{'public/themes'}"});
+					}
+				});
+				
+			});
+	
+
+		    function logout(){
+		    	
+		    	$('#logout').html("<iframe id=\"scalr\" style=\"height: 0px; width: 0px\" src=\"${scalrHomePage}/guest/logout\"></iframe>");
+		    	
+		    	setTimeout(casLogout, 3000);  
+		    }
+		    
+		</script>
     </head>
-    <body>
-        #{doLayout /}
-    </body>
+    <body scroll="no">
+	<div id="layout">
+		<div id="header">
+			<div class="headerNav">
+				<div style="margin-top:5px;display:inline;width:500px;position:absolute;floating:left;margin-left:200px;">
+				  <div id="myevents"></div>
+				</div>			
+				<a href="" target="navTab" rel="main" class="logo" >Dashboard</a>
+				<ul class="nav">
+					<li id="switchEnvBox"><span style="color:red;">Welcome: </span><a>${user?.name}</a>
+					</li>
+					<li><a>Accout Type:</a></li>
+					<li><a href="" target="dialog" width="530" height="230"><span>Change Password</span></a></li>
+					<li><a href="http://bugzilla.cloudpi.net" target="_blank">Support</a></li>
+					<li><a href="javascript:logout();">Logout</a></li>
+					<li id="logout">
+						
+					</li>
+				</ul>
+				<ul class="themeList" id="themeList">					
+					<li theme="default"><div class="selected">blue</div></li>
+					<li theme="green"><div>green</div></li>
+					<li theme="purple"><div>purple</div></li>
+					<li theme="silver"><div>silver</div></li>
+					<li theme="azure"><div>azure</div></li>
+				</ul>
+			</div>
+			
+		</div>
+
+		<div id="leftside">
+			<div id="sidebar_s">
+				<div class="collapse">
+					<div class="toggleCollapse"><div></div></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<div class="toggleCollapse"><h2>MENU</h2><div>收缩</div></div>
+				<div class="accordion" fillSpace="sidebar">
+				 #{systemsidebar /}
+				</div>
+
+			</div>
+		</div>
+		<div id="container">
+			<div id="navTab" class="tabsPage">
+				<div class="tabsPageHeader">
+					<div class="tabsPageHeaderContent"><!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
+						<ul class="navTab-tab">
+							<li tabid="main" class="main"><a href="" target="navTab" rel="main"><span><span class="home_icon">Dashboard</span></span></a></li>
+						</ul>
+					</div>
+					<div class="tabsLeft">left</div><!-- 禁用只需要添加一个样式 class="tabsLeft tabsLeftDisabled" -->
+					<div class="tabsRight">right</div><!-- 禁用只需要添加一个样式 class="tabsRight tabsRightDisabled" -->
+					<div class="tabsMore">more</div>
+				</div>
+				<ul class="tabsMoreList">
+					<li><a href="javascript:void(0)">VLB Management</a></li>
+				</ul>
+				<div class="navTab-panel tabsPageContent">
+					<div class="page">
+						 #{doLayout /}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="taskbar" style="left:0px; display:none;">
+			<div class="taskbarContent">
+				<ul></ul>
+			</div>
+			<div class="taskbarLeft taskbarLeftDisabled" style="display:none;">taskbarLeft</div>
+			<div class="taskbarRight" style="display:none;">taskbarRight</div>
+		</div>
+		<div id="splitBar"></div>
+		<div id="splitBarProxy"></div>
+	</div>
+
+	<div id="footer">
+		<p>Copyright&copy; 2011 CSvL/CST, DMC R&D Center, Samsung Eletronics</p>
+	</div>
+
+<!--拖动效果-->
+	<div class="resizable"></div>
+<!--阴影-->
+	<div class="shadow" style="width:508px; top:148px; left:296px;">
+		<div class="shadow_h">
+			<div class="shadow_h_l"></div>
+			<div class="shadow_h_r"></div>
+			<div class="shadow_h_c"></div>
+		</div>
+		<div class="shadow_c">
+			<div class="shadow_c_l" style="height:296px;"></div>
+			<div class="shadow_c_r" style="height:296px;"></div>
+			<div class="shadow_c_c" style="height:296px;"></div>
+		</div>
+		<div class="shadow_f">
+			<div class="shadow_f_l"></div>
+			<div class="shadow_f_r"></div>
+			<div class="shadow_f_c"></div>
+		</div>
+	</div>
+	<!--遮盖屏幕-->
+	<div id="alertBackground" class="alertBackground"></div>
+	<div id="dialogBackground" class="dialogBackground"></div>
+
+	<div id='background' class='background'></div>
+	<div id='progressBar' class='progressBar'>Loading...</div>
+
 </html>
