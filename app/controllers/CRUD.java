@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.spec.BaseModel;
-import models.spec.Where;
+import models.BaseModel;
+import models.Where;
 import play.Logger;
 import play.Play;
 import play.data.binding.Binder;

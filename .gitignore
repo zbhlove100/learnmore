@@ -1,0 +1,14 @@
+target
+eclipse
+tmp
+precompiled
+.project
+test-result
+.settings
+.classpath
+*.bak
+*~
+*.o
+*.class
+.classpath
+

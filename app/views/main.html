@@ -74,13 +74,6 @@
 				
 			});
 	
-
-		    function logout(){
-		    	
-		    	$('#logout').html("<iframe id=\"scalr\" style=\"height: 0px; width: 0px\" src=\"${scalrHomePage}/guest/logout\"></iframe>");
-		    	
-		    	setTimeout(casLogout, 3000);  
-		    }
 		    
 		</script>
     </head>
@@ -98,7 +91,7 @@
 					<li><a>Accout Type:</a></li>
 					<li><a href="" target="dialog" width="530" height="230"><span>Change Password</span></a></li>
 					<li><a href="http://bugzilla.cloudpi.net" target="_blank">Support</a></li>
-					<li><a href="javascript:logout();">Logout</a></li>
+					<li><a href="@{LearnmoreSecure.logout}">Logout</a></li>
 					<li id="logout">
 						
 					</li>

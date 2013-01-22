@@ -1,6 +1,10 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
+#secure
+GET         /login          		LearnmoreSecure.login
+GET         /logout        			LearnmoreSecure.logout
+GET         /authenticate   		LearnmoreSecure.authenticate
 
 # Home page
 GET     /                                       Application.index
