@@ -1,0 +1,117 @@
+<script type="text/javascript">
+	function details(bucketId){
+	 	if(bucketId!=-1){
+	       	var detailsAction = #{jsAction @Teachers.listDetailMessage(':id') /}
+	    	 $('#teacherDetails').load(detailsAction({'id':bucketId})) 
+	 	}else{
+			 $('#teacherDetails').click();
+		 }
+	 }  
+    $(function(){
+    	DrapDropBar('teacherlist');
+     });
+            
+</script>
+<form id="pagerForm" action="@{Teachers.list}" method="post">
+	<input type="hidden" value="${pageNum}" name="pageNum"> 
+	<input type="hidden" value="${numPerPage}" name="numPerPage"> 
+	<input type="hidden" value="${orderField}" name="orderField">
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onSubmit="return navTabSearch(this);"
+		action="@{Teachers.list}" method="post">
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li><label>name:</label> <input type="text"
+					name="name" value="${params.name}"/></li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li><div class="buttonActive">
+							<div class="buttonContent">
+								<button type="submit">Search</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>
+				<a class="add" id="ad" href="@{Teachers.blank}" target="dialog" height="300">
+					<span>Add teacher</span> 
+				</a>
+			</li>
+			<li>
+				<a class="delete" href="@{Teachers.deletes}" target="selectedTodo" postType="string" rel="ids"
+				title="Are you sure to delete these teachers?">
+				<span>Delete bucket</span>
+			</a></li>
+		</ul>
+	</div>
+	<div id="teacherlistTableDiv">
+		<table class="table" width="100%" layouth="400"  id="teacherlistTable">
+			<thead>
+				<tr>
+					<th width="50"><input type="checkbox" group="ids"
+						class="checkboxCtrl"></th>
+					<th width="200" class="asc">Name</th>
+					<th width="150">Type</th>
+					<th width="150">Telephone</th>
+					<th width="100">Email</th>
+				</tr>
+			</thead>
+			<tbody>
+				 #{list items:objects, as:'teacher'}
+				<tr onclick="details(${teacher.id})" target="sid_user"
+					rel="${teacher.id}">
+					<td><input name="ids" value="${teacher.id}" type="checkbox">
+					</td>
+					<td>${teacher.name}</td>
+					<td>${teacher.employeType}</td>
+					<td>${teacher.tel}</td>
+					<td><a href="${teacher.email}">${teacher.email}</a></td>
+				</tr>
+				#{/list} 
+			</tbody>
+		</table>
+		<div class="panelBar" id="panelBar" style="cursor: row-resize">
+			<div class="pages">
+				<span>List</span> 
+				<select name="numPerPage" onchange="navTabPageBreak({'numPerPage':this.value})">
+					<option value="20" #{if numPerPage==20}selected#{/if}>20</option>
+					<option value="50" #{if numPerPage==50}selected#{/if}>50</option>
+					<option value="100" #{if numPerPage==100}selected#{/if}>100</option>
+					<option value="200" #{if numPerPage==200}selected#{/if}>200</option>
+				</select> 
+				<span>Total:${totalCount}</span>
+			</div>
+
+			<div currentpage="${pageNum}" pagenumshown="10"
+				numperpage="${numPerPage}" totalcount="${totalCount}"
+				targettype="navTab" class="pagination" />
+		</div>
+	</div>
+	<div class="divider" id="teacherlistBar" style="cursor:row-resize;"></div>		
+	<div class="tabs">
+		<div class="tabsHeader">
+			<div class="tabsHeaderContent">
+				<ul>
+					<li><a href="javascript:details(-1);"><span>Details</span> </a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="tabsContent" style="height: 260px" id="teacherlistTabsDiv">
+			<div id="containerDetails">
+			</div>
+		</div>
+		<div class="tabsFooter">
+			<div class="tabsFooterContent"></div>
+		</div>
+	</div>
+</div>

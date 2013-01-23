@@ -41,7 +41,7 @@ public class LearnmoreSecure extends Controller{
     // ~~~ Login
 
     public static void login() throws Throwable {
-        System.out.println("-=-=-login");
+        
         Http.Cookie remember = request.cookies.get("rememberme");
         if(remember != null && remember.value.indexOf("-") > 0) {
             String sign = remember.value.substring(0, remember.value.indexOf("-"));
@@ -51,8 +51,7 @@ public class LearnmoreSecure extends Controller{
                 redirectToOriginalURL(username);
             }
         }
-        flash.keep("url");
-        renderTemplate("Application/login.html");
+        render();
     }
 
     public static void authenticate(@Required String username, String password, boolean remember) throws Throwable {
@@ -71,7 +70,6 @@ public class LearnmoreSecure extends Controller{
             params.flash();
             login();
         }
-        System.out.println("-=-=-:"+username);
         // Mark user as connected
         session.put("username", username);
         // Remember if needed
@@ -86,19 +84,17 @@ public class LearnmoreSecure extends Controller{
         Security.invoke("onDisconnect");
         session.clear();
         response.removeCookie("rememberme");
-        Security.invoke("onDisconnected");
+        Security.invoke("onTheDisconnected");
         flash.success("secure.logout");
         login();
     }
 
     // ~~~ Utils
 
-    static void redirectToOriginalURL(String username) throws Throwable {
-        System.out.println("-=-=-2222222222222222");
+    public static void redirectToOriginalURL(String username) throws Throwable {
         LearnmoreSecurity.invoke("onAuthenticated",username);
         String url = (String) Cache.get("url_" + session.getId());
         Cache.delete("url_" + session.getId());
-        System.out.println("-=-=-:"+url);
         if(url == null) {
             url = "/";
         }

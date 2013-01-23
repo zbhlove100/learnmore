@@ -26,6 +26,7 @@ public class Application extends Controller {
 	@Before
 	public static void checkUser(){
 		// for flash authorization
+	    
 		if (request.cookies == null
 				|| request.cookies.get("PLAY_SESSION") == null) {
 			Logger.debug("PLAY_SESSION is null");
@@ -47,7 +48,6 @@ public class Application extends Controller {
 				redirect(logoutUrl);
 			}
 			
-			// add wiki
 			renderArgs.put("user", CurrentUser.current());
 		}
 	}

@@ -1,33 +1,31 @@
 package models;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import utils.Base64Util;
 @Entity
+@Table(name="user")
 public class User extends BaseModel{
     public String name;
     
     public String email;
     
-    public String passwordBase64;
+    public String password;
     
-    public String role;
+    @ManyToOne
+    public Role role;
     
-    public User(String name, String email, String role) {
-        super();
-        this.name = name;
-        this.email = email;
-        this.role = role;
+
+    public void setPassword(String plainpassword) {
+        this.password = Base64Util.encode(plainpassword);
     }
 
-    public void setPasswordBase64(String plainpassword) {
-        this.passwordBase64 = Base64Util.encode(plainpassword);
-    }
-
-    public String getPasswordBase64() {
-        return Base64Util.decode(this.passwordBase64);
+    public String getPassword() {
+        return Base64Util.decode(this.password);
     }
     public static User connect(String username,String password){
-        return User.find("email = ? and password = ? and state = ?", username,password,BaseModel.ACTIVE).first();
+        return User.find("email = ? and password = ? and state = ?", username,Base64Util.encode(password),BaseModel.ACTIVE).first();
     }
 }

@@ -24,31 +24,28 @@ public class LearnmoreSecurity extends Security {
         CurrentUser cu = (CurrentUser)connected();
         return cu != null && profile.equals(cu.role);
     }
-    public static boolean authentify(String username, String password) {
-        return true;
-    }
-    public static void onAuthenticated(String username) {
+    public static boolean onAuthenticated(String username) {
                   
-        /*User acc = User.find("username=? and state=?", username,BaseModel.ACTIVE).first();*/
-        User acc = new User(username,username,username);
-        acc.setPasswordBase64(username);
+        User acc = User.find("email=? and state=?", username,BaseModel.ACTIVE).first();
         CurrentUser currentuser = (CurrentUser)Cache.get(Scope.Session.current().getId());
         if(currentuser == null){
-        	 currentuser = new CurrentUser(1l,acc.email,acc.role,acc.passwordBase64);
-        	 System.out.println("-=-=-3333333333333333");
+        	 currentuser = new CurrentUser(acc.id,acc.email,acc.role.roleName,acc.password);
         	 Cache.set(Scope.Session.current().getId(), currentuser, "30mn");
          }else{
         	 Cache.set(Scope.Session.current().getId(), currentuser, "30mn");
     	}
+        return false;
+        
     }
 
-    public static void onDisconnected() {
+    public static boolean onTheDisconnected() {
 		Cache.delete(Scope.Session.current().getId());
 		Scope.Session.current().clear();
 		// remove navtab information
 		Http.Response.current().removeCookie("lastnavtab_id");
 		Http.Response.current().removeCookie("lastnavtab_url");
-		Http.Response.current().removeCookie("lastnavtab_title");           
+		Http.Response.current().removeCookie("lastnavtab_title");
+        return false;           
     }
 
     public static Object connected() {
