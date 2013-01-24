@@ -228,11 +228,10 @@ var DWZ = {
 		layoutH: function($refBox){
 			return this.each(function(){
 				var $this = $(this);
-				if (! $refBox) $refBox = $this.parents("div.layoutBox:first");
+				if (! $refBox) $refBox = ("dialog" == $this.attr("layoutType") && $.pdialog) ? $.pdialog.getCurrent().find(".dialogContent") : $("#container .tabsPageContent");
 				var iRefH = $refBox.height();
 				var iLayoutH = parseInt($this.attr("layoutH"));
 				var iH = iRefH - iLayoutH > 50 ? iRefH - iLayoutH : 50;
-				
 				if ($this.isTag("table")) {
 					$this.removeAttr("layoutH").wrap('<div layoutH="'+iLayoutH+'" style="overflow:auto;height:'+iH+'px"></div>');
 				} else {

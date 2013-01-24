@@ -20,7 +20,7 @@
 				style[1] = $th.attr("align");
 				aStyles[aStyles.length] = style;
 			}
-			$(this).wrap("<div class='grid'></div>");
+			$(this).wrap("<div class='grid' id='"+$table.attr('id')+"'>></div>");
 			var $grid = $table.parent().html($table.html());
 			var thead = $grid.find("thead");
 			thead.wrap("<div class='gridHeader'><div class='gridThead'><table style='width:" + (tlength - 20) + "px;'></table></div></div>");
@@ -44,7 +44,6 @@
 
 			var tbody = $grid.find(">tbody");
 			var layoutStr = layoutH ? " layoutH='" + layoutH + "'" : "";
-			
 			tbody.wrap("<div class='gridScroller'" + layoutStr + " style='width:" + $tc.width() + "px;'><div class='gridTbody'><table style='width:" + (tlength - 20) + "px;'></table></div></div>");
 			var ftr = $(">tr:first-child", tbody);
 			var $trs = tbody.find('>tr');

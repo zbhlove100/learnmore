@@ -1,3 +1,33 @@
 # You can specialize this file for each language.
 # For example, for French create a messages.fr file
 #
+crud.title=Administration
+crud.home=Home
+crud.blank=New
+crud.index.title=Choose the object to edit
+crud.index.objectType=Object type
+crud.index.action=
+crud.index.add=Add
+crud.add=Add &{%s}
+crud.list.title=&{%s}
+crud.list.size=%d &{%s}
+crud.list.totalSize=%d total
+crud.pagination.previous=« Previous
+crud.pagination.next=Next »
+crud.pagination.last=Last »»
+crud.pagination.first=«« First
+crud.show.title=Edit &{%s}
+crud.save=Save
+crud.saveAndContinue=Save and continue editing
+crud.cancel=Cancel
+crud.hasErrors=Please correct errors
+crud.blank.title=Add &{%s}
+crud.saveAndAddAnother=Save and create another
+crud.delete=Delete &{%s} success
+crud.created=The &{%s} has been created
+crud.saved=The &{%s} has been saved
+crud.deleted=The &{%s} has been deleted
+crud.delete.error=Cannot delete this object
+crud.search=Search
+crud.none=(None)
+crud.selectValue=(Please select a value)

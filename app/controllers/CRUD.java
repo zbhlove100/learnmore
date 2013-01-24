@@ -448,9 +448,12 @@ public abstract class CRUD extends Application{
 		if (request.format.equals("json")) {
 			// renderJSON("{\"statusCode\":\"200\",  \"navTabId\":\"globalsettings\",\"forwardUrl\":\"/settings/list\"}");
 			String typename = type.name.toLowerCase();
-			renderJSON(forwardJson(typename,
-					String.format("/%s/list", typename),
-					Messages.get("crud.created", type.modelName)));
+			
+			Map map = forwardJson(typename,
+                    String.format("/%s/list", typename),
+                    Messages.get("crud.created", type.modelName));
+			map.put("callbackType", "closeCurrent");
+			renderJSON(map);
 		} else {
 
 			flash.success(Messages.get("crud.created", type.modelName));

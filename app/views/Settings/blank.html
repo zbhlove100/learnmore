@@ -1,0 +1,32 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="@{Settings.create}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+		 <input type="hidden" name="_saveAndAddAnother">
+			<div class="pageFormContent" layoutH="56" layoutW="56">
+				<p>
+					<label>Parameter Name：</label>
+					<input name="object.name" class="required" maxlength="200" maxlength="1" type="text"/>
+				</p>
+				<p>
+					<label>Parameter Value：</label>
+					<input name="object.value" type="text" maxlength="500" value=""/>
+				</p>
+				<p>
+					<label>Extend properties：</label>
+					<input name="object.extvalue" type="text" maxlength="500" />
+				</p>
+				<p>
+					<label>Description：</label>
+					<textarea name="object.description" maxlength="1000" cols="50" rows="5"></textarea>
+				</p>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">Save</button></div></div></li>
+					<li>
+						<div class="button"><div class="buttonContent"><button type="Button" class="close">Cancel</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</form>
+</div>

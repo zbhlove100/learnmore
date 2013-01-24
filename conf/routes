@@ -15,5 +15,16 @@ GET     /favicon.ico                            404
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
+#{crud.types}
+*			/${type.toLowerCase()}/list				${type}.list
+*			/${type.toLowerCase()}/blank			${type}.blank
+POST        /${type.toLowerCase()}/create        ${type}.create
+* 		    /${type.toLowerCase()}/show/{id}		${type}.show
+POST		/${type.toLowerCase()}/{id}/edit		${type}.edit
+POST	    /${type.toLowerCase()}/save/{id}		${type}.save
+POST	    /${type.toLowerCase()}/delete/{id}		${type}.delete
+GET 	    /${type.toLowerCase()}/deletes  		${type}.deletes
+#{/crud.types}
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

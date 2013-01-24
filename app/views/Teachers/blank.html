@@ -1,0 +1,49 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="@{Accounts.create}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+			<div class="pageFormContent" layoutH="56" layoutW="56">
+				<p>
+					<label>Account Type：</label>
+					#{select 'object.role.id', class:'combox', change:'accchange', id:'account_id'}
+  						#{list items:roles, as: 'role'}
+  							#{if role.name!='root'}
+    							#{option role.id} ${role.name} #{/option}
+    						#{/if}
+  						#{/list}
+					#{/select} 
+				</p>			
+				<p>
+					<label>Domain：</label>
+					#{select 'object.domain.id',  id:'domain_id'}
+  						#{list items:domains, as: 'domain'}
+  							#{if domain.id!=1}
+    							#{option domain.id } ${domain.name} #{/option}
+    						#{/if}
+  						#{/list}
+					#{/select} 
+				</p>
+				<p>
+					<label>Username：</label>
+					<input id="user_id" name="object.username" class="required" type="text" maxlength="90" minlength="2" size="20"/>
+				    &nbsp;<span id="result_user"></span>
+				</p>
+				<p>
+					<label>Password：</label>
+					<input name="object.password"  id="cp_newPassword" class="required" type="password" size="20" maxlength="30" minlength="4" class="required" value=""/>
+				</p>
+				<p>
+					<label>Confirm Password：</label>
+					<input name="rnewPassword" type="password" equalTo="#cp_newPassword" size="20" class="required" maxlength="30" minlength="4" value=""/>
+				</p>		
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">Save</button></div></div></li>
+					<li>
+						<div class="button"><div class="buttonContent"><button type="Button" class="close">Cancel</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

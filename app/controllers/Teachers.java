@@ -1,8 +1,15 @@
 package controllers;
 
+import java.util.List;
+
+import models.Teacher;
+import models.Where;
+
 public class Teachers extends CRUD {
     public static void list(){
-        render();
+        Where where = new Where(params);
+        
+        _list(where);
     }
     
     public static void blank(){
@@ -13,7 +20,7 @@ public class Teachers extends CRUD {
         render();
     }
     
-    public static void listDetailMessage(){
+    public static void listDetailMessage(Long id){
         render();
     }
 }
