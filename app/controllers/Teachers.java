@@ -31,6 +31,6 @@ public class Teachers extends CRUD {
     }
     
     public static void detail(long id){
-        
+        render();
     }
 }
