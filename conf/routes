@@ -20,7 +20,7 @@ GET     /public/                                staticDir:public
 *			/${type.toLowerCase()}/blank			${type}.blank
 POST        /${type.toLowerCase()}/create        ${type}.create
 * 		    /${type.toLowerCase()}/show/{id}		${type}.show
-POST		/${type.toLowerCase()}/{id}/edit		${type}.edit
+*			/${type.toLowerCase()}/{id}/edit		${type}.edit
 POST	    /${type.toLowerCase()}/save/{id}		${type}.save
 POST	    /${type.toLowerCase()}/delete/{id}		${type}.delete
 GET 	    /${type.toLowerCase()}/deletes  		${type}.deletes

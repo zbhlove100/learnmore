@@ -10,7 +10,49 @@
     $(function(){
     	DrapDropBar('teacherlist');
      });
-            
+     $(function(){
+    	 chart1 = new Highcharts.Chart({
+             chart: {
+                renderTo: 'containerDetails',
+                type: 'pie'
+             },
+             title: {
+                text: 'Employee composition'
+             },
+             tooltip: {
+         	    pointFormat: '{series.name}: <b>{point.percentage}%</b>',
+             	percentageDecimals: 1
+             },
+             plotOptions: {
+                 pie: {
+                     allowPointSelect: true,
+                     cursor: 'pointer',
+                     dataLabels: {
+                         enabled: true,
+                         color: '#000000',
+                         connectorColor: '#000000',
+                         formatter: function() {
+                             return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                         }
+                     }
+                 }
+             },
+             series: [{
+                 type: 'pie',
+                 name: 'Percentage',
+                 data: [
+                     ['Teacher',   60.0],
+                     ['Assitant',  20.0],
+                     {
+                         name: 'Markerter',
+                         y: 20.0,
+                         sliced: true,
+                         selected: true
+                     }
+                 ]
+             }]
+          });
+     });
 </script>
 <form id="pagerForm" action="@{Teachers.list}" method="post">
 	<input type="hidden" value="${pageNum}" name="pageNum"> 
@@ -59,10 +101,11 @@
 			<thead>
 				<tr>
 					<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-					<th width="200" class="asc">Name</th>
+					<th width="150" class="asc">Name</th>
 					<th width="150">Type</th>
-					<th width="150">Telephone</th>
-					<th width="100">Email</th>
+					<th width="200">Telephone</th>
+					<th width="300">Email</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -75,6 +118,7 @@
 					<td>${teacher.employeType}</td>
 					<td>${teacher.tel}</td>
 					<td><a href="${teacher.email}">${teacher.email}</a></td>
+					<td><a class="btn-mini btn btn-block btn-success" href="@{Teachers.detail(teacher.id)}" target="navTab" rel="teacherDetail" title="${teacher.name}">Detail >>></a></td>
 				</tr>
 				#{/list} 
 			</tbody>
