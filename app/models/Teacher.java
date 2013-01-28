@@ -1,6 +1,13 @@
 package models;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -11,17 +18,30 @@ public class Teacher extends BaseModel {
     
     public int age;
     
-    public String picture;
-    
     public String email;
-    
-    public String tel;
-    
-    public String address;
     
     public String employeType;
     
     public String state;
+    
+    public Date createdAt;
+    
+    public Date removedAt;
+    
+    @OneToOne(mappedBy="teacher")
+    public TeacherDetail teacherDetail;
+    
+    @OneToOne(mappedBy="teacher")
+    public ImgDetail imgDetail;
+    
+    @OneToMany(mappedBy="teacher",fetch=FetchType.LAZY)
+    public List<Lesson> lessons;
+    
+    @ManyToOne
+    public School school;
+    
+    @OneToMany(mappedBy="teacher",fetch=FetchType.LAZY)
+    public List<Tag> tags;
     
     public enum EM_TYPE{
         TEACHER,ASSISTANT,MARKETER

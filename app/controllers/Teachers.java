@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.BaseModel;
+import models.Lesson;
 import models.Teacher;
 import models.Where;
 
@@ -14,6 +15,9 @@ public class Teachers extends CRUD {
         renderArgs.put("sunTeacher", sunTeacher);
         renderArgs.put("sunAssistant", sunAssistant);
         renderArgs.put("sunMarketer", sunMarketer);
+        /*List<Teacher> teachers = Teacher.find("id = ?", 3l).fetch();
+        renderArgs.put("objects",teachers);
+        render();*/
         Where where = new Where(params);
         _list(where);
     }
@@ -31,6 +35,10 @@ public class Teachers extends CRUD {
     }
     
     public static void detail(long id){
+        Teacher t = Teacher.findById(id);
+        List<Lesson> lessons = Lesson.find("teacher = ? and state != ?", t,BaseModel.DELETE).fetch(5);
+        renderArgs.put("showTeacher", t);
+        renderArgs.put("lessons", lessons);
         render();
     }
 }

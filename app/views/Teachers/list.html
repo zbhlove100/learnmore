@@ -41,11 +41,11 @@
                  type: 'pie',
                  name: 'Percentage',
                  data: [
-                     ['Teacher',   60.0],
-                     ['Assitant',  20.0],
+                     ['Teacher',   ${sunTeacher}],
+                     ['Assitant',  ${sunAssistant}],
                      {
                          name: 'Markerter',
-                         y: 20.0,
+                         y: ${sunMarketer},
                          sliced: true,
                          selected: true
                      }
@@ -116,7 +116,7 @@
 					</td>
 					<td>${teacher.name}</td>
 					<td>${teacher.employeType}</td>
-					<td>${teacher.tel}</td>
+					<td>${teacher.teacherDetail?.tel?:''}</td>
 					<td><a href="${teacher.email}">${teacher.email}</a></td>
 					<td><a class="btn-mini btn btn-block btn-success" href="@{Teachers.detail(teacher.id)}" target="navTab" rel="teacherDetail" title="${teacher.name}">Detail >>></a></td>
 				</tr>

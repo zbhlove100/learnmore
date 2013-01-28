@@ -1,60 +1,222 @@
-<h2 class="contentTitle">文本框/文本域</h2>
+<h2 class="contentTitle">${showTeacher.name}</h2>
 
 	
-<div class="pageFormContent" layoutH="60">
-	<fieldset>
-		<legend>单行文本框</legend>
-		<dl>
-			<dt>普通输入框：</dt>
-			<dd><input name="field1" type="text" /></dd>
-		</dl>
-		<dl>
-			<dt>提示信息：</dt>
-			<dd><input name="field2" type="text" alt="提示信息"/></dd>
-		</dl>
-		<dl>
-			<dt>必填：</dt>
-			<dd><input class="required" name="field3" type="text" /></dd>
-		</dl>
-		<dl>
-			<dt>错误：</dt>
-			<dd><input class="error" name="field4" type="text" /></dd>
-		</dl>
-		<dl>
-			<dt>只读：</dt>
-			<dd><input readonly="true" name="field5" type="text" /></dd>
-		</dl>
-		<dl>
-			<dt>禁用：</dt>
-			<dd><input disabled="true" name="field6" type="text" /></dd>
-		</dl>
-		<dl>
-			<dt>密码：</dt>
-			<dd><input name="password" type="text" /></dd>
-		</dl>
-	</fieldset>
-	
-	<fieldset>
-		<legend>多行文本框(文本域)</legend>
-		<dl class="nowrap">
-			<dt>普通文本框：</dt>
-			<dd><textarea name="textarea1" cols="80" rows="2"></textarea></dd>
-		</dl>
-		<dl class="nowrap">
-			<dt>必填：</dt>
-			<dd><textarea name="textarea2" cols="80" rows="2"></textarea></dd>
-		</dl>
-		<dl class="nowrap">
-			<dt>错误：</dt>
-			<dd><textarea name="textarea3" class="error" cols="80" rows="2"></textarea></dd>
-		</dl>
-		<dl class="nowrap">
-			<dt>只读：</dt>
-			<dd><textarea name="textarea4" readonly="true" cols="80" rows="2"></textarea></dd>
-		</dl>
-		<dl class="nowrap">
-			<dt>禁用：</dt>
-			<dd><textarea name="textarea5" disabled="true" cols="80" rows="2"></textarea></dd>
-		</dl>
-	</fieldset>
+<div class="pageContent sortDrag" selector="h1" layoutH="60">
+	<div class="panel" defh="315">
+	<h1>详细信息</h1>
+		<div>
+			<table class="thistable" style="width: 100%">
+				<tbody>
+					<tr>
+						<td rowspan="11"><img height="300" src="@{'public/images/'}${showTeacher.imgDetail.basicImg}"/></td>
+						<th>
+							姓名
+						</th>
+						<td style="border-top: 1px solid #C1DAD7; ">
+							${showTeacher.name?:''}
+						</td>
+						<th>
+							性别
+						</th>
+						<td style="border-top: 1px solid #C1DAD7; ">
+							${showTeacher.teacherDetail?.sex?:''}
+						</td>
+						<th>
+							简介
+						</th>
+					</tr>
+					<tr>
+						<th>
+							age
+						</th>
+						<td>
+							${showTeacher.age?:''}
+						</td>
+						<th>
+							english name
+						</th>
+						<td>
+							${showTeacher.teacherDetail?.enName?:''}
+						</td>
+						<td rowspan="10" style="width: 400px;font-size: 13px; ">
+							${showTeacher.teacherDetail?.summary?:''}
+						</td>
+					</tr>
+					
+					<tr>
+						<th>
+							class
+						</th>
+						<td colspan="3">
+							${showTeacher.teacherDetail?.classType?:''}
+						</td>
+					</tr>
+					<tr>
+						<th>
+							education
+						</th>
+						<td colspan="3">
+							${showTeacher.teacherDetail?.education?:''}
+						</td>
+					</tr>	
+					<tr>
+						<th>
+							height
+						</th>
+						<td>
+							${showTeacher.teacherDetail?.height?:''}
+						</td>
+						<th>
+							生日
+						</th>
+						<td>
+							${showTeacher.teacherDetail?.birthday?:''}
+						</td>
+					</tr>
+					<tr>
+						<th>
+							horror man
+						</th>
+						<td colspan="3">
+							${showTeacher.teacherDetail?.adoreMan?:''}
+						</td>
+						
+					</tr>	
+					<tr>
+						<th>
+							interest
+						</th>
+						<td colspan="3">
+							${showTeacher.teacherDetail?.interest?:''}
+						</td>
+						
+					</tr>
+					<tr>
+						<th>
+							favorite place
+						</th>
+						<td colspan="3">
+							${showTeacher.teacherDetail?.favoritePlace?:''}
+						</td>
+						
+					</tr>	
+					<tr>
+						<th>
+							favorite color
+						</th>
+						<td colspan="3">
+							${showTeacher.teacherDetail?.favoriteColor?:''}
+						</td>
+						
+					</tr>	
+					<tr>
+						<th>
+							favorite sport
+						</th>
+						<td colspan="3">
+							${showTeacher.teacherDetail?.favoriteSport?:''}
+						</td>
+						
+					</tr>	
+					<tr>
+						<th>
+							teacher word
+						</th>
+						<td colspan="3">
+							${showTeacher.teacherDetail?.teacherWord?:''}
+						</td>
+						
+					</tr>							
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="panel collapse" defH="150">
+		<h1>员工信息</h1>
+		<div>
+			<table class="thistable" style="width: 100%">
+				<tbody>
+					<tr>
+						<th>
+							校区
+						</th>
+						<td style="border-top: 1px solid #C1DAD7; ">
+							${showTeacher.school?.name?:''}
+						</td>
+						<th>
+							职务
+						</th>
+						<td style="border-top: 1px solid #C1DAD7; ">
+							${showTeacher.employeType?:''}
+						</td>
+						<th>
+							部门
+						</th>
+						<td style="border-top: 1px solid #C1DAD7; ">
+						</td>
+					</tr>
+					<tr>
+						<th>
+							入职时间
+						</th>
+						<td >
+							${showTeacher.teacherDetail?.hireDate?:''}
+						</td>
+						<th>
+							工作时间
+						</th>
+						<td >
+							${showTeacher.employeType?:''}
+						</td>
+						<th>
+							毕业时间
+						</th>
+						<td >
+							${showTeacher.teacherDetail?.graduateDate?:''}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="panel collapse" minH="100" defH="150">
+		<h1>课程信息</h1>
+		<div>
+			<table class="thistable" style="width: 100%">
+				<tbody>
+					<tr>
+						<th>
+							课程名称
+						</th>
+						<th>
+							类别
+						</th>
+						<th>
+							时间
+						</th>
+						<th>
+							报名人数
+						</th>
+					</tr>
+					#{list items:lessons, as:'lesson'}
+					<tr>
+						<td >
+							${lesson.name}
+						</td>
+						<td >
+							${lesson.lessonType}
+						</td>
+						<td >
+							${lesson.startTime} -- ${lesson.endTime}
+						</td>
+						<td >
+							${lesson.studentNum}
+						</td>
+					</tr>
+					#{/list} 
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>

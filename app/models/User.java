@@ -14,6 +14,10 @@ public class User extends BaseModel{
     
     public String password;
     
+    public String state;
+    
+    public String isSuper;
+    
     @ManyToOne
     public Role role;
     
