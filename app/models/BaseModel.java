@@ -13,7 +13,7 @@ public class BaseModel extends Model {
 	 public static String PENDING = "Pending";
 	 public static String FREEZE = "Freeze";
 	 public static String DELETE = "Delete";
-
+	 public static String FINISH = "finish";
 	 public static List<String> getBaseStates(){
 		 List<String> ss = new ArrayList<String>();
 		 ss.add(ACTIVE);

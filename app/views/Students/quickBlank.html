@@ -1,0 +1,100 @@
+<script type="text/javascript">
+function searchServer(form) {
+	var url = "/Students/searchStudent";
+	var resultDiv = "searchStudentPageContent";
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: $(form).serializeArray(),
+		dataType: "html",
+		cache: false,
+		success: function(data){
+			var $p = $('#'+resultDiv);
+			$p.html(data);
+			$("table.table", $p).jTable();
+			$('table.list', $p).cssTable();		
+			if ($.fn.combox) $("select.combox",$p).combox();
+		},
+		error: DWZ.ajaxError
+	});
+	return false;
+}
+</script>
+<div class="page">
+	<div class="tabs">
+	  <div class="tabsHeader">
+		<div class="tabsHeaderContent">
+			<ul>
+				<li id="page1"><a href="#" onclick="tab_onclick(1)" ><span>已注册学员</span></a></li>
+				<li id="page2"><a href="#" onclick="tab_onclick(2)" ><span>未注册学员</span></a></li>
+			</ul>
+		</div>
+	  </div>
+	  <div class="tabsContent">
+		<div class="pageContent">
+			<form method="post" action="@{Students.quickCreate}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+					<p>
+						<label>课程名：</label>
+						${lesson.name}
+					</p>			
+					<div id="searchStudentPageContent" class="pageFormContent" layoutW="56" layoutH="100">				
+						<p>
+							<label>姓名</label>
+							<input type="text" name="studentname" value="${studentname}"/>
+						</p>
+						<p>
+							<label>电话</label>
+							<input type="text" name="studenttel" value="${studenttel}"/>
+							&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="regworkerButton" onclick="return searchServer(this.form)">Search</button>
+						</p>
+						<table id="studentlistTable" class="table" width="100%">
+							<thead>
+								<tr>
+									<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+									<th width="150" class="asc">姓名</th>
+									<th width="150">年龄</th>
+									<th width="150">年级</th>
+									<th width="200">电话</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								 #{list items:students, as:'student'}
+								<tr target="sid_user"
+									rel="${student.id}">
+									<td><input name="ids" value="${student.id}" type="checkbox">
+									</td>
+									<td>${student.name}</td>
+									<td>${student.age?:''}</td>
+									<td>${student.grade?:''}</td>
+									<td>${student.tel?:''}</td>
+									<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(student.id)}" target="navTab" rel="studentDetail" title="${student.name}">Detail >>></a></td>
+								</tr>
+								#{/list} 
+							</tbody>
+						</table>
+					</div>			
+					<p>
+						<label>备注：</label>
+						<input id="user_id" name="object.username" class="required" type="text" maxlength="90" minlength="2" size="20"/>
+					    &nbsp;<span id="result_user"></span>
+					</p>
+				</div>
+				<div class="formBar">
+					<ul>
+						<li><div class="buttonActive"><div class="buttonContent"><button type="submit">Save</button></div></div></li>
+						<li>
+							<div class="button"><div class="buttonContent"><button type="Button" class="close">Cancel</button></div></div>
+						</li>
+					</ul>
+				</div>
+			</form>
+			<div class="pageContent">
+				<form method="post" action="@{Students.quickCreate}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+					<div class="pageFormContent" layoutH="56" layoutW="56">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

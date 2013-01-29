@@ -1,0 +1,112 @@
+<script type="text/javascript">
+    $(function(){
+    	DrapDropBar('studentlist');
+     });
+     
+</script>
+<form id="pagerForm" action="@{Students.list}" method="post">
+	<input type="hidden" value="${pageNum}" name="pageNum"> 
+	<input type="hidden" value="${numPerPage}" name="numPerPage"> 
+	<input type="hidden" value="${orderField}" name="orderField">
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onSubmit="return navTabSearch(this);"
+		action="@{Students.list}" method="post">
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li><label>name:</label> <input type="text"
+					name="name" value="${params.name}"/></li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li><div class="buttonActive">
+							<div class="buttonContent">
+								<button type="submit">Search</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>
+				<a class="add" id="ad" href="@{Students.blank}" target="dialog" height="300">
+					<span>Add student</span> 
+				</a>
+			</li>
+			<li>
+				<a class="delete" href="@{Students.deletes}" target="selectedTodo" postType="string" rel="ids"
+				title="Are you sure to delete these Students?">
+				<span>Delete bucket</span>
+			</a></li>
+		</ul>
+	</div>
+	<div id="studentlistTableDiv">
+		<table id="studentlistTable" class="table" width="100%" layouth="450">
+			<thead>
+				<tr>
+					<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+					<th width="150" class="asc">姓名</th>
+					<th width="150">年龄</th>
+					<th width="150">年级</th>
+					<th width="200">电话</th>
+					<th width="300">Email</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				 #{list items:objects, as:'student'}
+				<tr target="sid_user"
+					rel="${student.id}">
+					<td><input name="ids" value="${student.id}" type="checkbox">
+					</td>
+					<td>${student.name}</td>
+					<td>${student.age?:''}</td>
+					<td>${student.grade?:''}</td>
+					<td>${student.tel?:''}</td>
+					<td><a href="${student?.email?:''}">${student?.email?:''}</a></td>
+					<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(student.id)}" target="navTab" rel="studentDetail" title="${student.name}">Detail >>></a></td>
+				</tr>
+				#{/list} 
+			</tbody>
+		</table>
+		<div class="panelBar">
+			<div class="pages">
+				<span>List</span> 
+				<select name="numPerPage" onchange="navTabPageBreak({'numPerPage':this.value})">
+					<option value="20" #{if numPerPage==20}selected#{/if}>20</option>
+					<option value="50" #{if numPerPage==50}selected#{/if}>50</option>
+					<option value="100" #{if numPerPage==100}selected#{/if}>100</option>
+					<option value="200" #{if numPerPage==200}selected#{/if}>200</option>
+				</select> 
+				<span>Total:${totalCount}</span>
+			</div>
+
+			<div currentpage="${pageNum}" pagenumshown="10"
+				numperpage="${numPerPage}" totalcount="${totalCount}"
+				targettype="navTab" class="pagination" />
+		</div>
+	</div>
+	<div class="divider" id="studentlistBar" style="cursor:row-resize;"></div>		
+	<div class="tabs">
+		<div class="tabsHeader">
+			<div class="tabsHeaderContent">
+				<ul>
+					<li><a href="javascript:details(-1);"><span>Details</span> </a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="tabsContent" style="height: 260px" id="studentlistTabsDiv">
+			<div id="containerDetails">
+			</div>
+		</div>
+		<div class="tabsFooter">
+			<div class="tabsFooterContent"></div>
+		</div>
+	</div>
+</div>

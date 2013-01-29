@@ -376,10 +376,10 @@ input[type="button"].btn-block {
 
 <!--for the table -->
 
-.thistable { 
+.thistableArea .thistable { 
 width: 100%; 
 padding: 0; 
-margin: 0; 
+margin: 10px; 
 } 
 
 .thistable caption { 
@@ -431,4 +431,37 @@ border-left: 1px solid #C1DAD7;
 border-top: 0; 
 background: #f5fafa no-repeat; 
 color: #797268; 
-} 
+}
+
+<!-- for lesson table -->
+.lessonTable-area{
+	float:left;
+	height: 535px;
+	width: 1150px;
+	margin: 10px 25px 10px 25px;
+}
+.lessonTable-area .lessonTable-table{
+	width:1000px;
+	margin: 10px 70px 20px 70px;
+	border: 1px solid #EC9600;
+	border-collapse: collapse;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	
+}
+.lessonTable-table tr,.lessonTable-table td{
+	vertical-align: inherit;
+	border-color: inherit;
+	border: 1px solid #EC9600;
+	border-collapse: collapse;
+}
+.lessonTable-table td{
+	height: 60px;
+}
+.lessonTable-table td.finish{
+	background-image: url("../images/ico_img_05.gif");
+	background-repeat: no-repeat;
+	z-index:10000;
+	color: #797268;
+}

@@ -1,12 +1,4 @@
 <script type="text/javascript">
-	function details(bucketId){
-	 	if(bucketId!=-1){
-	       	var detailsAction = #{jsAction @Teachers.listDetailMessage(':id') /}
-	    	 $('#teacherDetails').load(detailsAction({'id':bucketId})) 
-	 	}else{
-			 $('#teacherDetails').click();
-		 }
-	 }  
     $(function(){
     	DrapDropBar('teacherlist');
      });
@@ -110,7 +102,7 @@
 			</thead>
 			<tbody>
 				 #{list items:objects, as:'teacher'}
-				<tr onclick="details(${teacher.id})" target="sid_user"
+				<tr target="sid_user"
 					rel="${teacher.id}">
 					<td><input name="ids" value="${teacher.id}" type="checkbox">
 					</td>

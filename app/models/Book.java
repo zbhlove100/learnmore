@@ -31,9 +31,9 @@ public class Book extends Model{
 	public String state;
 	
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinTable(name="book_user"
+	@JoinTable(name="book_student"
 				,joinColumns={@JoinColumn(name="book_id")}
-				,inverseJoinColumns={@JoinColumn(name="user_id")})
+				,inverseJoinColumns={@JoinColumn(name="student_id")})
 	public List<User> users;
 	
 	@ManyToOne

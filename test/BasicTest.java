@@ -19,8 +19,20 @@ public class BasicTest extends UnitTest {
         Role r = new Role();
         r.roleName = "admin";
         r.save();*/
-        Teacher t = Teacher.findById(3l);
-        System.out.println(t.teacherDetail.tel);
+       /* Teacher t = Teacher.findById(3l);
+        System.out.println(t.teacherDetail.tel);*/
+        List<Lesson> lessons = Lesson.findAll();
+        for(int i=2;i<6;i++){
+            Student s = new Student();
+            s.name = "张" + i;
+            s.age = 11 + i;
+            s.grade = i + "年级";
+            s.email = i + "@126.com";
+            s.location = "TYUIOPKJJ";
+            s.lessons = lessons;
+            s.state = BaseModel.ACTIVE;
+            s.save();
+        }
     }
 
 }

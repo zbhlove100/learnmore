@@ -1,0 +1,107 @@
+<h2 class="contentTitle">${lesson.name}</h2>
+
+	
+<div class="pageContent sortDrag" selector="h1" layoutH="60">
+	<div class="panel collapse" minH="100" defH="150">
+		<h1>课程基本信息</h1>
+		<div>
+			<table class="thistable" style="width: 100%;margin-top: 10px;">
+				<tr>
+					<th>教师 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.teacher?.name}</td>
+					<th>课次 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.times}</td>
+					<td colspan="2" style="border-top: 1px solid #C1DAD7; "><button class="btn btn-block btn-warning">修改</button></td>
+				</tr>
+				<tr>
+					<th>时间类别 :</th>
+					<td>${lesson?.lessonTimeType}</td>
+					<th>类别 :</th>
+					<td>${lesson?.lessonType}</td>
+					<th>级别 :</th>
+					<td>${lesson?.level}</td>
+				</tr>
+				<tr>
+					<th>开课时间 :</th>
+					<td>${lesson?.startTime}</td>
+					<th>结课时间 :</th>
+					<td>${lesson?.endTime}</td>
+					<th>报名人数 :</th>
+					<td>${lesson?.studentNum}</td>
+				</tr>
+				<tr>
+					<th>地点 ：</th>
+					<td colspan="5">${lesson?.school.name}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="panel collapse" minH="100" defH="250">
+		<h1>课表</h1>
+		<div class="lessonTable-area">
+			<table class="lessonTable-table">
+				#{list items:lessonTables,as:'itemlist'}
+					<tr>
+					#{list items:itemlist,as:'item'}
+						<td #{if item.state == "finish"}class="finish"#{/if}>
+							${item.lessonDate} 
+							<br>
+							${item.name}
+						</td>
+					#{/list}
+					</tr>
+				#{/list}
+			</table>
+			<div class="formBar">
+				<ul>
+					<li>
+						#{if lessonTables.size()==0}<button class="btn btn-primary">新建课表</button>#{/if}
+						#{else}<a href="@{Lessons.list}" target="navTab" rel="lessonsList" class="btn btn-warning">修改</a>#{/else}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="panel collapse" defH="250">
+		<h1>学员信息</h1>
+		<div>
+			<table id="studentlistTable" class="table" width="100%">
+				<thead>
+					<tr>
+						<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+						<th width="150" class="asc">姓名</th>
+						<th width="150">年龄</th>
+						<th width="150">年级</th>
+						<th width="200">电话</th>
+						<th width="300">Email</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					 #{list items:lesson.students, as:'student'}
+					<tr target="sid_user"
+						rel="${student.id}">
+						<td><input name="ids" value="${student.id}" type="checkbox">
+						</td>
+						<td>${student.name}</td>
+						<td>${student.age?:''}</td>
+						<td>${student.grade?:''}</td>
+						<td>${student.tel?:''}</td>
+						<td>${student?.email?:''}</td>
+						<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(student.id)}" target="navTab" rel="studentDetail" title="${student.name}">Detail >>></a></td>
+					</tr>
+					#{/list} 
+				</tbody>
+			</table>
+			<div class="formBar">
+				<ul>
+					<li>
+						<a href="@{Students.quickBlank(lesson.id)}" target="dialog" height="500" width="600" class="btn btn-primary">添加</button>
+						<a href="@{Lessons.detail("\u007Bsid_user\u007D")}" target="navTab" rel="student{sid_user}" class="btn" title="">修改</a>
+						<a href="@{Lessons.list}" target="navTab" rel="lessonsList" class="btn btn-danger">删除</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

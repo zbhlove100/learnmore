@@ -2,8 +2,12 @@ package models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -37,6 +41,8 @@ public class Lesson extends Model{
 	
 	public String discription;
 	
+	public int price;
+	
 	public int studentNum;
 	@ManyToOne
 	public Teacher teacher;
@@ -52,4 +58,10 @@ public class Lesson extends Model{
 	
 	@OneToMany(mappedBy="lesson",fetch=FetchType.LAZY)
 	public List<Tag> tags;
+	
+	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @JoinTable(name="lesson_student"
+                ,joinColumns={@JoinColumn(name="lesson_id")}
+                ,inverseJoinColumns={@JoinColumn(name="student_id")})
+    public List<Student> students;
 }

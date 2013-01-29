@@ -1,0 +1,15 @@
+<div class="lessonTable-area">
+	<table class="lessonTable-table">
+		#{list items:lessonTables,as:'itemlist'}
+			<tr>
+			#{list items:itemlist,as:'item'}
+				<td #{if item.state == "finish"}class="finish"#{/if}>
+					${item.lessonDate} 
+					<br>
+					${item.name}
+				</td>
+			#{/list}
+			</tr>
+		#{/list}
+	</table>
+</div>

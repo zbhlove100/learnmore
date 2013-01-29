@@ -5,7 +5,7 @@
 	<div class="panel" defh="315">
 	<h1>详细信息</h1>
 		<div>
-			<table class="thistable" style="width: 100%">
+			<table class="thistable" style="width: 100%;margin-top: 10px;">
 				<tbody>
 					<tr>
 						<td rowspan="11"><img height="300" src="@{'public/images/'}${showTeacher.imgDetail.basicImg}"/></td>
@@ -202,7 +202,7 @@
 					#{list items:lessons, as:'lesson'}
 					<tr>
 						<td >
-							${lesson.name}
+							<a href="">${lesson.name}</a>
 						</td>
 						<td >
 							${lesson.lessonType}

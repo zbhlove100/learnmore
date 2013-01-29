@@ -272,15 +272,16 @@ CREATE TABLE `lesson` (
   `teacher_id` bigint(20) NOT NULL,
   `lesson_system_id` bigint(20) DEFAULT NULL,
   `book_id` bigint(20) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_lesson_school1` (`school_id`),
   KEY `fk_lesson_teacher1` (`teacher_id`),
   KEY `fk_lesson_lesson_system1` (`lesson_system_id`),
   KEY `fk_lesson_book1` (`book_id`),
-  CONSTRAINT `fk_lesson_school1` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_lesson_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_lesson_lesson_system1` FOREIGN KEY (`lesson_system_id`) REFERENCES `lesson_system` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_lesson_book1` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_lesson_book1` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_lesson_school1` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_lesson_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -290,7 +291,7 @@ CREATE TABLE `lesson` (
 
 LOCK TABLES `lesson` WRITE;
 /*!40000 ALTER TABLE `lesson` DISABLE KEYS */;
-INSERT INTO `lesson` VALUES (1,'新思维课程1','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,1),(2,'新思维课程2','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,1),(3,'新思维课程3','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,1),(4,'新思维课程4','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2),(5,'新思维课程5','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2),(6,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2),(7,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2),(8,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2),(9,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2),(10,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,3),(11,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,3),(12,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,1),(13,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2),(14,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,NULL);
+INSERT INTO `lesson` VALUES (1,'新思维课程1','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,1,1569),(2,'新思维课程2','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,1,1569),(3,'新思维课程3','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,1,1569),(4,'新思维课程4','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2,1569),(5,'新思维课程5','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2,1569),(6,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2,1569),(7,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2,1569),(8,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2,1569),(9,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2,1569),(10,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,3,1569),(11,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,3,1569),(12,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,1,1569),(13,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,2,1569),(14,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-01','2012-03-01',NULL,0,'少量',1,3,NULL,NULL,1569);
 /*!40000 ALTER TABLE `lesson` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -318,6 +319,7 @@ CREATE TABLE `lesson_student` (
 
 LOCK TABLES `lesson_student` WRITE;
 /*!40000 ALTER TABLE `lesson_student` DISABLE KEYS */;
+INSERT INTO `lesson_student` VALUES (1,2),(2,2),(3,2),(4,2),(5,2),(6,2),(7,2),(8,2),(9,2),(10,2),(11,2),(12,2),(13,2),(14,2),(1,3),(2,3),(3,3),(4,3),(5,3),(6,3),(7,3),(8,3),(9,3),(10,3),(11,3),(12,3),(13,3),(14,3),(1,4),(2,4),(3,4),(4,4),(5,4),(6,4),(7,4),(8,4),(9,4),(10,4),(11,4),(12,4),(13,4),(14,4),(1,5),(2,5),(3,5),(4,5),(5,5),(6,5),(7,5),(8,5),(9,5),(10,5),(11,5),(12,5),(13,5),(14,5),(1,6),(2,6),(3,6),(4,6),(5,6),(6,6),(7,6),(8,6),(9,6),(10,6),(11,6),(12,6),(13,6),(14,6);
 /*!40000 ALTER TABLE `lesson_student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -360,7 +362,7 @@ CREATE TABLE `lesson_table` (
   `name` varchar(45) DEFAULT NULL,
   `lesson_date` varchar(45) DEFAULT NULL,
   `state` varchar(45) DEFAULT NULL,
-  `lesson_id` bigint(20) NOT NULL,
+  `lesson_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_lesson_table_lesson1` (`lesson_id`),
   CONSTRAINT `fk_lesson_table_lesson1` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -375,6 +377,43 @@ LOCK TABLES `lesson_table` WRITE;
 /*!40000 ALTER TABLE `lesson_table` DISABLE KEYS */;
 INSERT INTO `lesson_table` VALUES (1,'第1课','2012-03-05','Finish',1),(2,'第2课','2012-03-05','Finish',1),(3,'第3课','2012-03-05','Finish',1),(4,'第3课','2012-03-05','Active',1),(5,'第3课','2012-03-05','Active',1),(6,'第3课','2012-03-05','Active',1),(7,'第3课','2012-03-05','Finish',1),(8,'第3课','2012-03-05','Active',1),(9,'第3课','2012-03-05','Active',1),(10,'第3课','2012-03-05','Active',1),(11,'第3课','2012-03-05','Active',1),(12,'第3课','2012-03-05','Active',1),(13,'第3课','2012-03-05','Active',1),(14,'第3课','2012-03-05','Active',1),(15,'第3课','2012-03-05','Active',1),(16,'第3课','2012-03-05','Active',1),(17,'第3课','2012-03-05','Active',1),(2016,'第1课','2012-10-10','Finish',2),(2017,'第2课','2012-10-10','Finish',2),(2018,'第3课','2012-10-10','Finish',2),(2019,'第4课','2012-10-10','Finish',2),(2020,'第5课','2012-10-10','Finish',2),(2021,'第6课','2012-10-10','Finish',2),(2022,'第7课','2012-10-10','Active',2),(2023,'第8课','2012-10-10','Active',2),(2024,'第9课','2012-10-10','Active',2),(2025,'第10课','2012-10-10','Active',2),(2026,'第11课','2012-10-10','Active',2),(2027,'第12课','2012-10-10','Active',2),(2028,'第13课','2012-10-10','Active',2),(2029,'第14课','2012-10-10','Active',2),(2030,'第15课','2012-10-10','Active',2),(2031,'第1课','2012-10-10','Finish',3),(2032,'第2课','2012-10-10','Finish',3),(2033,'第3课','2012-10-10','Finish',3),(2034,'第4课','2012-10-10','Finish',3),(2035,'第5课','2012-10-10','Finish',3),(2036,'第6课','2012-10-10','Finish',3),(2037,'第7课','2012-10-10','Active',3),(2038,'第8课','2012-10-10','Active',3),(2039,'第9课','2012-10-10','Active',3),(2040,'第10课','2012-10-10','Active',3),(2041,'第11课','2012-10-10','Active',3),(2042,'第12课','2012-10-10','Active',3),(2043,'第13课','2012-10-10','Active',3),(2044,'第14课','2012-10-10','Active',3),(2045,'第15课','2012-10-10','Active',3),(2046,'第1课','2012-10-10','Finish',4),(2047,'第2课','2012-10-10','Finish',4),(2048,'第3课','2012-10-10','Finish',4),(2049,'第4课','2012-10-10','Finish',4),(2050,'第5课','2012-10-10','Finish',4),(2051,'第6课','2012-10-10','Finish',4),(2052,'第7课','2012-10-10','Active',4),(2053,'第8课','2012-10-10','Active',4),(2054,'第9课','2012-10-10','Active',4),(2055,'第10课','2012-10-10','Active',4),(2056,'第11课','2012-10-10','Active',4),(2057,'第12课','2012-10-10','Active',4),(2058,'第13课','2012-10-10','Active',4),(2059,'第14课','2012-10-10','Active',4),(2060,'第15课','2012-10-10','Active',4),(2061,'第1课','2012-10-10','Finish',5),(2062,'第2课','2012-10-10','Finish',5),(2063,'第3课','2012-10-10','Finish',5),(2064,'第4课','2012-10-10','Finish',5),(2065,'第5课','2012-10-10','Finish',5),(2066,'第6课','2012-10-10','Finish',5),(2067,'第7课','2012-10-10','Active',5),(2068,'第8课','2012-10-10','Active',5),(2069,'第9课','2012-10-10','Active',5),(2070,'第10课','2012-10-10','Active',5),(2071,'第11课','2012-10-10','Active',5),(2072,'第12课','2012-10-10','Active',5),(2073,'第13课','2012-10-10','Active',5),(2074,'第14课','2012-10-10','Active',5),(2075,'第15课','2012-10-10','Active',5),(2076,'第1课','2012-10-10','Finish',6),(2077,'第2课','2012-10-10','Finish',6),(2078,'第3课','2012-10-10','Finish',6),(2079,'第4课','2012-10-10','Finish',6),(2080,'第5课','2012-10-10','Finish',6),(2081,'第6课','2012-10-10','Finish',6),(2082,'第7课','2012-10-10','Active',6),(2083,'第8课','2012-10-10','Active',6),(2084,'第9课','2012-10-10','Active',6),(2085,'第10课','2012-10-10','Active',6),(2086,'第11课','2012-10-10','Active',6),(2087,'第12课','2012-10-10','Active',6),(2088,'第13课','2012-10-10','Active',6),(2089,'第14课','2012-10-10','Active',6),(2090,'第15课','2012-10-10','Active',6),(2091,'第1课','2012-10-10','Finish',7),(2092,'第2课','2012-10-10','Finish',7),(2093,'第3课','2012-10-10','Finish',7),(2094,'第4课','2012-10-10','Finish',7),(2095,'第5课','2012-10-10','Finish',7),(2096,'第6课','2012-10-10','Finish',7),(2097,'第7课','2012-10-10','Active',7),(2098,'第8课','2012-10-10','Active',7),(2099,'第9课','2012-10-10','Active',7),(2100,'第10课','2012-10-10','Active',7),(2101,'第11课','2012-10-10','Active',7),(2102,'第12课','2012-10-10','Active',7),(2103,'第13课','2012-10-10','Active',7),(2104,'第14课','2012-10-10','Active',7),(2105,'第15课','2012-10-10','Active',7),(2106,'第1课','2012-10-10','Finish',8),(2107,'第2课','2012-10-10','Finish',8),(2108,'第3课','2012-10-10','Finish',8),(2109,'第4课','2012-10-10','Finish',8),(2110,'第5课','2012-10-10','Finish',8),(2111,'第6课','2012-10-10','Finish',8),(2112,'第7课','2012-10-10','Active',8),(2113,'第8课','2012-10-10','Active',8),(2114,'第9课','2012-10-10','Active',8),(2115,'第10课','2012-10-10','Active',8),(2116,'第11课','2012-10-10','Active',8),(2117,'第12课','2012-10-10','Active',8),(2118,'第13课','2012-10-10','Active',8),(2119,'第14课','2012-10-10','Active',8),(2120,'第15课','2012-10-10','Active',8),(2121,'第1课','2012-10-10','Finish',9),(2122,'第2课','2012-10-10','Finish',9),(2123,'第3课','2012-10-10','Finish',9),(2124,'第4课','2012-10-10','Finish',9),(2125,'第5课','2012-10-10','Finish',9),(2126,'第6课','2012-10-10','Finish',9),(2127,'第7课','2012-10-10','Active',9),(2128,'第8课','2012-10-10','Active',9),(2129,'第9课','2012-10-10','Active',9),(2130,'第10课','2012-10-10','Active',9),(2131,'第11课','2012-10-10','Active',9),(2132,'第12课','2012-10-10','Active',9),(2133,'第13课','2012-10-10','Active',9),(2134,'第14课','2012-10-10','Active',9),(2135,'第15课','2012-10-10','Active',9),(2136,'第1课','2012-10-10','Finish',10),(2137,'第2课','2012-10-10','Finish',10),(2138,'第3课','2012-10-10','Finish',10),(2139,'第4课','2012-10-10','Finish',10),(2140,'第5课','2012-10-10','Finish',10),(2141,'第6课','2012-10-10','Finish',10),(2142,'第7课','2012-10-10','Active',10),(2143,'第8课','2012-10-10','Active',10),(2144,'第9课','2012-10-10','Active',10),(2145,'第10课','2012-10-10','Active',10),(2146,'第11课','2012-10-10','Active',10),(2147,'第12课','2012-10-10','Active',10),(2148,'第13课','2012-10-10','Active',10),(2149,'第14课','2012-10-10','Active',10),(2150,'第15课','2012-10-10','Active',10),(2151,'第1课','2012-10-10','Finish',11),(2152,'第2课','2012-10-10','Finish',11),(2153,'第3课','2012-10-10','Finish',11),(2154,'第4课','2012-10-10','Finish',11),(2155,'第5课','2012-10-10','Finish',11),(2156,'第6课','2012-10-10','Finish',11),(2157,'第7课','2012-10-10','Active',11),(2158,'第8课','2012-10-10','Active',11),(2159,'第9课','2012-10-10','Active',11),(2160,'第10课','2012-10-10','Active',11),(2161,'第11课','2012-10-10','Active',11),(2162,'第12课','2012-10-10','Active',11),(2163,'第13课','2012-10-10','Active',11),(2164,'第14课','2012-10-10','Active',11),(2165,'第15课','2012-10-10','Active',11),(2166,'第1课','2012-10-10','Finish',12),(2167,'第2课','2012-10-10','Finish',12),(2168,'第3课','2012-10-10','Finish',12),(2169,'第4课','2012-10-10','Finish',12),(2170,'第5课','2012-10-10','Finish',12),(2171,'第6课','2012-10-10','Finish',12),(2172,'第7课','2012-10-10','Active',12),(2173,'第8课','2012-10-10','Active',12),(2174,'第9课','2012-10-10','Active',12),(2175,'第10课','2012-10-10','Active',12),(2176,'第11课','2012-10-10','Active',12),(2177,'第12课','2012-10-10','Active',12),(2178,'第13课','2012-10-10','Active',12),(2179,'第14课','2012-10-10','Active',12),(2180,'第15课','2012-10-10','Active',12),(2181,'第1课','2012-10-10','Finish',13),(2182,'第2课','2012-10-10','Finish',13),(2183,'第3课','2012-10-10','Finish',13),(2184,'第4课','2012-10-10','Finish',13),(2185,'第5课','2012-10-10','Finish',13),(2186,'第6课','2012-10-10','Finish',13),(2187,'第7课','2012-10-10','Active',13),(2188,'第8课','2012-10-10','Active',13),(2189,'第9课','2012-10-10','Active',13),(2190,'第10课','2012-10-10','Active',13),(2191,'第11课','2012-10-10','Active',13),(2192,'第12课','2012-10-10','Active',13),(2193,'第13课','2012-10-10','Active',13),(2194,'第14课','2012-10-10','Active',13),(2195,'第15课','2012-10-10','Active',13),(2196,'第1课','2012-10-10','Finish',14),(2197,'第2课','2012-10-10','Finish',14),(2198,'第3课','2012-10-10','Finish',14),(2199,'第4课','2012-10-10','Finish',14),(2200,'第5课','2012-10-10','Finish',14),(2201,'第6课','2012-10-10','Finish',14),(2202,'第7课','2012-10-10','Active',14),(2203,'第8课','2012-10-10','Active',14),(2204,'第9课','2012-10-10','Active',14),(2205,'第10课','2012-10-10','Active',14),(2206,'第11课','2012-10-10','Active',14),(2207,'第12课','2012-10-10','Active',14),(2208,'第13课','2012-10-10','Active',14),(2209,'第14课','2012-10-10','Active',14),(2210,'第15课','2012-10-10','Active',14);
 /*!40000 ALTER TABLE `lesson_table` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `order`
+--
+
+DROP TABLE IF EXISTS `order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `student_id` bigint(20) DEFAULT NULL,
+  `teacher_id` bigint(20) DEFAULT NULL,
+  `lesson_id` bigint(20) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `description` varchar(5000) DEFAULT NULL,
+  `money` int(11) DEFAULT NULL,
+  `state` varchar(45) DEFAULT NULL,
+  `removed_at` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_order_student1` (`student_id`),
+  KEY `fk_order_teacher1` (`teacher_id`),
+  KEY `fk_order_lesson1` (`lesson_id`),
+  CONSTRAINT `fk_order_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_lesson1` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order`
+--
+
+LOCK TABLES `order` WRITE;
+/*!40000 ALTER TABLE `order` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -466,16 +505,17 @@ DROP TABLE IF EXISTS `student`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `student` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `age` int(11) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
   `state` varchar(45) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `removed_at` timestamp NULL DEFAULT NULL,
+  `grade` varchar(45) DEFAULT NULL,
+  `tel` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -484,7 +524,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (1,NULL,'emJoeHp6','1@1.com',NULL,NULL,'Active','0000-00-00 00:00:00',NULL);
+INSERT INTO `student` VALUES (2,'张','@126.com',11,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'年级','13610101010'),(3,'张2','2@126.com',13,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'2年级','13610101010'),(4,'张3','3@126.com',14,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'3年级','13610101010'),(5,'张4','4@126.com',15,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'4年级','13610101010'),(6,'张5','5@126.com',16,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'5年级','13610101010');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -693,4 +733,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-28 18:12:33
+-- Dump completed on 2013-01-29 17:32:55

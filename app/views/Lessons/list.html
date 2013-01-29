@@ -1,0 +1,124 @@
+<script type="text/javascript">
+	function details(id){
+	 	if(id!=-1){
+	       	var detailsAction = #{jsAction @Lessons.listDetailMessage(':id') /}
+	    	 $('#lessonDetails').load(detailsAction({'id':id})) 
+	 	}else{
+			 $('#lessonDetails').click();
+		 }
+	 }  
+    $(function(){
+    	DrapDropBar('lessonsList');
+     });
+</script>
+<form id="pagerForm" action="@{Lessons.list}" method="post">
+	<input type="hidden" value="${pageNum}" name="pageNum"> 
+	<input type="hidden" value="${numPerPage}" name="numPerPage"> 
+	<input type="hidden" value="${orderField}" name="orderField">
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onSubmit="return navTabSearch(this);"
+		action="@{Lessons.list}" method="post">
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li><label>name:</label> <input type="text"
+					name="name" value="${params.name}"/></li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li><div class="buttonActive">
+							<div class="buttonContent">
+								<button type="submit">Search</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>
+				<a class="add" id="ad" href="@{Lessons.blank}" target="dialog" height="300">
+					<span>Add teacher</span> 
+				</a>
+			</li>
+			<li>
+				<a class="delete" href="@{Lessons.deletes}" target="selectedTodo" postType="string" rel="ids"
+				title="Are you sure to delete these teachers?">
+				<span>Delete bucket</span>
+			</a></li>
+		</ul>
+	</div>
+	<div id="lessonsListTableDiv">
+		<table id="lessonsListTable" class="table" width="100%" layouth="480">
+			<thead>
+				<tr>
+					<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+					<th width="200" class="asc">课名</th>
+					<th width="120">时间类别</th>
+					<th width="120">类别</th>
+					<th width="120">教师</th>
+					<th width="120">级别</th>
+					<th width="150">开始时间</th>
+					<th width="150">结束时间</th>
+					<th width="100">报名人数</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				 #{list items:objects, as:'lesson'}
+				<tr onclick="details(${lesson.id})" target="sid_user" rel="${lesson.id}">
+					<td><input name="ids" value="${lesson.id}" type="checkbox">
+					</td>
+					<td>${lesson.name}</td>
+					<td>${lesson.lessonTimeType}</td>
+					<td>${lesson.lessonType}</td>
+					<td><a href="">${lesson.teacher?.name}</a></td>
+					<td>${lesson.level}</td>
+					<td>${lesson.startTime}</td>
+					<td>${lesson.endTime}</td>
+					<td><strong>${lesson.studentNum}</strong></td>
+					<td><a class="btn-mini btn btn-block btn-success" href="@{Lessons.detail(lesson.id)}" target="navTab" rel="teacherDetail" title="${lesson.name}">Detail >>></a></td>
+				</tr>
+				#{/list} 
+			</tbody>
+		</table>
+		<div class="panelBar">
+			<div class="pages">
+				<span>List</span> 
+				<select name="numPerPage" onchange="navTabPageBreak({'numPerPage':this.value})">
+					<option value="20" #{if numPerPage==20}selected#{/if}>20</option>
+					<option value="50" #{if numPerPage==50}selected#{/if}>50</option>
+					<option value="100" #{if numPerPage==100}selected#{/if}>100</option>
+					<option value="200" #{if numPerPage==200}selected#{/if}>200</option>
+				</select> 
+				<span>Total:${totalCount}</span>
+			</div>
+
+			<div currentpage="${pageNum}" pagenumshown="10"
+				numperpage="${numPerPage}" totalcount="${totalCount}"
+				targettype="navTab" class="pagination" />
+		</div>
+	</div>
+	<div class="divider" id="lessonsListBar" style="cursor:row-resize;"></div>		
+	<div class="tabs">
+		<div class="tabsHeader">
+			<div class="tabsHeaderContent">
+				<ul>
+					<li><a href="javascript:details(-1);"><span>Details</span> </a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="tabsContent" style="height: 300px" id="lessonsListTabsDiv">
+			<div id="lessonDetails">
+			</div>
+		</div>
+		<div class="tabsFooter">
+			<div class="tabsFooterContent"></div>
+		</div>
+	</div>
+</div>
