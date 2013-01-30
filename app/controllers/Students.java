@@ -42,7 +42,20 @@ public class Students extends CRUD {
         render();
     }
     
-    public static void quickCreate(){
+    public static void quickCreateOrder(){
+        long id = params.get("lessonid",Long.class);
+        long id2 = params.get("yids",Long.class);
+        String[] ids = params.getAll("ids");
+        int money = params.get("money",Integer.class);
+        String description = params.get("orderDescription");
+        if(ids.length > 0){
+            
+        }else{
+            renderJSON(jsonError("请选择一名学生！"));
+        }
+    }
+    
+    public static void quickCreateOrderAndStu(){
     }
     
     public static void detail(long id){

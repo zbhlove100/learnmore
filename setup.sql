@@ -278,10 +278,10 @@ CREATE TABLE `lesson` (
   KEY `fk_lesson_teacher1` (`teacher_id`),
   KEY `fk_lesson_lesson_system1` (`lesson_system_id`),
   KEY `fk_lesson_book1` (`book_id`),
-  CONSTRAINT `fk_lesson_lesson_system1` FOREIGN KEY (`lesson_system_id`) REFERENCES `lesson_system` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_lesson_book1` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_lesson_school1` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_lesson_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_lesson_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_lesson_book1` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_lesson_lesson_system1` FOREIGN KEY (`lesson_system_id`) REFERENCES `lesson_system` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -514,6 +514,7 @@ CREATE TABLE `student` (
   `removed_at` timestamp NULL DEFAULT NULL,
   `grade` varchar(45) DEFAULT NULL,
   `tel` varchar(45) DEFAULT NULL,
+  `birthday` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -524,7 +525,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (2,'张','@126.com',11,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'年级','13610101010'),(3,'张2','2@126.com',13,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'2年级','13610101010'),(4,'张3','3@126.com',14,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'3年级','13610101010'),(5,'张4','4@126.com',15,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'4年级','13610101010'),(6,'张5','5@126.com',16,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'5年级','13610101010');
+INSERT INTO `student` VALUES (2,'张','@126.com',11,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'年级','13610101010',NULL),(3,'张2','2@126.com',13,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'2年级','13610101010',NULL),(4,'张3','3@126.com',14,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'3年级','13610101010',NULL),(5,'张4','4@126.com',15,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'4年级','13610101010',NULL),(6,'张5','5@126.com',16,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'5年级','13610101010',NULL);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -733,4 +734,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-29 17:32:55
+-- Dump completed on 2013-01-30 18:50:32

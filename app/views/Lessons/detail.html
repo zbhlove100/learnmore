@@ -2,7 +2,7 @@
 
 	
 <div class="pageContent sortDrag" selector="h1" layoutH="60">
-	<div class="panel collapse" minH="100" defH="150">
+	<div class="panel collapse"  defH="150">
 		<h1>课程基本信息</h1>
 		<div>
 			<table class="thistable" style="width: 100%;margin-top: 10px;">
@@ -11,7 +11,8 @@
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.teacher?.name}</td>
 					<th>课次 :</th>
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.times}</td>
-					<td colspan="2" style="border-top: 1px solid #C1DAD7; "><button class="btn btn-block btn-warning">修改</button></td>
+					<th>价格 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.price}</td>
 				</tr>
 				<tr>
 					<th>时间类别 :</th>
@@ -31,37 +32,13 @@
 				</tr>
 				<tr>
 					<th>地点 ：</th>
-					<td colspan="5">${lesson?.school.name}</td>
+					<td colspan="3">${lesson?.school.name}</td>
+					<td colspan="2" style="border-top: 1px solid #C1DAD7; "><button class="btn btn-block btn-warning">修改</button></td>
 				</tr>
 			</table>
 		</div>
 	</div>
-	<div class="panel collapse" minH="100" defH="250">
-		<h1>课表</h1>
-		<div class="lessonTable-area">
-			<table class="lessonTable-table">
-				#{list items:lessonTables,as:'itemlist'}
-					<tr>
-					#{list items:itemlist,as:'item'}
-						<td #{if item.state == "finish"}class="finish"#{/if}>
-							${item.lessonDate} 
-							<br>
-							${item.name}
-						</td>
-					#{/list}
-					</tr>
-				#{/list}
-			</table>
-			<div class="formBar">
-				<ul>
-					<li>
-						#{if lessonTables.size()==0}<button class="btn btn-primary">新建课表</button>#{/if}
-						#{else}<a href="@{Lessons.list}" target="navTab" rel="lessonsList" class="btn btn-warning">修改</a>#{/else}
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+	
 	<div class="panel collapse" defH="250">
 		<h1>学员信息</h1>
 		<div>
@@ -96,9 +73,35 @@
 			<div class="formBar">
 				<ul>
 					<li>
-						<a href="@{Students.quickBlank(lesson.id)}" target="dialog" height="500" width="600" class="btn btn-primary">添加</button>
+						<a href="@{Students.quickBlank(lesson.id)}" target="dialog" height="600" width="650" class="btn btn-primary">添加</button>
 						<a href="@{Lessons.detail("\u007Bsid_user\u007D")}" target="navTab" rel="student{sid_user}" class="btn" title="">修改</a>
 						<a href="@{Lessons.list}" target="navTab" rel="lessonsList" class="btn btn-danger">删除</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="panel collapse" minH="100" defH="250">
+		<h1>课表</h1>
+		<div class="lessonTable-area">
+			<table class="lessonTable-table">
+				#{list items:lessonTables,as:'itemlist'}
+					<tr>
+					#{list items:itemlist,as:'item'}
+						<td #{if item.state == "finish"}class="finish"#{/if}>
+							${item.lessonDate} 
+							<br>
+							${item.name}
+						</td>
+					#{/list}
+					</tr>
+				#{/list}
+			</table>
+			<div class="formBar">
+				<ul>
+					<li>
+						#{if lessonTables.size()==0}<button class="btn btn-primary">新建课表</button>#{/if}
+						#{else}<a href="@{Lessons.list}" target="navTab" rel="lessonsList" class="btn btn-warning">修改</a>#{/else}
 					</li>
 				</ul>
 			</div>
