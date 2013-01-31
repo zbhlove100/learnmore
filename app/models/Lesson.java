@@ -57,6 +57,9 @@ public class Lesson extends Model{
 	public List<LessonTable> lessonTables;
 	
 	@OneToMany(mappedBy="lesson",fetch=FetchType.LAZY)
+    public List<Order> orders;
+	
+	@OneToMany(mappedBy="lesson",fetch=FetchType.LAZY)
 	public List<Tag> tags;
 	
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)

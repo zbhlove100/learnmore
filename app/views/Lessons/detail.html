@@ -1,7 +1,31 @@
+<<script type="text/javascript">
+<!--
+
+//-->
+function deleteOrders(){
+	var ids = myGetIds("ids","navTab");
+	var lessonid = ${lesson.id};
+	var url = "/Orders/searchStudent";
+	var title = "确定要删除吗?";
+	alertMsg.confirm(title, {okCall: function(){
+		$.ajax({
+			type:'POST', 
+			url:"/Orders/deletesInLesson", 
+			dataType:'json', 
+			cache: false,
+			data: {ids: ids, lessonid: lessonid },
+			success: navTabAjaxDone,
+			error: DWZ.ajaxError
+		});
+	}});
+	
+}
+</script>
 <h2 class="contentTitle">${lesson.name}</h2>
 
 	
 <div class="pageContent sortDrag" selector="h1" layoutH="60">
+	<input type="hidden" name="relid" value="lessonDetail${lesson.id}">
 	<div class="panel collapse"  defH="150">
 		<h1>课程基本信息</h1>
 		<div>
@@ -12,7 +36,7 @@
 					<th>课次 :</th>
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.times}</td>
 					<th>价格 :</th>
-					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.price}</td>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.price}元</td>
 				</tr>
 				<tr>
 					<th>时间类别 :</th>
@@ -28,7 +52,7 @@
 					<th>结课时间 :</th>
 					<td>${lesson?.endTime}</td>
 					<th>报名人数 :</th>
-					<td>${lesson?.studentNum}</td>
+					<td><strong>${lesson?.orders?.size()}</strong></td>
 				</tr>
 				<tr>
 					<th>地点 ：</th>
@@ -49,23 +73,27 @@
 						<th width="150" class="asc">姓名</th>
 						<th width="150">年龄</th>
 						<th width="150">年级</th>
-						<th width="200">电话</th>
-						<th width="300">Email</th>
+						<th width="150">电话</th>
+						<th width="200">Email</th>
+						<th width="100">报名费用</th>
+						<th width="300">备注</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					 #{list items:lesson.students, as:'student'}
+					 #{list items:orders, as:'order'}
 					<tr target="sid_user"
-						rel="${student.id}">
-						<td><input name="ids" value="${student.id}" type="checkbox">
+						rel="${order.id}">
+						<td><input name="ids" value="${order.id}" type="checkbox">
 						</td>
-						<td>${student.name}</td>
-						<td>${student.age?:''}</td>
-						<td>${student.grade?:''}</td>
-						<td>${student.tel?:''}</td>
-						<td>${student?.email?:''}</td>
-						<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(student.id)}" target="navTab" rel="studentDetail" title="${student.name}">Detail >>></a></td>
+						<td>${order.student.name}</td>
+						<td>${order.student.age?:''}</td>
+						<td>${order.student.grade?:''}</td>
+						<td>${order.student.tel?:''}</td>
+						<td>${order.student?.email?:''}</td>
+						<td>${order.money?:''}</td>
+						<td>${order.description?:''}</td>
+						<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(order.student.id)}" target="navTab" rel="studentDetail" title="${order.student.name}">Detail >>></a></td>
 					</tr>
 					#{/list} 
 				</tbody>
@@ -73,9 +101,9 @@
 			<div class="formBar">
 				<ul>
 					<li>
-						<a href="@{Students.quickBlank(lesson.id)}" target="dialog" height="600" width="650" class="btn btn-primary">添加</button>
+						<a href="@{Orders.quickBlank(lesson.id)}" target="dialog" height="600" width="650" class="btn btn-primary">添加</button>
 						<a href="@{Lessons.detail("\u007Bsid_user\u007D")}" target="navTab" rel="student{sid_user}" class="btn" title="">修改</a>
-						<a href="@{Lessons.list}" target="navTab" rel="lessonsList" class="btn btn-danger">删除</a>
+						<button onclick="deleteOrders()" class="btn btn-danger">删除</button>
 					</li>
 				</ul>
 			</div>

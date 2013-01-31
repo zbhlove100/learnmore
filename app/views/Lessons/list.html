@@ -81,8 +81,8 @@
 					<td>${lesson.level}</td>
 					<td>${lesson.startTime}</td>
 					<td>${lesson.endTime}</td>
-					<td><strong>${lesson.studentNum}</strong></td>
-					<td><a class="btn-mini btn btn-block btn-success" href="@{Lessons.detail(lesson.id)}" target="navTab" rel="teacherDetail" title="${lesson.name}">Detail >>></a></td>
+					<td><strong>${lesson.orders.size()}</strong></td>
+					<td><a class="btn-mini btn btn-block btn-success" href="@{Lessons.detail(lesson.id)}" target="navTab" rel="lessonDetail${lesson.id}" title="${lesson.name}">Detail >>></a></td>
 				</tr>
 				#{/list} 
 			</tbody>

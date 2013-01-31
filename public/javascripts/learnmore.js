@@ -39,3 +39,13 @@ function DrapDropBar(tabid){
 		}
 	});  	
 }
+
+function myGetIds(selectedIds, targetType){
+	var ids = "";
+	var $box = targetType == "dialog" ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
+	$box.find("input:checked").filter("[name='"+selectedIds+"']").each(function(i){
+		var val = $(this).val();
+		ids += i==0 ? val : ","+val;
+	});
+	return ids;
+}

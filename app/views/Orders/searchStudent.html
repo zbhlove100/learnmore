@@ -1,0 +1,40 @@
+<p>
+	<label>姓名</label>
+	<input type="text" name="searchname" value="${params.searchname}"/>
+</p>
+<p>
+	<label>电话</label>
+	<input type="text" name="searchtel" value="${params.searchtel}"/>
+	&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="regworkerButton" onclick="return searchServer(this.form)">Search</button>
+</p>
+<table id="studentlistTable" class="table" width="100%">
+	<thead>
+		<tr>
+			<th width="50"><input type="checkbox" group="studentids" class="checkboxCtrl"></th>
+			<th width="150" class="asc">姓名</th>
+			<th width="150">年龄</th>
+			<th width="150">年级</th>
+			<th width="200">电话</th>
+			<th width="100"></th>
+		</tr>
+	</thead>
+	<tbody>
+		 #{list items:students, as:'student'}
+		<tr>
+			<td>
+			#{if orderedStudents[student.id]=='true'}
+			<Strong>已报</Strong>
+			#{/if}
+			#{else}
+			<input type="checkbox" name="studentids" value="${student.id}">
+			#{/else}
+			</td>
+			<td>${student.name}</td>
+			<td>${student.age?:''}</td>
+			<td>${student.grade?:''}</td>
+			<td>${student.tel?:''}</td>
+			<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(student.id)}" target="navTab" rel="studentDetail" title="${student.name}">Detail >>></a></td>
+		</tr>
+		#{/list} 
+	</tbody>
+</table>

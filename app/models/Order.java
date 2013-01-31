@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 @Entity
-@Table(name="order")
+@Table(name="order_message")
 public class Order extends BaseModel {
     
     public String name;

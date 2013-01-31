@@ -167,10 +167,13 @@ CREATE TABLE `img_detail` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `basic_img` varchar(5000) DEFAULT NULL,
   `teacher_id` bigint(20) DEFAULT NULL,
+  `student_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_img_detail_teacher1` (`teacher_id`),
+  KEY `fk_img_detail_student1` (`student_id`),
+  CONSTRAINT `fk_img_detail_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_img_detail_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,7 +182,7 @@ CREATE TABLE `img_detail` (
 
 LOCK TABLES `img_detail` WRITE;
 /*!40000 ALTER TABLE `img_detail` DISABLE KEYS */;
-INSERT INTO `img_detail` VALUES (1,'/teacher/hong_miaomiao.jpg',3);
+INSERT INTO `img_detail` VALUES (1,'/teacher/hong_miaomiao.jpg',3,NULL);
 /*!40000 ALTER TABLE `img_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,10 +281,10 @@ CREATE TABLE `lesson` (
   KEY `fk_lesson_teacher1` (`teacher_id`),
   KEY `fk_lesson_lesson_system1` (`lesson_system_id`),
   KEY `fk_lesson_book1` (`book_id`),
-  CONSTRAINT `fk_lesson_school1` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_lesson_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_lesson_lesson_system1` FOREIGN KEY (`lesson_system_id`) REFERENCES `lesson_system` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_lesson_book1` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_lesson_lesson_system1` FOREIGN KEY (`lesson_system_id`) REFERENCES `lesson_system` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_lesson_school1` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_lesson_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -380,13 +383,13 @@ INSERT INTO `lesson_table` VALUES (1,'第1课','2012-03-05','Finish',1),(2,'第2
 UNLOCK TABLES;
 
 --
--- Table structure for table `order`
+-- Table structure for table `order_message`
 --
 
-DROP TABLE IF EXISTS `order`;
+DROP TABLE IF EXISTS `order_message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `order` (
+CREATE TABLE `order_message` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `student_id` bigint(20) DEFAULT NULL,
   `teacher_id` bigint(20) DEFAULT NULL,
@@ -404,16 +407,17 @@ CREATE TABLE `order` (
   CONSTRAINT `fk_order_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_order_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_order_lesson1` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `order`
+-- Dumping data for table `order_message`
 --
 
-LOCK TABLES `order` WRITE;
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
+LOCK TABLES `order_message` WRITE;
+/*!40000 ALTER TABLE `order_message` DISABLE KEYS */;
+INSERT INTO `order_message` VALUES (1,3,3,1,NULL,NULL,'test',500,'Delete',NULL),(2,4,3,1,NULL,NULL,'test',500,'Delete',NULL),(3,6,3,1,NULL,NULL,'我就多收他的钱，怎么滴',700,'Delete',NULL),(4,3,3,2,NULL,NULL,'',34,'Active',NULL),(5,6,3,2,NULL,NULL,'',1111,'Active',NULL),(6,4,3,2,NULL,NULL,'',1111,'Active',NULL),(7,2,3,2,NULL,NULL,'',22,'Active',NULL),(8,4,3,3,NULL,NULL,'',21,'Active',NULL),(9,6,3,3,NULL,NULL,'',324,'Active',NULL),(10,2,3,3,NULL,NULL,'',200,'Active',NULL),(11,4,3,1,NULL,NULL,'',250,'Active',NULL),(12,8,3,1,NULL,NULL,'',2134,'Active',NULL);
+/*!40000 ALTER TABLE `order_message` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -515,8 +519,9 @@ CREATE TABLE `student` (
   `grade` varchar(45) DEFAULT NULL,
   `tel` varchar(45) DEFAULT NULL,
   `birthday` varchar(45) DEFAULT NULL,
+  `description` varchar(5000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -525,7 +530,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (2,'张','@126.com',11,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'年级','13610101010',NULL),(3,'张2','2@126.com',13,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'2年级','13610101010',NULL),(4,'张3','3@126.com',14,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'3年级','13610101010',NULL),(5,'张4','4@126.com',15,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'4年级','13610101010',NULL),(6,'张5','5@126.com',16,'TYUIOPKJJ','Active','2013-01-29 07:21:35',NULL,'5年级','13610101010',NULL);
+INSERT INTO `student` VALUES (2,'张','@126.com',11,'TYUIOPKJJ','Active','2013-01-31 08:43:37',NULL,'年级','13610101010','1999-11-11',NULL),(3,'张2','2@126.com',13,'TYUIOPKJJ','Active','2013-01-31 08:43:37',NULL,'2年级','13610101010','1998-06-06',NULL),(4,'张3','3@126.com',14,'TYUIOPKJJ','Active','2013-01-31 08:43:37',NULL,'3年级','13610101010','1992-09-16',NULL),(5,'张4','4@126.com',15,'TYUIOPKJJ','Active','2013-01-31 08:43:37',NULL,'4年级','13610101010','1988-05-05',NULL),(6,'张5','5@126.com',16,'TYUIOPKJJ','Active','2013-01-31 08:43:37',NULL,'5年级','13610101010','1983-01-18',NULL),(7,'王1',NULL,15,NULL,'Active','2013-01-31 08:48:34',NULL,NULL,'18615555555','1998-01-07',NULL),(8,'李里',NULL,18,NULL,'Active','2013-01-31 08:48:34',NULL,NULL,'15815444444','1995-01-18',NULL);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -734,4 +739,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-30 18:52:32
+-- Dump completed on 2013-01-31 18:31:11

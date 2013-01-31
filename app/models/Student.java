@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -34,6 +35,11 @@ public class Student extends BaseModel {
     public String grade;
     
     public String tel;
+    
+    public String description;
+    
+    @OneToOne(mappedBy="student")
+    public ImgDetail imgDetail;
     
     @ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinTable(name="lesson_student"

@@ -12,4 +12,7 @@ public class ImgDetail extends BaseModel {
     
     @OneToOne
     public Teacher teacher;
+    
+    @OneToOne
+    public Student student;
 }

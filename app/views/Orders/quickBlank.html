@@ -1,0 +1,199 @@
+<script type="text/javascript">
+function searchServer(form) {
+	var url = "/Orders/searchStudent";
+	var resultDiv = "searchStudentPageContent";
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: $(form).serializeArray(),
+		dataType: "html",
+		cache: false,
+		success: function(data){
+			var $p = $('#'+resultDiv);
+			$p.html(data);
+			$("table.table", $p).jTable();
+			$('table.list', $p).cssTable();		
+			if ($.fn.combox) $("select.combox",$p).combox();
+		},
+		error: DWZ.ajaxError
+	});
+	return false;
+}
+function getIds(selectedIds){
+	var ids = "";
+	$.pdialog.getCurrent().find("input:checked").filter("[name="+selectedIds+"]").each(function(i){
+		var val = $(this).val();
+		ids += i==0 ? val : ","+val;
+	});
+	return ids;
+}
+function subform(){
+	var ids = getIds("studentids");
+	$("input[name=allid]").val(ids);
+	var $form = $(".pageContent:visible",$.pdialog.getCurrent()).find("form");
+	$form.submit();
+}
+</script>
+<div class="page">
+	<div class="tabs">
+	  <div class="tabsHeader">
+		<div class="tabsHeaderContent">
+			<ul>
+				<li id="page1"><a href="#" onclick="tab_onclick(1)" ><span>已注册学员</span></a></li>
+				<li id="page2"><a href="#" onclick="tab_onclick(2)" ><span>未注册学员</span></a></li>
+			</ul>
+		</div>
+	  </div>
+	  <div class="tabsContent">
+		<div class="pageContent">
+			<form name="form1" method="post" action="@{Orders.quickCreateOrder}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+				<input name="lessonid" type="hidden" value="${lesson.id}"/>
+				<input name="allid" type="hidden" value=""/>
+				<div id="searchStudentPageContent" class="pageFormContent" layoutW="56" layoutH="290">				
+					<p>
+						<label>姓名</label>
+						<input type="text" name="searchname" value="${params.searchname}"/>
+					</p>
+					<p>
+						<label>电话</label>
+						<input type="text" name="searchtel" value="${params.searchtel}"/>
+						&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="regworkerButton" onclick="return searchServer(this.form)">Search</button>
+					</p>
+					<table id="studentlistTable" class="table" width="100%">
+						<thead>
+							<tr>
+								<th width="50"><input type="checkbox" group="studentids" class="checkboxCtrl"></th>
+								<th width="150" class="asc">姓名</th>
+								<th width="150">年龄</th>
+								<th width="150">年级</th>
+								<th width="200">电话</th>
+								<th width="100"></th>
+							</tr>
+						</thead>
+						<tbody>
+							 #{list items:students, as:'student'}
+							<tr>
+								<td>
+								#{if orderedStudents[student.id]=='true'}
+								<Strong>已报</Strong>
+								#{/if}
+								#{else}
+								<input type="checkbox" name="studentids" value="${student.id}">
+								#{/else}
+								</td>
+								<td>${student.name}</td>
+								<td>${student.age?:''}</td>
+								<td>${student.grade?:''}</td>
+								<td>${student.tel?:''}</td>
+								<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(student.id)}" target="navTab" rel="studentDetail" title="${student.name}">Detail >>></a></td>
+							</tr>
+							#{/list} 
+						</tbody>
+					</table>
+				</div>		
+				<div id="searchStudentPageContent" class="pageFormContent" layoutW="56">		
+					<p>
+						<label>课程名：</label>
+						${lesson.name}
+					</p>	
+					<p>
+						<label>教师 :</label>
+						${lesson?.teacher?.name}
+					</p>
+					<p>
+						<label>价格 :</label>
+						${lesson.price?:0}￥
+					</p>
+					<p>
+						<label>实收金额：</label>
+						<input name="money" class="required number" type="text" size="20"/>
+					</p>
+					<p>
+						<label>备注：</label>
+						<textarea name="orderDescription" class=""></textarea>
+					</p>
+					<p></p>
+					<div class="formBar">
+						<ul>
+							<li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="subform()">保存</button></div></div></li>
+							<li>
+								<div class="button"><div class="buttonContent"><button type="Button" class="close">取消</button></div></div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="pageContent">
+			<form method="post" action="@{Orders.quickCreateOrderAndStu}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+				<input name="lessonid" type="hidden" value="${lesson.id}"/>
+				<div class="pageFormContent" layoutH="90">
+					<fieldset>
+						<legend>学员信息</legend>
+						<dl>
+							<dt>姓名：</dt>
+							<dd><input name="studentname" class="required" type="text" size="10"/></dd>
+						</dl>
+						<dl>
+							<dt>生日：</dt>
+							<dd>
+								<input name="studentbirthday" class="required date" type="text" readonly="true"/>
+								<a class="inputDateButton" href="javascript:;">选择</a>
+								<span class="info">yyyy-MM-dd</span>
+							</dd>
+						</dl>
+						<dl>
+							<dt>电话：</dt>
+							<dd>
+								<input name="studenttel" class="required" type="text" size=""/>
+							</dd>
+						</dl>
+					</fieldset>
+					<fieldset>
+						<legend>课程信息</legend>
+						<dl>
+							<dt>课程名：</dt>
+							<dd>${lesson.name}</dd>
+						</dl>
+						<dl>
+							<dt>教师 :</dt>
+							<dd>
+								${lesson?.teacher?.name}
+							</dd>
+						</dl>
+						<dl>
+							<dt>价格 :</dt>
+							<dd>
+								${lesson.price?:0}￥
+							</dd>
+						</dl>
+						<dl>
+							<dt>实收金额：</dt>
+							<dd>
+								<input name="money" class="required number" type="text" size="20"/>
+							</dd>
+						</dl>
+						<dl class="nowrap">
+							<dt>备注：</dt>
+							<dd>
+								<textarea name="orderDescription" cols="80" rows="2"></textarea>
+							</dd>
+						</dl>
+						<dl>
+						</dl>
+					</fieldset>
+				</div>
+				<div class="formBar" style="margin-right: 10px">
+					<ul>
+						<li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="subform()">保存并创建学员</button></div></div></li>
+						<li>
+							<div class="button"><div class="buttonContent"><button type="Button" class="close">取消</button></div></div>
+						</li>
+					</ul>
+				</div>
+			</form>
+		</div>
+			
+      </div>
+	</div>
+</div>

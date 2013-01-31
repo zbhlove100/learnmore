@@ -24,6 +24,7 @@ POST        /${type.toLowerCase()}/create        ${type}.create
 POST	    /${type.toLowerCase()}/save/{id}		${type}.save
 POST	    /${type.toLowerCase()}/delete/{id}		${type}.delete
 GET 	    /${type.toLowerCase()}/deletes  		${type}.deletes
+* 		    /${type.toLowerCase()}/detail/{id}		${type}.detail
 #{/crud.types}
 
 # Catch all

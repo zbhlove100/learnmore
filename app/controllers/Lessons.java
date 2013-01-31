@@ -9,6 +9,8 @@ import java.util.List;
 import models.BaseModel;
 import models.Lesson;
 import models.LessonTable;
+import models.Order;
+import models.Student;
 
 public class Lessons extends CRUD {
     public static void list(){
@@ -34,8 +36,14 @@ public class Lessons extends CRUD {
         try {
             Lesson lesson = Lesson.findById(id);
             List<List> lessonTables = getLessonTable(id);
+            List<Student> students = new ArrayList<Student>();
+            List<Order> orders = Order.find("lesson = ? and state = ?", lesson,BaseModel.ACTIVE).fetch();
+            for(Order order:orders){
+                students.add(order.student);
+            }
             renderArgs.put("lessonTables",lessonTables);
             renderArgs.put("lesson",lesson);
+            renderArgs.put("orders",orders);
         } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -146,6 +146,30 @@ public abstract class CRUD extends Application{
         //String json = gson.toJson(map);
         //return json;        
     }
+    protected static Map forwardJsonCloseDailog(String tabId,String url,String message){
+        Map map = new HashMap();     
+        map.put( "statusCode", "200");    
+        
+        String selfnavTabId = params.get("navTabId");
+         if( selfnavTabId!= null){
+             if(!"".equals(selfnavTabId))
+                 map.put("navTabId",  selfnavTabId);
+         }else{
+             map.put( "navTabId", tabId);
+         }
+        map.put( "forwardUrl", url); 
+        map.put("callbackType", "closeCurrent");
+        String allmessages = allMessage(message);
+           
+        if(!"".equals(allmessages))
+             map.put( "message", allmessages);           
+        
+        return map;
+        
+        //Gson gson = new Gson();
+        //String json = gson.toJson(map);
+        //return json;        
+    }
     protected static Map forwardJson_error(String tabId,String url,String message){
         Map map = new HashMap();     
         map.put( "statusCode", "300");    
