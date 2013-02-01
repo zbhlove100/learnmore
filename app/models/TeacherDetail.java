@@ -53,9 +53,11 @@ public class TeacherDetail extends Model{
 	
 	public String household;
 	
-    public Date hireDate;
+    public String hireDate;
     
-    public Date graduateDate;
+    public String graduateSchool;
+    
+    public String graduateDate;
 	@OneToOne
 	Teacher teacher;
 }

@@ -1,40 +1,150 @@
 <div class="page">
 	<div class="pageContent">
-		<form method="post" action="@{Accounts.create}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+		<form method="post" action="@{Teachers.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
 			<div class="pageFormContent" layoutH="56" layoutW="56">
+				<fieldset>
+					<legend>基本信息</legend>
+					<dl>
+						<dt>姓名：</dt>
+						<dd><input name="name" class="required" type="text" size="10"/></dd>
+					</dl>
+					<dl>
+						<dt>性别：</dt>
+						<dd><input name="sex" type="radio" value="男" checked="checked"/>男<input name="sex" type="radio" value="女"/>女</dd>
+					</dl>
+					<dl>
+						<dt>生日：</dt>
+						<dd><input name="birthday" class="required date" type="text" readonly="true"/>
+							<a class="inputDateButton" href="javascript:;">选择</a>
+							<span class="info">yyyy-MM-dd</span>
+						</dd>
+					</dl>
+					<dl>
+						<dt>电话：</dt>
+						<dd><input name="tel" class="" type="text" size="10"/></dd>
+					</dl>
+					<dl>
+						<dt>Email：</dt>
+						<dd><input name="email" class="required" type="text" size="10"/></dd>
+					</dl>
+					<dl>
+						<dt>员工类型：</dt>
+						<dd>
+							<select class="combox required"  name="type">
+								<option value="">--请选择--</option>
+								#{list items:employeTypes,as:'etype'}
+								<option value="${etype}">${etype}</option>
+								#{/list}
+							</select>
+						</dd>
+					</dl>
+					<dl>
+						<dt>校区：</dt>
+						<dd>
+							<select class="combox required"  name="schoolid">
+								<option value="">--请选择--</option>
+								#{list items:schools,as:'school'}
+								<option value="${school.id}">${school.name}</option>
+								#{/list}
+							</select>
+						</dd>
+					</dl>
+					<dl>
+						<dt>照片：</dt>
+						<dd><input name="picture" class="" type="file" size="10"/></dd>
+					</dl>
+				</fieldset>	
+				<fieldset>
+					<legend>详细信息</legend>
+					<dl>
+						<dt>英文名：</dt>
+						<dd><input name="enname" class="" type="text" size="50"/></dd>
+					</dl>
+					
+					<dl>
+						<dt>所教课程：</dt>
+						<dd><input name="classType" class="" type="text" size="100"/></dd>
+					</dl>
+					<dl>
+						<dt>血型：</dt>
+						<dd><input name="bloodtype" class="" type="text" size="10"/></dd>
+					</dl>
+					
+					<dl>
+						<dt>身高：</dt>
+						<dd><input name="height" class="number" type="text" size="10"/>CM</dd>
+					</dl>
+					<dl>
+						<dt>爱好：</dt>
+						<dd><input name="interest" class="" type="text" size="10"/></dd>
+					</dl>
+					<dl>
+						<dt>喜欢的颜色：</dt>
+						<dd><input name="favoriteColor" class="" type="text" size="50"/></dd>
+					</dl>
+					<dl>
+						<dt>喜欢的运动：</dt>
+						<dd><input name="favoriteSport" class="" type="text" size="50"/></dd>
+					</dl>
+					<dl>
+						<dt>喜欢的动物：</dt>
+						<dd><input name="favoriteAnimal" class="" type="text" size="50"/></dd>
+					</dl>
+					<dl>
+						<dt>最想去的地方：</dt>
+						<dd><input name="favoritePlace" class="" type="text" size="100"/></dd>
+					</dl>
+					<dl>
+						<dt>最崇拜的人：</dt>
+						<dd><input name="adoreMan" class="" type="text" size="100"/></dd>
+					</dl>
+					<dl>
+						<dt>座右铭：</dt>
+						<dd><input name="teacherWord" class="" type="text" size="500"/></dd>
+					</dl>
+					<dl>
+						<dt>qq：</dt>
+						<dd><input name="qq" class="number" type="text" size="10"/></dd>
+					</dl>
+					<dl>
+						<dt>微博：</dt>
+						<dd><input name="weibo" class="" type="text" size="100"/></dd>
+					</dl>
+					<dl>
+						<dt>地址：</dt>
+						<dd><input name="address" class="" type="text" size="500"/></dd>
+					</dl>
+					<dl>
+						<dt>户口：</dt>
+						<dd><input name="household" class="" type="text" size="500"/></dd>
+					</dl>
+					<dl>
+						<dt>学历：</dt>
+						<dd><input name="education" class="" type="text" size="50"/></dd>
+					</dl>
+					<dl>
+						<dt>毕业学校：</dt>
+						<dd><input name="graduateSchool" class="" type="text" size="200"/></dd>
+					</dl>
+					<dl>
+						<dt>毕业时间：</dt>
+						<dd><input name="graduateDate" class="required date" type="text" readonly="true"/>
+							<a class="inputDateButton" href="javascript:;">选择</a>
+							<span class="info">yyyy-MM-dd</span>
+						</dd>
+					</dl>
+					<dl>
+						<dt>入职时间：</dt>
+						<dd><input name="hireDate" class="required date" type="text" readonly="true"/>
+							<a class="inputDateButton" href="javascript:;">选择</a>
+							<span class="info">yyyy-MM-dd</span>
+						</dd>
+					</dl>
+				</fieldset>
 				<p>
-					<label>Account Type：</label>
-					#{select 'object.role.id', class:'combox', change:'accchange', id:'account_id'}
-  						#{list items:roles, as: 'role'}
-  							#{if role.name!='root'}
-    							#{option role.id} ${role.name} #{/option}
-    						#{/if}
-  						#{/list}
-					#{/select} 
-				</p>			
-				<p>
-					<label>Domain：</label>
-					#{select 'object.domain.id',  id:'domain_id'}
-  						#{list items:domains, as: 'domain'}
-  							#{if domain.id!=1}
-    							#{option domain.id } ${domain.name} #{/option}
-    						#{/if}
-  						#{/list}
-					#{/select} 
+					<label>个人简介：</label>
+					<textarea name="summary" rows="4" cols="105"></textarea>
 				</p>
-				<p>
-					<label>Username：</label>
-					<input id="user_id" name="object.username" class="required" type="text" maxlength="90" minlength="2" size="20"/>
-				    &nbsp;<span id="result_user"></span>
-				</p>
-				<p>
-					<label>Password：</label>
-					<input name="object.password"  id="cp_newPassword" class="required" type="password" size="20" maxlength="30" minlength="4" class="required" value=""/>
-				</p>
-				<p>
-					<label>Confirm Password：</label>
-					<input name="rnewPassword" type="password" equalTo="#cp_newPassword" size="20" class="required" maxlength="30" minlength="4" value=""/>
-				</p>		
 			</div>
 			<div class="formBar">
 				<ul>

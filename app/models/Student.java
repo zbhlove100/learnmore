@@ -22,6 +22,8 @@ public class Student extends BaseModel {
     
     public int age;
     
+    public String sex;
+    
     public String birthday;
     
     public String location;

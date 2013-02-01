@@ -56,8 +56,28 @@
 		action="@{Teachers.list}" method="post">
 		<div class="searchBar">
 			<ul class="searchContent">
-				<li><label>name:</label> <input type="text"
-					name="name" value="${params.name}"/></li>
+				<li>
+					<label>姓名:</label> 
+					<input type="text" name="name" value="${params.name}"/>
+				</li>
+				<li>
+					<label>员工类型:</label> 
+					<select class="combox required"  name="type">
+						<option value="">--请选择--</option>
+						#{list items:employeTypes,as:'etype'}
+						<option value="${etype}" #{if etype==params.type} selected #{/if}>${etype}</option>
+						#{/list}
+					</select>
+				</li>
+				<li>
+					<label>校区：</label>
+					<select class="combox required"  name="schoolid">
+						<option value="">--请选择--</option>
+						#{list items:schools,as:'school'}
+						<option value="${school.id}"  #{if school.id==params.schoolid} selected #{/if} >${school.name}</option>
+						#{/list}
+					</select>
+				</li>
 			</ul>
 			<div class="subBar">
 				<ul>
@@ -77,13 +97,13 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li>
-				<a class="add" id="ad" href="@{Teachers.blank}" target="dialog" height="300">
+				<a class="add" id="ad" href="@{Teachers.blank}" target="dialog" height="650" width="850" rel="createTeacher">
 					<span>Add teacher</span> 
 				</a>
 			</li>
 			<li>
 				<a class="delete" href="@{Teachers.deletes}" target="selectedTodo" postType="string" rel="ids"
-				title="Are you sure to delete these teachers?">
+				title="确定要删除这些员工信息吗?">
 				<span>Delete bucket</span>
 			</a></li>
 		</ul>

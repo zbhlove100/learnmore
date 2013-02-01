@@ -54,6 +54,7 @@ public class Students extends CRUD {
         String address = params.get("address");
         String grade = params.get("grade");
         String description = params.get("description");
+        String sex = params.get("sex");
         
         String uploadFileName = picture.getName();
         String uploadpath = Setting.value("uploadpath", "/public/images/student/");
@@ -94,6 +95,7 @@ public class Students extends CRUD {
             student.email = studentemail;
             student.location = address;
             student.grade = grade;
+            student.sex = sex;
             student.age = mdu.getAgeForBirthday(studentbirthday, "yyyy-MM-dd");
             student.description = description;
             student.state = BaseModel.ACTIVE;
@@ -116,6 +118,32 @@ public class Students extends CRUD {
     }
     
     public static void detail(long id){
-        render();
+        Student student = Student.findById(id);
+        List<Order> orders = Order.find("student = ? and state != ?", student,BaseModel.DELETE).fetch();
+        try {
+            
+            MyDateUtils mdu = new MyDateUtils();
+            for(Order o:orders){
+                Lesson lesson = o.lesson;
+                lesson.status = mdu.getClassStatus(lesson.startTime,lesson.endTime,"yyyy-MM-dd");
+            }
+            renderArgs.put("orders", orders);
+            renderArgs.put("student", student);
+            render();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        
+    }
+    
+    public static void deletes(String ids){
+        String where = String.format("id in (%s)", ids);
+        List<Student> students = Student.find(where).fetch();
+        for(Student s : students){
+            s.state = BaseModel.DELETE;
+            s.save();
+        }
+        renderJSON(forwardJson("studentList", "/sutdents/list", "删除成功！"));
     }
 }

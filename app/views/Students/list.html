@@ -14,8 +14,14 @@
 		action="@{Students.list}" method="post">
 		<div class="searchBar">
 			<ul class="searchContent">
-				<li><label>name:</label> <input type="text"
-					name="name" value="${params.name}"/></li>
+				<li>
+					<label>name:</label> 
+					<input type="text" name="name" value="${params.name}"/>
+				</li>
+				<li>
+					<label>电话:</label> 
+					<input type="text" name="tel" value="${params.tel}"/>
+				</li>
 			</ul>
 			<div class="subBar">
 				<ul>
@@ -35,7 +41,7 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li>
-				<a class="add" id="ad" href="@{Students.blank}" target="dialog" height="400" title="添加学员信息">
+				<a class="add" id="ad" href="@{Students.blank}" target="dialog" height="450" title="添加学员信息">
 					<span>添加学员</span> 
 				</a>
 			</li>
@@ -47,7 +53,7 @@
 		</ul>
 	</div>
 	<div id="studentlistTableDiv">
-		<table id="studentlistTable" class="table" width="100%" layouth="450">
+		<table id="studentlistTable" class="table" width="100%" layouth="138">
 			<thead>
 				<tr>
 					<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
@@ -92,7 +98,7 @@
 				targettype="navTab" class="pagination" />
 		</div>
 	</div>
-	<div class="divider" id="studentlistBar" style="cursor:row-resize;"></div>		
+	<!-- <div class="divider" id="studentlistBar" style="cursor:row-resize;"></div>		
 	<div class="tabs">
 		<div class="tabsHeader">
 			<div class="tabsHeaderContent">
@@ -108,5 +114,5 @@
 		<div class="tabsFooter">
 			<div class="tabsFooterContent"></div>
 		</div>
-	</div>
+	</div> -->
 </div>
