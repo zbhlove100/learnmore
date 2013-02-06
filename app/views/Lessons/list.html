@@ -6,10 +6,32 @@
 	 	}else{
 			 $('#lessonDetails').click();
 		 }
-	 }  
+	 }
+	function selectPcollection(pcid){
+		var result=new Array();
+		var url="/lessons/selectPcollection?pcid="+pcid;   
+	        $.ajax({
+	            url: url,   //接收页面
+	            type: 'post',      //POST方式发送数据
+	            async: false,      //ajax同步
+	            success: function(data) {
+	            	var protocalDiv = $("div[name='subcollection']",$.pdialog.getCurrent()).parent();
+	            	var select = "<select class='combox' name='subcollection'><option value=''>--请选择--</option>"
+	            	$(data).each(function(index){
+	            		select = select + "<option value="+data[index].name+">"+data[index].name+"</option>";
+	            	});
+	            	select = select + "</select>";
+	            	protocalDiv.after(select);
+	            	protocalDiv.remove();
+	            	$("select[name='subcollection']",$.pdialog.getCurrent()).combox();
+	            }
+	        });
+	        return result;
+	}
     $(function(){
     	DrapDropBar('lessonsList');
      });
+    
 </script>
 <form id="pagerForm" action="@{Lessons.list}" method="post">
 	<input type="hidden" value="${pageNum}" name="pageNum"> 
@@ -21,8 +43,68 @@
 		action="@{Lessons.list}" method="post">
 		<div class="searchBar">
 			<ul class="searchContent">
-				<li><label>name:</label> <input type="text"
-					name="name" value="${params.name}"/></li>
+				<li><label>课程名:</label> <input type="text" name="sname" value="${params.sname}"/></li>
+				<li>
+					<label>时间范围:</label>
+					<input name="sstartDate" class="date" type="text" readonly="true" value="${params.sstartDate}"/>
+					<a class="inputDateButton" href="javascript:;">不限</a>
+				</li>
+				<li>
+					<label>~</label>
+					<input name="sstopDate" class="date" type="text" readonly="true" value="${params.sstopDate}"/>
+					<a class="inputDateButton" href="javascript:;">不限</a>
+				</li>
+			</ul>
+			<div class="divider"></div>
+			<ul class="searchContent">
+				<li>
+					<label>类别:</label> 
+					<select class="combox"  name="stype">
+						<option value="">--请选择--</option>
+						#{list items:types,as:'type'}
+						<option value="${type.codeValue}"  #{if type.codeValue==params.stype} selected #{/if} >${type.codeValue}</option>
+						#{/list}
+					</select>
+				</li>
+				<li>
+					<label>时间类别:</label> 
+					<select class="combox"  name="stimeType">
+						<option value="">--请选择--</option>
+						#{list items:timeTypes,as:'code'}
+						<option value="${code.codeValue}"  #{if code.codeValue==params.stimeType} selected #{/if} >${code.codeValue}</option>
+						#{/list}
+					</select>
+				</li>
+				<li>
+					<label>校区：</label>
+					<select class="combox"  name="schoolid">
+						<option value="">--请选择--</option>
+						#{list items:schools,as:'school'}
+						<option value="${school.id}"  #{if (school.id+"")==(params.schoolid+"")} selected #{/if} >${school.name}</option>
+						#{/list}
+					</select>
+				</li>
+			</ul>
+			<div class="divider"></div>
+			<ul class="searchContent">
+				<li>
+					<label>课程系列：</label>
+					<select class="combox"  name="scollection" ref="pcollection" change="selectPcollection" param="pcid">
+						<option value="">--请选择--</option>
+						#{list items:collections,as:'collection'}
+						<option value="${collection.codeValue}"  #{if collection.codeValue==params.scollection} selected #{/if} >${collection.codeValue}</option>
+						#{/list}
+					</select>
+				</li>
+				<li>
+					<label>子系列:</label>
+					<select class="combox"  name="subcollection" id="pcollection">
+						<option value="">--请选择--</option>
+						#{list items:subcollections,as:'collection'}
+						<option value="${collection.codeValue}"  #{if collection.codeValue==params.subcollection} selected #{/if} >${collection.codeValue}</option>
+						#{/list}
+					</select>
+				</li>
 			</ul>
 			<div class="subBar">
 				<ul>
@@ -42,14 +124,14 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li>
-				<a class="add" id="ad" href="@{Lessons.blank}" target="dialog" height="300">
-					<span>Add teacher</span> 
+				<a class="add" id="ad" href="@{Lessons.blank}" target="dialog" height="600" rel="createLesson">
+					<span>新增课程</span> 
 				</a>
 			</li>
 			<li>
 				<a class="delete" href="@{Lessons.deletes}" target="selectedTodo" postType="string" rel="ids"
 				title="Are you sure to delete these teachers?">
-				<span>Delete bucket</span>
+				<span>删除课程</span>
 			</a></li>
 		</ul>
 	</div>
@@ -79,8 +161,8 @@
 					<td>${lesson.lessonType}</td>
 					<td><a href="">${lesson.teacher?.name}</a></td>
 					<td>${lesson.level}</td>
-					<td>${lesson.startTime}</td>
-					<td>${lesson.endTime}</td>
+					<td>${lesson.startTime.format('yyyy-MM-dd')}</td>
+					<td>${lesson.endTime.format('yyyy-MM-dd')}</td>
 					<td><strong>${lesson.orders.size()}</strong></td>
 					<td><a class="btn-mini btn btn-block btn-success" href="@{Lessons.detail(lesson.id)}" target="navTab" rel="lessonDetail${lesson.id}" title="${lesson.name}">Detail >>></a></td>
 				</tr>

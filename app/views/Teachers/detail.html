@@ -27,13 +27,13 @@
 					</tr>
 					<tr>
 						<th>
-							age
+							年龄
 						</th>
 						<td>
 							${showTeacher.age?:''}
 						</td>
 						<th>
-							english name
+							英文名
 						</th>
 						<td>
 							${showTeacher.teacherDetail?.enName?:''}
@@ -45,7 +45,7 @@
 					
 					<tr>
 						<th>
-							class
+							所教课程
 						</th>
 						<td colspan="3">
 							${showTeacher.teacherDetail?.classType?:''}
@@ -53,7 +53,7 @@
 					</tr>
 					<tr>
 						<th>
-							education
+							毕业学校
 						</th>
 						<td colspan="3">
 							${showTeacher.teacherDetail?.education?:''}
@@ -61,7 +61,7 @@
 					</tr>	
 					<tr>
 						<th>
-							height
+							身高
 						</th>
 						<td>
 							${showTeacher.teacherDetail?.height?:''}
@@ -75,7 +75,7 @@
 					</tr>
 					<tr>
 						<th>
-							horror man
+							最崇拜的人
 						</th>
 						<td colspan="3">
 							${showTeacher.teacherDetail?.adoreMan?:''}
@@ -84,7 +84,7 @@
 					</tr>	
 					<tr>
 						<th>
-							interest
+							爱好
 						</th>
 						<td colspan="3">
 							${showTeacher.teacherDetail?.interest?:''}
@@ -93,7 +93,7 @@
 					</tr>
 					<tr>
 						<th>
-							favorite place
+							最想去的地方
 						</th>
 						<td colspan="3">
 							${showTeacher.teacherDetail?.favoritePlace?:''}
@@ -102,7 +102,7 @@
 					</tr>	
 					<tr>
 						<th>
-							favorite color
+							最喜欢的颜色
 						</th>
 						<td colspan="3">
 							${showTeacher.teacherDetail?.favoriteColor?:''}
@@ -111,7 +111,7 @@
 					</tr>	
 					<tr>
 						<th>
-							favorite sport
+							最喜欢的运动
 						</th>
 						<td colspan="3">
 							${showTeacher.teacherDetail?.favoriteSport?:''}
@@ -120,7 +120,7 @@
 					</tr>	
 					<tr>
 						<th>
-							teacher word
+							座右铭
 						</th>
 						<td colspan="3">
 							${showTeacher.teacherDetail?.teacherWord?:''}
@@ -160,19 +160,19 @@
 							入职时间
 						</th>
 						<td >
-							${showTeacher.teacherDetail?.hireDate?:''}
+							${showTeacher.teacherDetail?.hireDate?.format("yyyy-MM-dd")}
 						</td>
 						<th>
 							工作时间
 						</th>
 						<td >
-							${showTeacher.employeType?:''}
+							${workdate.year?:0}年${workdate.month?:0}月
 						</td>
 						<th>
 							毕业时间
 						</th>
 						<td >
-							${showTeacher.teacherDetail?.graduateDate?:''}
+							${showTeacher.teacherDetail?.graduateDate?.format("yyyy-MM-dd")}
 						</td>
 					</tr>
 				</tbody>
@@ -208,7 +208,7 @@
 							${lesson.lessonType}
 						</td>
 						<td >
-							${lesson.startTime} -- ${lesson.endTime}
+							${lesson.startTime.format("yyyy-MM-dd")} -- ${lesson.endTime.format("yyyy-MM-dd")}
 						</td>
 						<td >
 							${lesson.studentNum}

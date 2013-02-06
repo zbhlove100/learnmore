@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -35,9 +36,9 @@ public class Lesson extends Model{
 	
 	public int times;
 	
-	public String startTime;
+	public Date startTime;
 	
-	public String endTime;
+	public Date endTime;
 	
 	public String discription;
 	

@@ -1,0 +1,97 @@
+<script src="@{'/public/javascripts/bootstrap/js/bootstrap-button.js'}" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	$(".btn-group").button();
+})
+function selectTargetLesson(pcid){
+	
+	var id = pcid.pcid;
+	var llt = $("#lastSelectTargetLt").val();
+	
+	$("#lessonName"+id).parent().removeClass("blank").addClass("target");
+	if(llt !=0){
+		var lastTd = $("#lessonName"+llt).parent();
+		$(lastTd).removeClass("target");
+		if($(lastTd.find("[id^='lessonDate']").html()=="未定")){
+			$(lastTd).addClass("blank");
+		}
+	}
+	$("#lastSelectTargetLt").val(id);
+}
+function selectLessonByTable(tid){
+	var td = $("#lessonTableTd"+tid);
+	if($(td).hasClass("blank")){
+		$(td).removeClass("blank").addClass("target");
+	}else{
+		$(td).addClass("target");
+	}
+	var llt = $("#lastSelectTargetLt").val();
+	if(llt !=0){
+		var lastTd = $("#lessonTableTd"+llt);
+		$(lastTd).removeClass("target");
+		if($(lastTd.find("[id^='lessonDate']").html()=="未定")){
+			$(lastTd).addClass("blank");
+		}
+	}
+	$("#lastSelectTargetLt").val(tid);
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="@{lessons.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
+			<input type="hidden" id="lastSelectTargetLt" value="0">
+			<div class="pageFormContent" layoutH="56" layoutW="56">
+				<fieldset>
+					<legend>课表</legend>
+					<dl>
+						<dt>上课时间：</dt>
+						<dd>
+							<input name="startDate" class="date" dateFmt="yyyy-MM-dd HH:mm" type="text" readonly="true"/>
+							<a class="inputDateButton" href="javascript:;">选择</a>
+							<span class="info">yyyy-MM-dd</span>
+							
+						</dd>
+						
+					</dl>
+					<dl>
+						<dd>
+							<select class="combox"  name="targetLesson" change="selectTargetLesson" param="pcid">
+							<option value="">--请选择--</option>
+							#{list items:1..lesson.times,as:'i'}
+							<option value="${i}">第${i}课</option>
+							#{/list}
+							</select>
+						</dd>
+					</dl>
+				</fieldset>
+				<div class="btn-group" data-toggle="buttons-radio">
+					<button class="btn btn-mini btn-success" onclick="return false;">列表</button>
+					<button class="btn btn-mini btn-success" onclick="return false;">图标</button>
+				</div>
+				<div class="lessonTable-area">
+					<table class="lessonTable-table">
+						#{list items:lessonTables,as:'itemlist'}
+							<tr>
+							#{list items:itemlist,as:'item'}
+								<td class="blank" id="lessonTableTd${item.mark}" onclick="selectLessonByTable(${item.mark})" style="cursor: pointer;">
+									<span id="lessonName${item.mark}">${item.name}</span>
+									<br>
+									<span id="lessonDate${item.mark}">未定</span>
+								</td>
+							#{/list}
+							</tr>
+						#{/list}
+					</table>
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">Save</button></div></div></li>
+					<li>
+						<div class="button"><div class="buttonContent"><button type="Button" class="close">Cancel</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

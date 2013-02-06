@@ -3,15 +3,17 @@ package utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import models.Setting;
 
 public class MyDateUtils {
-    public int getAgeForBirthday(String birthday,String dateFormat) throws ParseException{
+    public static int getAgeForBirthday(String birthday,String dateFormat) throws ParseException{
         int differyear = getDaysSinceNow(birthday,dateFormat)/365;
         return differyear;
     }
-    public int getDaysSinceNow(String birthday,String dateFormat) throws ParseException{
+    public static int getDaysSinceNow(String birthday,String dateFormat) throws ParseException{
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
         long now = new Date().getTime();
         long birthtime = sdf.parse(birthday).getTime();
@@ -19,7 +21,7 @@ public class MyDateUtils {
         int differDays = (int) (now/secondPerDay - birthtime/secondPerDay);
         return differDays;
     }
-    public int getDifferDays(String date1,String date2,String dateFormat) throws ParseException{
+    public static int getDifferDays(String date1,String date2,String dateFormat) throws ParseException{
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
         long d1 = sdf.parse(date1).getTime();
         long d2 = sdf.parse(date2).getTime();
@@ -27,7 +29,7 @@ public class MyDateUtils {
         int differDays = (int)((d1/secondPerDay - d2/secondPerDay)>0?(d1/secondPerDay - d2/secondPerDay):(d2/secondPerDay - d1/secondPerDay));
         return differDays;
     }
-    public String getClassStatus(String startTime,String endTime,String dateFormat) throws ParseException{
+    public static String getClassStatus(String startTime,String endTime,String dateFormat) throws ParseException{
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
         long d1 = sdf.parse(startTime).getTime();
         long d2 = sdf.parse(endTime).getTime();
@@ -38,6 +40,19 @@ public class MyDateUtils {
         }else if((now-d1>0)&&(now-d2<0)){
             result = Setting.value("LESSON_FINISH", "进行中");
         }
+        return result;
+    }
+    public static Map getYearAndMonthSinceNow(Date date,String dateFormat) throws ParseException{
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        return getYearAndMonthSinceNow(sdf.format(date),dateFormat);
+    }
+    public static Map getYearAndMonthSinceNow(String date,String dateFormat) throws ParseException{
+        Map result = new HashMap<String, Object>();
+        int days = getDaysSinceNow(date,dateFormat);
+        int years = days/365;
+        int months =  (days%365)/30;
+        result.put("year", years);
+        result.put("month", months);
         return result;
     }
 }

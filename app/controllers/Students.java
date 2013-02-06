@@ -125,7 +125,8 @@ public class Students extends CRUD {
             MyDateUtils mdu = new MyDateUtils();
             for(Order o:orders){
                 Lesson lesson = o.lesson;
-                lesson.status = mdu.getClassStatus(lesson.startTime,lesson.endTime,"yyyy-MM-dd");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                lesson.status = mdu.getClassStatus(sdf.format(lesson.startTime),sdf.format(lesson.endTime),"yyyy-MM-dd");
             }
             renderArgs.put("orders", orders);
             renderArgs.put("student", student);

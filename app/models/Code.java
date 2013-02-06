@@ -14,5 +14,9 @@ public class Code extends Model{
 	
 	public String discription;
 	
-	public int parentCode;
+	public String state;
+	
+	public long parentCode;
+	
+	public static final long ROOT = 0L;
 }

@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class SimpleTest {
 
-    @Test
+    //@Test
     public void test() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         long bir = sdf.parse("1985-03-01").getTime();
@@ -20,6 +20,12 @@ public class SimpleTest {
         long x = now-bir;
         int hour = (int) (x/i);
         System.out.println(hour/365);
+    }
+    @Test
+    public void test1() throws ParseException {
+        long i = 1l;
+        int j = 1;
+        System.out.print(i==j);
     }
 
 }

@@ -1,0 +1,147 @@
+<script type="text/javascript">
+function selectPcollection(pcid){
+	var result=new Array();
+	var url="/lessons/selectPcollection?pcid="+pcid;   
+        $.ajax({
+            url: url,   //接收页面
+            type: 'post',      //POST方式发送数据
+            async: false,      //ajax同步
+            success: function(data) {
+            	var protocalDiv = $("div[name='subcollection']",$.pdialog.getCurrent()).parent();
+            	var select = "<select class='combox' name='subcollection'><option value=''>--请选择--</option>"
+            	$(data).each(function(index){
+            		select = select + "<option value="+data[index].name+">"+data[index].name+"</option>";
+            	});
+            	select = select + "</select>";
+            	protocalDiv.after(select);
+            	protocalDiv.remove();
+            	$("select[name='subcollection']",$.pdialog.getCurrent()).combox();
+            }
+        });
+        return result;
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="@{lessons.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
+			<div class="pageFormContent" layoutH="56" layoutW="56">
+			<fieldset>
+				<legend>课程信息</legend>
+				<dl>
+					<dt>课程名：</dt>
+					<dd><input name="name" class="required" type="text" size="20"/></dd>
+				</dl>
+				<dl>
+					<dt>教师：</dt>
+					<dd>
+						<input id="createLessonTeacherName" name="teachername" class="required" type="text" size="20" readonly/>
+						<input id="createLessonTeacherId" name="teacherid" class="" type="hidden"/>
+						<a href="/lessons/selectLessonTeacher" target="dialog" height="350" width="450" class="btn btn-mini btn-primary" rel="lessonTeacerPage">查找</a>
+					</dd>
+				</dl>
+				<dl>
+					<dt>时间类别：</dt>
+					<dd>
+						<select class="combox"  name="stimeType">
+						<option value="">--请选择--</option>
+						#{list items:timeTypes,as:'code'}
+						<option value="${code.codeValue}" >${code.codeValue}</option>
+						#{/list}
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt>类别：</dt>
+					<dd>
+						<select class="combox"  name="type">
+						<option value="">--请选择--</option>
+						#{list items:types,as:'code'}
+						<option value="${code.codeValue}" >${code.codeValue}</option>
+						#{/list}
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt>课程系列：</dt>
+					<dd>
+						<select class="combox"  name="scollection" ref="pcollection" change="selectPcollection" param="pcid">
+						<option value="">--请选择--</option>
+						#{list items:collections,as:'collection'}
+						<option value="${collection.codeValue}"  #{if collection.codeValue==params.scollection} selected #{/if} >${collection.codeValue}</option>
+						#{/list}
+					</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt>子系列：</dt>
+					<dd>
+						<select class="combox"  name="subcollection" id="pcollection">
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt>地点：</dt>
+					<dd>
+						<select class="combox"  name="schoolid">
+						<option value="">--请选择--</option>
+						#{list items:schools,as:'school'}
+						<option value="${school.id}" >${school.name}</option>
+						#{/list}
+					</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt>等级：</dt>
+					<dd>
+						<input name="level" class="" type="text" size="20"/>
+					</dd>
+				</dl>
+				<dl>
+					<dt>课次：</dt>
+					<dd>
+						<input name="times" class="required number" type="text" size=""/>
+					</dd>
+				</dl>
+				<dl>
+					<dt>价格：</dt>
+					<dd>
+						<input name="price" class="required number" type="text" size=""/>
+					</dd>
+				</dl>
+				<dl>
+					<dt>开始时间：</dt>
+					<dd>
+						<input name="startDate" class="date" type="text" readonly="true"/>
+						<a class="inputDateButton" href="javascript:;">选择</a>
+						<span class="info">yyyy-MM-dd</span>
+					</dd>
+				</dl>
+				<dl>
+					<dt>结束时间：</dt>
+					<dd>
+						<input name="stopDate" class="date" type="text" readonly="true"/>
+						<a class="inputDateButton" href="javascript:;">选择</a>
+						<span class="info">yyyy-MM-dd</span>
+					</dd>
+				</dl>
+				<p>
+					<label>备注：</label>
+					<textarea name="description" rows="4" cols="70" style="z-index: 1000"></textarea>
+				</p>
+				<dl></dl>
+				<dl></dl>
+				<dl></dl>
+				
+			</fieldset>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">Save</button></div></div></li>
+					<li>
+						<div class="button"><div class="buttonContent"><button type="Button" class="close">Cancel</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

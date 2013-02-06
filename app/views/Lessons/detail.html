@@ -48,9 +48,9 @@ function deleteOrders(){
 				</tr>
 				<tr>
 					<th>开课时间 :</th>
-					<td>${lesson?.startTime}</td>
+					<td>${lesson?.startTime.format('yyyy-MM-dd')}</td>
 					<th>结课时间 :</th>
-					<td>${lesson?.endTime}</td>
+					<td>${lesson?.endTime.format('yyyy-MM-dd')}</td>
 					<th>报名人数 :</th>
 					<td><strong>${lesson?.orders?.size()}</strong></td>
 				</tr>
@@ -128,7 +128,7 @@ function deleteOrders(){
 			<div class="formBar">
 				<ul>
 					<li>
-						#{if lessonTables.size()==0}<button class="btn btn-primary">新建课表</button>#{/if}
+						#{if lessonTables.size()==0}<a href="@{Lessons.createLessonTable(lesson.id)}" target="dialog" width="1000" rel="createLessonTable${lesson.id}" class="btn btn-primary">新建课表</a>#{/if}
 						#{else}<a href="@{Lessons.list}" target="navTab" rel="lessonsList" class="btn btn-warning">修改</a>#{/else}
 					</li>
 				</ul>

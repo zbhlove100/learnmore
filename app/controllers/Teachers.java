@@ -3,7 +3,10 @@ package controllers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 
@@ -62,11 +65,12 @@ public class Teachers extends CRUD {
         String tel = params.get("tel");
         String email = params.get("email");
         String type = params.get("type");
-        String schoolid = params.get("schoolid");
+        long schoolid = params.get("schoolid",Long.class);
         String enname = params.get("enname");
         String classType = params.get("classType");
         String bloodtype = params.get("bloodtype");
-        int height = params.get("height",Integer.class);
+        String heightString = params.get("height");
+        int height = (heightString == null || "".equals(heightString))?0:Integer.parseInt(heightString);
         String interest = params.get("interest");
         String favoriteColor = params.get("favoriteColor");
         String favoriteSport = params.get("favoriteSport");
@@ -117,7 +121,7 @@ public class Teachers extends CRUD {
         }
         try {
             age = mdu.getAgeForBirthday(birthday, "yyyy-MM-dd");
-            EntityManager em = JPA.em();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             School school = School.findById(schoolid);
             
             Teacher teacher = new Teacher();
@@ -127,8 +131,6 @@ public class Teachers extends CRUD {
             teacher.school = school;
             teacher.state = BaseModel.ACTIVE;
             teacher.save();
-            em.getTransaction().commit();
-            em.getTransaction().begin();
             
             TeacherDetail teacherDetail = new TeacherDetail();
             teacherDetail.address = address;
@@ -143,10 +145,10 @@ public class Teachers extends CRUD {
             teacherDetail.favoriteColor = favoriteColor;
             teacherDetail.favoritePlace = favoritePlace;
             teacherDetail.favoriteSport = favoriteSport;
-            teacherDetail.graduateDate = graduateDate;
+            teacherDetail.graduateDate = sdf.parse(graduateDate);
             teacherDetail.graduateSchool = graduateSchool;
             teacherDetail.height = height;
-            teacherDetail.hireDate = hireDate;
+            teacherDetail.hireDate = sdf.parse(hireDate);
             teacherDetail.household = household;
             teacherDetail.interest = interest;
             teacherDetail.qq = qq;
@@ -155,6 +157,7 @@ public class Teachers extends CRUD {
             teacherDetail.teacherWord = teacherWord;
             teacherDetail.tel = tel;
             teacherDetail.weibo = weibo;
+            teacherDetail.teacher = teacher;
             teacherDetail.save();
             
             ImgDetail imgDetail = new ImgDetail();
@@ -163,6 +166,7 @@ public class Teachers extends CRUD {
             imgDetail.save();
         } catch (Exception e) {
             // TODO: handle exception
+            e.printStackTrace();
         }
         renderJSON(forwardJsonCloseDailog("createTeacher", "/teachers/list", "创建成功！"));
         
@@ -183,10 +187,18 @@ public class Teachers extends CRUD {
     }
     
     public static void detail(long id){
-        Teacher t = Teacher.findById(id);
-        List<Lesson> lessons = Lesson.find("teacher = ? and state != ?", t,BaseModel.DELETE).fetch(5);
-        renderArgs.put("showTeacher", t);
-        renderArgs.put("lessons", lessons);
-        render();
+        try {
+            Teacher t = Teacher.findById(id);
+            Map workdate = MyDateUtils.getYearAndMonthSinceNow(t.teacherDetail.hireDate, "yyyy-MM-dd");
+            List<Lesson> lessons = Lesson.find("teacher = ? and state != ?", t,BaseModel.DELETE).fetch(5);
+            renderArgs.put("showTeacher", t);
+            renderArgs.put("lessons", lessons);
+            renderArgs.put("workdate", workdate);
+            render();
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
     }
 }

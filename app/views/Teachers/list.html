@@ -71,10 +71,10 @@
 				</li>
 				<li>
 					<label>校区：</label>
-					<select class="combox required"  name="schoolid">
+					<select class="combox"  name="schoolid">
 						<option value="">--请选择--</option>
 						#{list items:schools,as:'school'}
-						<option value="${school.id}"  #{if school.id==params.schoolid} selected #{/if} >${school.name}</option>
+						<option value="${school.id}"  #{if (school.id+"")==(params.schoolid+"") } selected #{/if} >${school.name}</option>
 						#{/list}
 					</select>
 				</li>
