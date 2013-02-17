@@ -1,4 +1,4 @@
-<h2 class="contentTitle">${showTeacher.name}</h2>
+<h2 class="contentTitle">${showTeacher.name}                  <a href="@{teachers.edit(showTeacher.id)}" class="btn btn-warning" style="float: right;">修改</a></h2>
 
 	
 <div class="pageContent sortDrag" selector="h1" layoutH="60">
@@ -201,7 +201,7 @@
 					</tr>
 					#{list items:lessons, as:'lesson'}
 					<tr>
-						<td >
+						<td>
 							<a href="">${lesson.name}</a>
 						</td>
 						<td >

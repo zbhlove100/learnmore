@@ -40,6 +40,9 @@ public class Teacher extends BaseModel {
     @ManyToOne
     public School school;
     
+    @ManyToOne
+    public Department department;
+    
     @OneToMany(mappedBy="teacher",fetch=FetchType.LAZY)
     public List<Tag> tags;
     

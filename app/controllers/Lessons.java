@@ -51,7 +51,6 @@ public class Lessons extends CRUD {
         }else if(params.get("sstopDate") != null&& !"".equals(params.get("sstopDate"))){
             bf.append(String.format("\n and startTime < '%s'",params.get("sstopDate")));
         }
-        System.out.println("---------------------------->"+bf.toString());
         List<Lesson> lessons = Lesson.find(bf.toString()).fetch();
         List<Code> collections = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"collection").fetch();
         List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
@@ -137,9 +136,34 @@ public class Lessons extends CRUD {
            
         }
         renderArgs.put("lessonTables", tables);
+        renderArgs.put("lessonid", id);
         render();
     }
     
+    public static void saveLessonTable(long id){
+        Lesson lesson = Lesson.findById(id);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        try {
+            for(int i=1;i<=lesson.times;i++){
+                LessonTable lessonTable = new LessonTable();
+                lessonTable.lesson = lesson;
+                lessonTable.name = "第"+i+"课";
+                if(params.get("lessonDate"+i)!=null&&!"".equals(params.get("lessonDate"+i))){
+                    lessonTable.lessonDate = sdf.parse(params.get("lessonDate"+i));
+                }else{
+                    lessonTable.lessonDate = new Date();
+                }
+                
+                lessonTable.state = BaseModel.ACTIVE;
+                lessonTable.save();
+            }
+            renderJSON(forwardJsonCloseDailog("lessonDetail"+id,"/lessons/detail/"+id,"添加课表成功！"));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            renderJSON(jsonError(e.getMessage()));
+        }
+    }
     public static void deletes(String ids){
         String where = String.format("id in (%s)", ids);
         List<Lesson> Lessons = Lesson.find(where).fetch();

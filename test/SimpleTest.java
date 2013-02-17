@@ -25,7 +25,18 @@ public class SimpleTest {
     public void test1() throws ParseException {
         long i = 1l;
         int j = 1;
-        System.out.print(i==j);
+        long year = 86400000;
+        long yeart = year*365;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        sdf.parse("2012-02").getTime();
+        long d = new Date().getTime();
+        long day =  (d/year)-365;
+        
+        System.out.println(d);
+        System.out.println(yeart);
+        System.out.println(d-yeart);
+        System.out.println(sdf.parse("2012-02").getTime());
+        System.out.print(sdf.format(d));
     }
 
 }

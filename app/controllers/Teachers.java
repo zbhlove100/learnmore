@@ -201,4 +201,10 @@ public class Teachers extends CRUD {
         }
         
     }
+    
+    public static void edit(long id){
+        Teacher teacher = Teacher.findById(id);
+        renderArgs.put("teacher", teacher);
+        render();
+    }
 }

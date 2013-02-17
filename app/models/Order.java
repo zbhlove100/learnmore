@@ -19,7 +19,12 @@ public class Order extends BaseModel {
     
     public Date createdAt;
     
+    public Date modifyAt;
+    
     public Date removedAt;
+    
+    @ManyToOne
+    public User user;
     
     @ManyToOne
     public Student student;

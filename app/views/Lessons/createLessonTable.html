@@ -6,11 +6,16 @@ $(function(){
 function selectTargetLesson(pcid){
 	
 	var id = pcid.pcid;
+	var td = $("#lessonTableTd"+id);
 	var llt = $("#lastSelectTargetLt").val();
 	
-	$("#lessonName"+id).parent().removeClass("blank").addClass("target");
+	if($(td).hasClass("blank")){
+		$(td).removeClass("blank").addClass("target");
+	}else{
+		$(td).addClass("target");
+	}
 	if(llt !=0){
-		var lastTd = $("#lessonName"+llt).parent();
+		var lastTd = $("#lessonTableTd"+llt);
 		$(lastTd).removeClass("target");
 		if($(lastTd.find("[id^='lessonDate']").html()=="未定")){
 			$(lastTd).addClass("blank");
@@ -19,26 +24,23 @@ function selectTargetLesson(pcid){
 	$("#lastSelectTargetLt").val(id);
 }
 function selectLessonByTable(tid){
-	var td = $("#lessonTableTd"+tid);
-	if($(td).hasClass("blank")){
-		$(td).removeClass("blank").addClass("target");
-	}else{
-		$(td).addClass("target");
-	}
-	var llt = $("#lastSelectTargetLt").val();
-	if(llt !=0){
-		var lastTd = $("#lessonTableTd"+llt);
-		$(lastTd).removeClass("target");
-		if($(lastTd.find("[id^='lessonDate']").html()=="未定")){
-			$(lastTd).addClass("blank");
-		}
-	}
-	$("#lastSelectTargetLt").val(tid);
+	var selectId = $("div[name='targetLesson']").attr("id");
+	var tara = $("#op"+selectId).find("a[value="+tid+"]");
+	$("#"+selectId+">a").html($(tara).html());
+	$("#"+selectId+">input[type='hidden']").val($(tara).attr("value"));
+	var id = {pcid:tid}
+	selectTargetLesson(id);
+}
+function addDate(){
+	var date = $("input[name='startDate']").val();
+	var tarid = $("div[name='targetLesson']>input[type='hidden']").val();
+	$("#lessonTableTd"+tarid).find("[id^='lessonDate']").html(date);
+	$("#lessonTableTd"+tarid).find("input[name^='lessonDate']").val(date);
 }
 </script>
 <div class="page">
 	<div class="pageContent">
-		<form method="post" action="@{lessons.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
+		<form method="post" action="@{lessons.saveLessonTable(lessonid)}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
 			<input type="hidden" id="lastSelectTargetLt" value="0">
 			<div class="pageFormContent" layoutH="56" layoutW="56">
 				<fieldset>
@@ -61,6 +63,7 @@ function selectLessonByTable(tid){
 							<option value="${i}">第${i}课</option>
 							#{/list}
 							</select>
+							<button onclick="javaScript:addDate();return false;" class="btn btn-mini btn-primary">添加</button>
 						</dd>
 					</dl>
 				</fieldset>
@@ -73,10 +76,11 @@ function selectLessonByTable(tid){
 						#{list items:lessonTables,as:'itemlist'}
 							<tr>
 							#{list items:itemlist,as:'item'}
-								<td class="blank" id="lessonTableTd${item.mark}" onclick="selectLessonByTable(${item.mark})" style="cursor: pointer;">
+								<td class="blank" id="lessonTableTd${item.mark}" onclick="selectLessonByTable(${item.mark})" style="cursor: pointer;width: 180px;">
 									<span id="lessonName${item.mark}">${item.name}</span>
 									<br>
 									<span id="lessonDate${item.mark}">未定</span>
+									<input type="hidden" name="lessonDate${item.mark}" value=""/>
 								</td>
 							#{/list}
 							</tr>

@@ -1,0 +1,120 @@
+<script type="text/javascript">
+    $(function(){
+    	DrapDropBar('Orderlist');
+     });
+     
+</script>
+<form id="pagerForm" action="@{Orders.list}" method="post">
+	<input type="hidden" value="${pageNum}" name="pageNum"> 
+	<input type="hidden" value="${numPerPage}" name="numPerPage"> 
+	<input type="hidden" value="${orderField}" name="orderField">
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onSubmit="return navTabSearch(this);"
+		action="@{Orders.list}" method="post">
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>name:</label> 
+					<input type="text" name="name" value="${params.name}"/>
+				</li>
+				<li>
+					<label>电话:</label> 
+					<input type="text" name="tel" value="${params.tel}"/>
+				</li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li><div class="buttonActive">
+							<div class="buttonContent">
+								<button type="submit">Search</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>
+				<a class="add" id="ad" href="@{Orders.blank}" target="dialog" height="450" title="添加订单">
+					<span>添加订单</span> 
+				</a>
+			</li>
+			<li>
+				<a class="delete" href="@{Orders.deletes}" target="selectedTodo" postType="string" rel="ids"
+				title="确定要删除订单吗?">
+				<span>删除订单</span>
+			</a></li>
+		</ul>
+	</div>
+	<div id="OrderlistTableDiv">
+		<table id="OrderlistTable" class="table" width="100%" layouth="138">
+			<thead>
+				<tr>
+					<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+					<th width="150" class="asc">订单编号</th>
+					<th width="150">课程</th>
+					<th width="150">学员</th>
+					<th width="150">老师</th>
+					<th width="200">日期</th>
+					<th width="300">金额</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				 #{list items:orders, as:'Order'}
+				<tr target="sid_user"
+					rel="${Order.id}">
+					<td><input name="ids" value="${Order.id}" type="checkbox">
+					</td>
+					<td>${Order.id}</td>
+					<td>${Order.lesson.name?:''}</td>
+					<td>${Order.student.name?:''}</td>
+					<td>${Order.teacher.name?:''}</td>
+					<td>${Order.createdAt.format('yyyy-MM-dd')?:''}</td>
+					<td>${Order.money?:''}</td>
+					<td><a class="btn-mini btn btn-block btn-success" href="@{Orders.detail(Order.id)}" target="navTab" rel="OrderDetail" title="order${Order.id}">Detail >>></a></td>
+				</tr>
+				#{/list} 
+			</tbody>
+		</table>
+		<div class="panelBar">
+			<div class="pages">
+				<span>List</span> 
+				<select name="numPerPage" onchange="navTabPageBreak({'numPerPage':this.value})">
+					<option value="20" #{if numPerPage==20}selected#{/if}>20</option>
+					<option value="50" #{if numPerPage==50}selected#{/if}>50</option>
+					<option value="100" #{if numPerPage==100}selected#{/if}>100</option>
+					<option value="200" #{if numPerPage==200}selected#{/if}>200</option>
+				</select> 
+				<span>Total:${totalCount}</span>
+			</div>
+
+			<div currentpage="${pageNum}" pagenumshown="10"
+				numperpage="${numPerPage}" totalcount="${totalCount}"
+				targettype="navTab" class="pagination" />
+		</div>
+	</div>
+	<!-- <div class="divider" id="OrderlistBar" style="cursor:row-resize;"></div>		
+	<div class="tabs">
+		<div class="tabsHeader">
+			<div class="tabsHeaderContent">
+				<ul>
+					<li><a href="javascript:details(-1);"><span>Details</span> </a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="tabsContent" style="height: 260px" id="OrderlistTabsDiv">
+			<div id="containerDetails">
+			</div>
+		</div>
+		<div class="tabsFooter">
+			<div class="tabsFooterContent"></div>
+		</div>
+	</div> -->
+</div>

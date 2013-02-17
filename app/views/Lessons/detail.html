@@ -128,8 +128,8 @@ function deleteOrders(){
 			<div class="formBar">
 				<ul>
 					<li>
-						#{if lessonTables.size()==0}<a href="@{Lessons.createLessonTable(lesson.id)}" target="dialog" width="1000" rel="createLessonTable${lesson.id}" class="btn btn-primary">新建课表</a>#{/if}
-						#{else}<a href="@{Lessons.list}" target="navTab" rel="lessonsList" class="btn btn-warning">修改</a>#{/else}
+						#{if lessonTables.size()==0}<a href="@{Lessons.createLessonTable(lesson.id)}" target="dialog" width="1100" height="500" rel="createLessonTable${lesson.id}" class="btn btn-primary">新建课表</a>#{/if}
+						#{else}<a href="@{Lessons.list}" width="1100" height="500" target="dialog" rel="lessonsList" class="btn btn-warning">修改</a>#{/else}
 					</li>
 				</ul>
 			</div>
