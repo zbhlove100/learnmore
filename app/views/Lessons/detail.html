@@ -35,17 +35,26 @@ function deleteOrders(){
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.teacher?.name}</td>
 					<th>课次 :</th>
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.times}</td>
-					<th>价格 :</th>
-					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.price}元</td>
+					<th>时长 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.price}</td>
 				</tr>
 				<tr>
 					<th>时间类别 :</th>
 					<td>${lesson?.lessonTimeType}</td>
 					<th>类别 :</th>
 					<td>${lesson?.lessonType}</td>
+					<th>价格 :</th>
+					<td>${lesson?.price}元</td>
+				</tr>
+				<tr>
+					<th>课程系列 :</th>
+					<td>${lesson?.collection}</td>
+					<th>子系列 :</th>
+					<td>${lesson?.subCollection}</td>
 					<th>级别 :</th>
 					<td>${lesson?.level}</td>
 				</tr>
+				
 				<tr>
 					<th>开课时间 :</th>
 					<td>${lesson?.startTime.format('yyyy-MM-dd')}</td>

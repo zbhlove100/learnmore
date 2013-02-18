@@ -169,53 +169,60 @@ public class Orders extends CRUD {
     
     public static void statisticsMonth(){
         int months = 12;
+        long monthtime = 86400000*31l;
         try {
             List<Department> departments = Department.find("type = ? and state !=?"
                                                         , Teacher.EM_TYPE.TEACHER.toString()
                                                         ,BaseModel.DELETE).fetch();
             String toMonth = params.get("toMonth");
             String startMonth = null;
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-            String sql = "select CONCAT(YEAR(o.createdAt),-MONTH(o.createdAt)) as month, count(*) as con,d from Order o,Teacher t,Department d" +
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-01");
+            String sql = "select CONCAT(CONCAT(YEAR(o.createdAt),-MONTH(o.createdAt)),'-01') as month, count(*) as con,d from Order o,Teacher t,Department d" +
                 		" where 1=1" +
                         "and o.teacher = t and t.department = d \n";
             if(toMonth==null||"".equals(toMonth)){
                 long year = 86400000;
                 long yeart = year*365;
-                long now = new Date().getTime();
-                toMonth = sdf.format(now);
+                Date nodate = new Date();
+                toMonth = sdf.format(nodate.getTime()+monthtime);
+                long now = sdf.parse(toMonth).getTime();
                 startMonth = sdf.format(now-yeart);
                 sql = sql + "and o.createdAt > '"+startMonth +"' and o.createdAt < '"+toMonth +"'";
             }else{
                 
             }
-            sql += "group by CONCAT(YEAR(o.createdAt),-MONTH(o.createdAt)),d";        
+            sql += "group by CONCAT(CONCAT(YEAR(o.createdAt),-MONTH(o.createdAt)),'-01'),d";        
             Query query = JPA.em().createQuery(sql);
             List l = query.getResultList();
-            Iterator i = l.iterator();
             List<Map> sResult = new ArrayList<Map>();
-            Date tempDate = sdf.parse(startMonth);
-            for(int j=0;j<months;j++){
-                Map map = new HashMap<String, Integer>();
-                long monthtime = 86400000*30;
-                long td = tempDate.getTime() + monthtime*j;
-                String year = sdf.format(td);
-                map.put("year", year);
-                map.put("con", 0);
-                for(Department department:departments){
-                    map.put("dept", department.name);
-                    while(i.hasNext()){
-                        Object[] obj = (Object[]) i.next();
+            
+            
+            for(Department department:departments){
+            	Map map = new HashMap<String, Object>();
+            	map.put("dept", department.name);
+            	List datalist = new ArrayList<HashMap>();
+            	Date tempDate = sdf.parse(startMonth);
+	            for(int j=0;j<months;j++){
+	                long td = j==0?tempDate.getTime():(tempDate.getTime() + monthtime);
+	                String year = sdf.format(td);
+	                Map datamap = new HashMap<String, Object>();
+	                datamap.put("year", year.substring(0, 7));
+	                datamap.put("con", 0);
+	                tempDate = sdf.parse(year);
+                    for(int i=0;i<l.size();i++){
+                        Object[] obj = (Object[]) l.get(i);
+                        String selectDate = (String) obj[0];
+                        selectDate = getTheFormatDate(selectDate);
                         String dept = ((Department)obj[2]).name;
-                        if(year.equals(obj[0])&&department.name.equals(dept)){
-                            map.put("con", obj[1]);
-                            map.put("dept", (dept));
+                        if(year.equals(selectDate)&&department.name.equals(dept)){
+                        	datamap.put("con", obj[1]);
                         }
                     }
-                }
-                
-                sResult.add(map);
-            }
+                    datalist.add(datamap);
+	            }
+	            map.put("data", datalist);
+	            sResult.add(map);
+        	}
             Gson gson = new Gson();
             renderArgs.put("sResult", gson.toJson(sResult));
             //renderArgs.put("departments", gson.toJson(departments));
@@ -225,5 +232,14 @@ public class Orders extends CRUD {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+    private static String getTheFormatDate(String date){
+    	String result = date;
+    	String dates[] = date.split("-");
+    	int month = Integer.parseInt(dates[1]);
+    	if(month<10){
+    		result = dates[0]+"-0"+dates[1]+"-"+dates[2];
+    	}
+    	return result;
     }
 }

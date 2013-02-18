@@ -1,14 +1,27 @@
 <script type="text/javascript">
      $(function(){
     	 var chart;
-    	 var chart1;
+    	 var columnchart;
     	 var source;
     	 var lineseries;
     	 var months;
     	    $(document).ready(function() {
     	    	source = eval($("#hiddenSticSource").val());
-    	    	alert($("#hiddenSticSource").val());
-    	    	months = $("#hiddenMonths").val(); 
+    	    	months = new Array();
+    	    	for(var i=0;i<source[0].data.length;i++){
+    	    		months.push(source[0].data[i].year);
+    	    	}
+    	    	lineseries = new Array();
+    	    	for(var i=0;i<source.length;i++){
+    	    		var inerdata = new Object();
+    	    		inerdata.name = source[i].dept;
+    	    		var inerlist = new Array();
+    	    		for(var j=0;j<source[i].data.length;j++){
+    	    			inerlist.push(source[i].data[j].con);
+    	    		}
+    	    		inerdata.data = inerlist;
+    	    		lineseries.push(inerdata);
+    	    	}
     	    	chart = new Highcharts.Chart({
     	            chart: {
     	                renderTo: 'lineChartDiv',
@@ -18,14 +31,14 @@
     	                text: '按月统计'
     	            },
     	            subtitle: {
-    	                text: '报名人数'
+    	                text: '按部门统计'
     	            },
     	            xAxis: {
-    	                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    	                categories: months
     	            },
     	            yAxis: {
     	                title: {
-    	                    text: '人'
+    	                    text: '报名人数（人）'
     	                }
     	            },
     	            tooltip: {
@@ -43,56 +56,61 @@
     	                    enableMouseTracking: false
     	                }
     	            },
-    	            series: [{
-    	                name: '大鹏',
-    	                data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-    	            }, {
-    	                name: '丽莎',
-    	                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-    	            }]
+    	            series: lineseries
     	        });
-    	        chart1 = new Highcharts.Chart({
-    	            chart: {
-    	                renderTo: 'lineChartDiv1',
-    	                type: 'line'
-    	            },
-    	            title: {
-    	                text: '按月统计'
-    	            },
-    	            subtitle: {
-    	                text: '报名人数'
-    	            },
-    	            xAxis: {
-    	                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    	            },
-    	            yAxis: {
-    	                title: {
-    	                    text: '人'
-    	                }
-    	            },
-    	            tooltip: {
-    	                enabled: true,
-    	                formatter: function() {
-    	                    return '<b>'+ this.series.name +'</b><br/>'+
-    	                        this.x +': '+ this.y +'人';
-    	                }
-    	            },
-    	            plotOptions: {
-    	                line: {
-    	                    dataLabels: {
-    	                        enabled: true
-    	                    },
-    	                    enableMouseTracking: false
-    	                }
-    	            },
-    	            series: [{
-    	                name: '大鹏',
-    	                data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-    	            }, {
-    	                name: '丽莎',
-    	                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-    	            }]
-    	        });
+    	    	 columnchart = new Highcharts.Chart({
+    	             chart: {
+    	                 renderTo: 'lineChartDiv1',
+    	                 type: 'column'
+    	             },
+    	             title: {
+    	                 text: '按月统计'
+    	             },
+    	             xAxis: {
+    	                 categories: months
+    	             },
+    	             yAxis: {
+    	                 min: 0,
+    	                 title: {
+    	                     text: '报名人数（人）'
+    	                 },
+    	                 stackLabels: {
+    	                     enabled: true,
+    	                     style: {
+    	                         fontWeight: 'bold',
+    	                         color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+    	                     }
+    	                 }
+    	             },
+    	             legend: {
+    	                 align: 'right',
+    	                 x: -100,
+    	                 verticalAlign: 'top',
+    	                 y: 20,
+    	                 floating: true,
+    	                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColorSolid) || 'white',
+    	                 borderColor: '#CCC',
+    	                 borderWidth: 1,
+    	                 shadow: false
+    	             },
+    	             tooltip: {
+    	                 formatter: function() {
+    	                     return '<b>'+ this.x +'</b><br/>'+
+    	                         this.series.name +': '+ this.y +'<br/>'+
+    	                         'Total: '+ this.point.stackTotal;
+    	                 }
+    	             },
+    	             plotOptions: {
+    	                 column: {
+    	                     stacking: 'normal',
+    	                     dataLabels: {
+    	                         enabled: true,
+    	                         color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+    	                     }
+    	                 }
+    	             },
+    	             series: lineseries
+    	         });
     	    });
      })
 </script>
@@ -128,6 +146,6 @@
 	<input id="hiddenSticSource" type="hidden" value="${sResult}">
 	<input id="hiddenDepartment" type="hidden" value="${departments}">
 	<input id="hiddenMonths" type="hidden" value="${months}">
-	<div id="lineChartDiv" style="height: 300px;width: 50%;float: left;"></div>
-	<div id="lineChartDiv1" style="height: 300px;width: 50%;float: left;"></div>
+	<div id="lineChartDiv" style="height: 300px;"></div>
+	<div id="lineChartDiv1" style="height: 300px;"></div>
 </div>

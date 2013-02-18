@@ -21,7 +21,7 @@ public class SimpleTest {
         int hour = (int) (x/i);
         System.out.println(hour/365);
     }
-    @Test
+    //@Test
     public void test1() throws ParseException {
         long i = 1l;
         int j = 1;
@@ -38,5 +38,32 @@ public class SimpleTest {
         System.out.println(sdf.parse("2012-02").getTime());
         System.out.print(sdf.format(d));
     }
-
+    @Test
+    public void test2() throws ParseException {
+    	String startMonth = null;
+        String toMonth = null;
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-01");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM");
+            long year1 = 86400000;
+            long yeart = year1*365;
+            toMonth = sdf.format(new Date());
+            
+            long now = sdf.parse(toMonth).getTime();
+            startMonth = sdf.format(now-yeart);
+            //System.out.println(startMonth);
+        Date tempDate = sdf.parse(startMonth);
+        long monthtime = 86400000*31l;
+        int months = 12;
+        for(int j=0;j<months;j++){
+        	  long dtime = monthtime*j;
+        	  //System.out.println(tempDate.getTime());
+        	  //System.out.println(monthtime);
+              long td = tempDate.getTime() + monthtime;
+              //System.out.println(td);
+              String year = sdf.format(td);
+              tempDate = sdf.parse(year);
+              System.out.println(td);
+              System.out.println(year);
+        }
+    }
 }
