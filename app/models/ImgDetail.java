@@ -10,6 +10,8 @@ public class ImgDetail extends BaseModel {
 
     public String basicImg;
     
+    public String state;
+    
     @OneToOne
     public Teacher teacher;
     

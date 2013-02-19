@@ -23,20 +23,22 @@ function selectPcollection(pcid){
 </script>
 <div class="page">
 	<div class="pageContent">
-		<form method="post" action="@{lessons.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
+		<form method="post" action="@{lessons.save}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
 			<div class="pageFormContent" layoutH="56" layoutW="56">
+			<input type="hidden" name="id" value="${lesson.id}">
+			<input type="hidden" name="rendertype" value="${type}">
 			<fieldset>
 				<legend>课程信息</legend>
 				<dl>
 					<dt>课程名：</dt>
-					<dd><input name="name" class="required" type="text" size="20"/></dd>
+					<dd><input name="name" class="required" type="text" size="20" value="${lesson.name}"/></dd>
 				</dl>
 				<dl>
 					<dt>教师：</dt>
 					<dd>
-						<input id="createLessonTeacherName" name="teachername" class="required" type="text" size="20" readonly/>
-						<input id="createLessonTeacherId" name="teacherid" class="" type="hidden"/>
-						<a href="@{Lessons.selectLessonTeacher('createLesson')}" target="dialog" height="350" width="450" class="btn btn-mini btn-primary" rel="lessonTeacerPage">查找</a>
+						<input id="createLessonTeacherName" name="teachername" class="required" type="text" size="20" value="${lesson.teacher.name}" readonly/>
+						<input id="createLessonTeacherId" name="teacherid" class="" type="hidden" value="${lesson.teacher.id}"/>
+						<a href="@{Lessons.selectLessonTeacher('editLesson')}" target="dialog" height="350" width="450" class="btn btn-mini btn-primary" rel="lessonTeacerPage">查找</a>
 					</dd>
 				</dl>
 				<dl>
@@ -45,7 +47,7 @@ function selectPcollection(pcid){
 						<select class="combox"  name="stimeType">
 						<option value="">--请选择--</option>
 						#{list items:timeTypes,as:'code'}
-						<option value="${code.codeValue}" >${code.codeValue}</option>
+						<option value="${code.codeValue}" #{if code.codeValue==lesson.lessonTimeType} selected #{/if}>${code.codeValue}</option>
 						#{/list}
 						</select>
 					</dd>
@@ -56,7 +58,7 @@ function selectPcollection(pcid){
 						<select class="combox"  name="type">
 						<option value="">--请选择--</option>
 						#{list items:types,as:'code'}
-						<option value="${code.codeValue}" >${code.codeValue}</option>
+						<option value="${code.codeValue}" #{if code.codeValue==lesson.lessonType} selected #{/if}>${code.codeValue}</option>
 						#{/list}
 						</select>
 					</dd>
@@ -67,15 +69,16 @@ function selectPcollection(pcid){
 						<select class="combox"  name="scollection" ref="pcollection" change="selectPcollection" param="pcid">
 						<option value="">--请选择--</option>
 						#{list items:collections,as:'collection'}
-						<option value="${collection.codeValue}"  #{if collection.codeValue==params.scollection} selected #{/if} >${collection.codeValue}</option>
+						<option value="${collection.codeValue}"  #{if collection.codeValue==lesson.collection} selected #{/if} >${collection.codeValue}</option>
 						#{/list}
-					</select>
+						</select>
 					</dd>
 				</dl>
 				<dl>
 					<dt>子系列：</dt>
 					<dd>
 						<select class="combox"  name="subcollection" id="pcollection">
+							<option value="${lesson.subCollection}" >${lesson.subCollection}</option>
 						</select>
 					</dd>
 				</dl>
@@ -85,7 +88,7 @@ function selectPcollection(pcid){
 						<select class="combox"  name="schoolid">
 						<option value="">--请选择--</option>
 						#{list items:schools,as:'school'}
-						<option value="${school.id}" >${school.name}</option>
+						<option value="${school.id}" #{if school.id==lesson.school.id} selected #{/if}>${school.name}</option>
 						#{/list}
 					</select>
 					</dd>
@@ -93,31 +96,31 @@ function selectPcollection(pcid){
 				<dl>
 					<dt>等级：</dt>
 					<dd>
-						<input name="level" class="" type="text" size="20"/>
+						<input name="level" class="" type="text" size="20" value="${lesson.level}"/>
 					</dd>
 				</dl>
 				<dl>
 					<dt>课次：</dt>
 					<dd>
-						<input name="times" class="required number" type="text" size=""/>
+						<input name="times" class="required number" type="text" size="" value="${lesson.times}"/>
 					</dd>
 				</dl>
 				<dl>
 					<dt>时长：</dt>
 					<dd>
-						<input name="duration" class="required" type="text" size=""/>
+						<input name="duration" class="required" type="text" size="" value="${lesson.duration}"/>
 					</dd>
 				</dl>
 				<dl>
 					<dt>价格：</dt>
 					<dd>
-						<input name="price" class="required number" type="text" size=""/>
+						<input name="price" class="required number" type="text" size="" value="${lesson.price}"/>
 					</dd>
 				</dl>
 				<dl>
 					<dt>开始时间：</dt>
 					<dd>
-						<input name="startDate" class="date" type="text" readonly="true"/>
+						<input name="startDate" class="date" type="text" readonly="true" value="${lesson?.startTime.format('yyyy-MM-dd')}"/>
 						<a class="inputDateButton" href="javascript:;">选择</a>
 						<span class="info">yyyy-MM-dd</span>
 					</dd>
@@ -125,14 +128,14 @@ function selectPcollection(pcid){
 				<dl>
 					<dt>结束时间：</dt>
 					<dd>
-						<input name="stopDate" class="date" type="text" readonly="true"/>
+						<input name="stopDate" class="date" type="text" readonly="true"  value="${lesson?.endTime.format('yyyy-MM-dd')}"/>
 						<a class="inputDateButton" href="javascript:;">选择</a>
 						<span class="info">yyyy-MM-dd</span>
 					</dd>
 				</dl>
 				<p>
 					<label>备注：</label>
-					<textarea name="description" rows="4" cols="70" style="z-index: 1000"></textarea>
+					<textarea name="description" rows="4" cols="70" style="z-index: 1000">${lesson.description}</textarea>
 				</p>
 				<dl></dl>
 				<dl></dl>

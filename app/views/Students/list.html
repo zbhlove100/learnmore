@@ -46,6 +46,11 @@
 				</a>
 			</li>
 			<li>
+				<a class="edit" href="@{Students.edit("\u007Bsid_user\u007D",'list')}" target="dialog" height="450" rel="editStudent" title="修改学生信息" >
+					<span>修改信息</span> 
+				</a>
+			</li>
+			<li>
 				<a class="delete" href="@{Students.deletes}" target="selectedTodo" postType="string" rel="ids"
 				title="确定要删除这些学员吗?">
 				<span>删除学员</span>
@@ -76,7 +81,7 @@
 					<td>${student.grade?:''}</td>
 					<td>${student.tel?:''}</td>
 					<td><a href="${student?.email?:''}">${student?.email?:''}</a></td>
-					<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(student.id)}" target="navTab" rel="studentDetail" title="${student.name}">Detail >>></a></td>
+					<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(student.id)}" target="navTab" rel="studentDetail${student.id}" title="${student.name}">Detail >>></a></td>
 				</tr>
 				#{/list} 
 			</tbody>

@@ -36,11 +36,13 @@ public class Lesson extends Model{
 	
 	public int times;
 	
+	public String duration;
+	
 	public Date startTime;
 	
 	public Date endTime;
 	
-	public String discription;
+	public String description;
 	
 	public int price;
 	

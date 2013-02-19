@@ -75,7 +75,7 @@ public class Lessons extends CRUD {
         render();
     }
     
-    public static void selectLessonTeacher(){
+    public static void selectLessonTeacher(String relid){
         int pageNum = Integer.parseInt(params.get("pageNum")==null?"1":params.get("pageNum"));
         int numPerPage = getPageSize();
         
@@ -85,6 +85,7 @@ public class Lessons extends CRUD {
         renderArgs.put("numPerPage", numPerPage);
         renderArgs.put("totalCount", totalCount);
         renderArgs.put("objects", teachers);
+        renderArgs.put("relid", relid);
         render();
     }
     
@@ -96,11 +97,12 @@ public class Lessons extends CRUD {
             lesson.name = params.get("name");
             lesson.collection = params.get("scollection");
             lesson.subCollection = params.get("subcollection");
-            lesson.discription = params.get("discription");
+            lesson.description = params.get("description");
             lesson.startTime = sdf.parse(params.get("startDate"));
             lesson.endTime = sdf.parse(params.get("stopDate"));
             lesson.lessonTimeType = params.get("stimeType");
             lesson.lessonType = params.get("type");
+            lesson.duration = params.get("duration");
             lesson.level = params.get("level");
             lesson.price = params.get("price",Integer.class);
             lesson.times = params.get("times",Integer.class);
@@ -110,12 +112,13 @@ public class Lessons extends CRUD {
             lesson.state = BaseModel.ACTIVE;
             lesson.school = school;
             lesson.save();
+            renderJSON(forwardJsonCloseDailog("lessonsList", "/lessons/list", "创建成功！"));
         } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
-        renderJSON(forwardJsonCloseDailog("lessonsList", "/lessons/list", "创建成功！"));
+        
     }
     
     public static void createLessonTable(long id){
@@ -201,6 +204,59 @@ public class Lessons extends CRUD {
             e.printStackTrace();
         }
         render();
+    }
+    
+    public static void edit(long id,String type){
+        Lesson lesson = Lesson.findById(id);
+        List<Code> collections = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"collection").fetch();
+        List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
+        List<Code> types = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_type").fetch();
+        List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
+        renderArgs.put("schools", schools);
+        renderArgs.put("collections", collections);
+        renderArgs.put("types", types);
+        renderArgs.put("timeTypes", timeTypes);
+        renderArgs.put("lesson", lesson);
+        renderArgs.put("type", type);
+        render();
+    }
+    
+    public static void save(){
+        long id = params.get("id",Long.class);
+        String type = params.get("rendertype");
+        Lesson lesson = Lesson.findById(id);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        School school = School.findById(params.get("schoolid",Long.class));
+        try {
+            lesson.name = params.get("name");
+            lesson.collection = params.get("scollection");
+            lesson.subCollection = params.get("subcollection");
+            lesson.description = params.get("description");
+            lesson.startTime = sdf.parse(params.get("startDate"));
+            lesson.endTime = sdf.parse(params.get("stopDate"));
+            lesson.lessonTimeType = params.get("stimeType");
+            lesson.lessonType = params.get("type");
+            lesson.level = params.get("level");
+            lesson.price = params.get("price",Integer.class);
+            lesson.times = params.get("times",Integer.class);
+            lesson.duration = params.get("duration");
+            Teacher teacher = Teacher.findById(params.get("teacherid",Long.class));
+            lesson.teacher = teacher;
+            lesson.studentNum = 0;
+            lesson.state = BaseModel.ACTIVE;
+            lesson.school = school;
+            lesson.save();
+            if(type.equals("detail")){
+                renderJSON(forwardJsonCloseDailog("lessonDetail"+id, "/lessons/detail/"+id, "修改成功！"));
+            }else if(type.equals("list")){
+                renderJSON(forwardJsonCloseDailog("studentList", "/lessons/list", "修改成功！"));
+            }
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
     }
     private static List<List> getLessonTable(long id) throws ParseException{
         List<List> lessonTables = new ArrayList<List>();

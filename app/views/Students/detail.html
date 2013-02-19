@@ -1,14 +1,14 @@
-<h2 class="contentTitle">${student.name}</h2>
+<h2 class="contentTitle">${student.name}  <a href="@{Students.edit(student.id,'detail')}" height="450" target="dialog" rel="editStudent" title="修改学生信息" class="btn btn-warning" style="float: right;">修改</a></h2>
 
 	
 <div class="pageContent sortDrag" selector="h1" layoutH="60">
-	<div class="panel" defh="215">
+	<div class="panel" defh="225">
 	<h1>详细信息</h1>
 		<div>
 			<table class="thistable" style="width: 100%;margin-top: 10px;">
 				<tbody>
 					<tr>
-						<td rowspan="3" style="width: 300px;"><img height="200" src="@{'public/images/'}${student.imgDetail?.basicImg}"/></td>
+						<td rowspan="5" style="width: 300px;"><img height="200" src="@{'public/images/student'}/${student.imgDetail?.basicImg}"/></td>
 						<th>
 							姓名
 						</th>
@@ -24,7 +24,7 @@
 					</tr>
 					<tr>
 						<th>
-							age
+							年龄
 						</th>
 						<td>
 							${student.age?:''}
@@ -34,6 +34,34 @@
 						</th>
 						<td>
 							${student.birthday?:''}
+						</td>
+					</tr>
+					<tr>
+						<th>
+							电话
+						</th>
+						<td>
+							${student.tel?:''}
+						</td>
+						<th>
+							年级
+						</th>
+						<td>
+							${student.grade?:''}
+						</td>
+					</tr>
+					<tr>
+						<th>
+							地址
+						</th>
+						<td>
+							${student.location?:''}
+						</td>
+						<th>
+							Email
+						</th>
+						<td>
+							${student.email?:''}
 						</td>
 					</tr>
 					<tr>
@@ -83,7 +111,7 @@
 							${order.lesson.lessonType}
 						</td>
 						<td >
-							${order.lesson.startTime.format('yyyy-MM-dd')} ~ ${order.lesson.endTime.format('yyyy-MM-dd')}
+							${order.lesson.startTime} ~ ${order.lesson.endTime}
 						</td>
 						<td >
 							${order.lesson.status}

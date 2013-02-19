@@ -10,7 +10,10 @@ function setTeacherToParent(){
 	name = $("#tlistid"+id).find("div").html();
 	$("#createLessonTeacherId").val(id);
 	$("#createLessonTeacherName").val(name);
-	var dialog = $("body").data("createLesson");
+	var type = $("#selectLessonTeacherType",$.pdialog.getCurrent()).val()
+	
+	var	dialog = $("body").data(type);
+	
 	$.pdialog.closeCurrent();
 	$.pdialog.switchDialog(dialog);
 }
@@ -24,6 +27,7 @@ function setTeacherToParent(){
 	<div class="pageHeader">
 		<form rel="pagerForm" onSubmit="return dialogSearch(this);"
 		action="@{lessons.selectLessonTeacher}" method="post">
+		<input type="hidden" id="selectLessonTeacherType" value="${relid}">
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>

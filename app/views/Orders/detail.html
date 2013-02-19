@@ -1,0 +1,152 @@
+<script type="text/javascript">
+
+</script>
+<h2 class="contentTitle">${order.name}</h2>
+
+	
+<div class="pageContent sortDrag" selector="h1" layoutH="60">
+	<a href="@{Orders.printPage(order.id)}" class="btn btn-success" target="dialog" rel="printPage" title="打印单据" style="float: right;">打印单据</a>
+	<div class="panel"  defH="150">
+		<h1>缴费信息</h1>
+		<div>
+			<table class="thistable" style="width: 100%;margin-top: 10px;">
+				<tr>
+					<th>订单名 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${order.name}</td>
+				</tr>
+				<tr>
+					<th>实收金额 :</th>
+					<td style="color: red;">${order.money}</td>
+				</tr>
+				<tr>
+					<th>下单时间 :</th>
+					<td>${order.createdAt}</td>
+				</tr>
+				<tr>
+					<th>备注 :</th>
+					<td>${order.description}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="panel collapse"  defH="150">
+		<h1>课程基本信息</h1>
+		<div>
+			<table class="thistable" style="width: 100%;margin-top: 10px;">
+				<tr>
+					<th>教师 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.teacher?.name}</td>
+					<th>课次 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.times}</td>
+					<th>时长 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.duration}</td>
+				</tr>
+				<tr>
+					<th>类别 :</th>
+					<td>${lesson?.lessonType}</td>
+					<th>时间类别 :</th>
+					<td>${lesson?.lessonTimeType}</td>
+					<th>价格 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.price}元</td>
+				</tr>
+				<tr>
+					<th>课程系列 :</th>
+					<td>${lesson?.collection}</td>
+					<th>子系列 :</th>
+					<td>${lesson?.subCollection}</td>
+					<th>级别 :</th>
+					<td>${lesson?.level}</td>
+				</tr>
+				<tr>
+					<th>开课时间 :</th>
+					<td>${lesson?.startTime.format('yyyy-MM-dd')}</td>
+					<th>结课时间 :</th>
+					<td>${lesson?.endTime.format('yyyy-MM-dd')}</td>
+					<th>报名人数 :</th>
+					<td><strong>${lesson?.orders?.size()}</strong></td>
+				</tr>
+				<tr>
+					<th>地点 ：</th>
+					<td>${lesson?.school.name}</td>
+					<th>备注 ：</th>
+					<td colspan="3">${lesson?.description}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="panel collapse" defh="225">
+	<h1>学员信息</h1>
+		<div>
+			<table class="thistable" style="width: 100%;margin-top: 10px;">
+				<tbody>
+					<tr>
+						<td rowspan="5" style="width: 300px;"><img height="200" src="@{'public/images/student'}/${student.imgDetail?.basicImg}"/></td>
+						<th>
+							姓名
+						</th>
+						<td style="border-top: 1px solid #C1DAD7; ">
+							${student.name?:''}
+						</td>
+						<th>
+							性别
+						</th>
+						<td style="border-top: 1px solid #C1DAD7; ">
+							${student.sex?:''}
+						</td>
+					</tr>
+					<tr>
+						<th>
+							年龄
+						</th>
+						<td>
+							${student.age?:''}
+						</td>
+						<th>
+							生日
+						</th>
+						<td>
+							${student.birthday?:''}
+						</td>
+					</tr>
+					<tr>
+						<th>
+							电话
+						</th>
+						<td>
+							${student.tel?:''}
+						</td>
+						<th>
+							年级
+						</th>
+						<td>
+							${student.grade?:''}
+						</td>
+					</tr>
+					<tr>
+						<th>
+							地址
+						</th>
+						<td>
+							${student.location?:''}
+						</td>
+						<th>
+							Email
+						</th>
+						<td>
+							${student.email?:''}
+						</td>
+					</tr>
+					<tr>
+						<th>
+							备注
+						</th>
+						<td rowspan="3" colspan="3" style="font-size: 13px; ">
+							${student.description?:''}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+</div>
