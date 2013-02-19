@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 import org.junit.Test;
 
@@ -21,7 +22,7 @@ public class SimpleTest {
         int hour = (int) (x/i);
         System.out.println(hour/365);
     }
-    @Test
+    //@Test
     public void test1() throws ParseException {
         long i = 1l;
         int j = 1;
@@ -37,6 +38,10 @@ public class SimpleTest {
         System.out.println(d-yeart);
         System.out.println(sdf.parse("2012-02").getTime());
         System.out.print(sdf.format(d));
+    }
+    @Test
+    public void test2(){
+        System.out.println(UUID.randomUUID().toString());
     }
 
 }

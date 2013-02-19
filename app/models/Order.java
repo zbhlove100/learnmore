@@ -17,6 +17,8 @@ public class Order extends BaseModel {
     
     public String state;
     
+    public String identifyNo;
+    
     public Date createdAt;
     
     public Date modifyAt;

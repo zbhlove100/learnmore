@@ -201,12 +201,13 @@ CREATE TABLE `img_detail` (
   `basic_img` varchar(5000) DEFAULT NULL,
   `teacher_id` bigint(20) DEFAULT NULL,
   `student_id` bigint(20) DEFAULT NULL,
+  `state` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_img_detail_teacher1` (`teacher_id`),
   KEY `fk_img_detail_student1` (`student_id`),
   CONSTRAINT `fk_img_detail_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_img_detail_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,7 +216,7 @@ CREATE TABLE `img_detail` (
 
 LOCK TABLES `img_detail` WRITE;
 /*!40000 ALTER TABLE `img_detail` DISABLE KEYS */;
-INSERT INTO `img_detail` VALUES (1,'/teacher/hong_miaomiao.jpg',3,NULL),(5,'/student/article-2137915-12D540C0000005DC-161_306x397-231x300.jpg',NULL,12),(6,'/teacher/400_F_24118840_qLIbz64G6fcBd74iiDd59VOe1aW9ZfuG.jpg',11,NULL);
+INSERT INTO `img_detail` VALUES (1,'/teacher/hong_miaomiao.jpg',3,NULL,'Active'),(5,'article-2137915-12D540C0000005DC-161_306x397-231x300.jpg',NULL,12,'Active'),(6,'/teacher/400_F_24118840_qLIbz64G6fcBd74iiDd59VOe1aW9ZfuG.jpg',11,NULL,'Active'),(8,'b0029488_892359.jpg',NULL,3,'Active');
 /*!40000 ALTER TABLE `img_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -301,7 +302,7 @@ CREATE TABLE `lesson` (
   `times` int(11) DEFAULT NULL,
   `start_time` timestamp NULL DEFAULT NULL,
   `end_time` timestamp NULL DEFAULT NULL,
-  `discription` varchar(5000) DEFAULT NULL,
+  `description` varchar(5000) DEFAULT NULL,
   `student_num` int(11) DEFAULT NULL,
   `status` varchar(45) DEFAULT NULL,
   `school_id` bigint(20) NOT NULL,
@@ -309,6 +310,7 @@ CREATE TABLE `lesson` (
   `lesson_system_id` bigint(20) DEFAULT NULL,
   `book_id` bigint(20) DEFAULT NULL,
   `price` int(11) DEFAULT NULL,
+  `duration` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_lesson_school1` (`school_id`),
   KEY `fk_lesson_teacher1` (`teacher_id`),
@@ -327,7 +329,7 @@ CREATE TABLE `lesson` (
 
 LOCK TABLES `lesson` WRITE;
 /*!40000 ALTER TABLE `lesson` DISABLE KEYS */;
-INSERT INTO `lesson` VALUES (1,'新思维课程1','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,1,1569),(2,'新思维课程2','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-04 16:00:00','2012-04-04 16:00:00',NULL,0,NULL,1,3,NULL,1,1569),(3,'新思维课程3','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-31 16:00:00','2012-04-30 16:00:00',NULL,0,NULL,1,3,NULL,1,1569),(4,'新思维课程4','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-04-04 16:00:00','2012-05-04 16:00:00',NULL,0,NULL,1,3,NULL,2,1569),(5,'新思维课程5','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569),(6,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569),(7,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569),(8,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569),(9,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569),(10,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,3,1569),(11,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,3,1569),(12,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,1,1569),(13,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569),(14,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,NULL,1569),(15,'les1','寒假班','英语','少儿系列','自然拼音','3j','Active',10,'2013-02-09 16:00:00','2013-02-28 16:00:00',NULL,0,NULL,1,3,NULL,NULL,1500);
+INSERT INTO `lesson` VALUES (1,'新思维课程1','寒假班','英语','少儿系列','快乐思维','初A','Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00','阿斯搜索搜索搜索搜索搜索搜索搜索ssss',0,NULL,1,4,NULL,1,1569,'3小时'),(2,'新思维课程2','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-04 16:00:00','2012-04-04 16:00:00',NULL,0,NULL,1,3,NULL,1,1569,NULL),(3,'新思维课程3','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-03-31 16:00:00','2012-04-30 16:00:00',NULL,0,NULL,1,3,NULL,1,1569,NULL),(4,'新思维课程4','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-04-04 16:00:00','2012-05-04 16:00:00',NULL,0,NULL,1,3,NULL,2,1569,NULL),(5,'新思维课程5','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569,NULL),(6,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569,NULL),(7,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569,NULL),(8,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569,NULL),(9,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569,NULL),(10,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,3,1569,NULL),(11,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,3,1569,NULL),(12,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,1,1569,NULL),(13,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,2,1569,NULL),(14,'我打卡洛斯讲道理看我','寒假班','英语','少儿系列','快乐思维',NULL,'Active',15,'2012-02-29 16:00:00','2012-02-29 16:00:00',NULL,0,NULL,1,3,NULL,NULL,1569,NULL),(15,'les1','寒假班','英语','少儿系列','自然拼音','3j','Active',10,'2013-02-09 16:00:00','2013-02-28 16:00:00',NULL,0,NULL,1,3,NULL,NULL,1500,NULL);
 /*!40000 ALTER TABLE `lesson` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -435,15 +437,16 @@ CREATE TABLE `order_message` (
   `removed_at` varchar(45) DEFAULT NULL,
   `user_id` bigint(20) DEFAULT NULL,
   `modify_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `identify_no` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_order_student1` (`student_id`),
   KEY `fk_order_teacher1` (`teacher_id`),
   KEY `fk_order_lesson1` (`lesson_id`),
   KEY `fk_order_message_user1` (`user_id`),
-  CONSTRAINT `fk_order_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_order_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_order_lesson1` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_order_message_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_order_message_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -453,7 +456,7 @@ CREATE TABLE `order_message` (
 
 LOCK TABLES `order_message` WRITE;
 /*!40000 ALTER TABLE `order_message` DISABLE KEYS */;
-INSERT INTO `order_message` VALUES (1,3,3,1,NULL,'2013-01-17 03:37:38','test',500,'Delete',NULL,NULL,'2013-02-17 07:04:13'),(2,4,3,1,NULL,'2013-02-17 03:37:38','test',500,'Delete',NULL,NULL,'2013-02-17 03:39:41'),(3,6,3,1,NULL,'2012-02-17 03:37:38','我就多收他的钱，怎么滴',700,'Delete',NULL,NULL,'2013-02-17 07:04:13'),(4,3,3,2,NULL,'2012-06-17 03:37:38','',34,'Active',NULL,NULL,'2013-02-17 07:04:13'),(5,6,3,2,NULL,'2012-07-17 03:37:38','',1111,'Active',NULL,NULL,'2013-02-17 07:04:13'),(6,4,3,2,NULL,'2013-02-17 03:37:38','',1111,'Active',NULL,NULL,'2013-02-17 03:39:41'),(7,2,3,2,NULL,'2013-02-17 03:37:38','',22,'Active',NULL,NULL,'2013-02-17 03:39:41'),(8,4,3,3,NULL,'2013-02-17 03:37:38','',21,'Active',NULL,NULL,'2013-02-17 03:39:41'),(9,6,3,3,NULL,'2013-02-17 03:37:38','',324,'Active',NULL,NULL,'2013-02-17 03:39:41'),(10,2,3,3,NULL,'2013-02-17 03:37:38','',200,'Active',NULL,NULL,'2013-02-17 03:39:41'),(11,4,3,1,NULL,'2013-02-17 03:37:38','',250,'Active',NULL,NULL,'2013-02-17 03:39:41'),(12,8,3,1,NULL,'2013-02-17 03:37:38','',2134,'Active',NULL,NULL,'2013-02-17 03:39:41'),(13,12,3,15,NULL,'2013-02-17 03:37:38','',1300,'Active',NULL,NULL,'2013-02-17 03:39:41'),(14,6,3,4,NULL,'2013-02-17 03:37:38','',1244,'Active',NULL,NULL,NULL);
+INSERT INTO `order_message` VALUES (1,3,3,1,NULL,'2013-01-17 03:37:38','test',500,'Delete',NULL,NULL,'2013-02-17 07:04:13',NULL),(2,4,3,1,NULL,'2013-02-17 03:37:38','test',500,'Delete',NULL,NULL,'2013-02-17 03:39:41',NULL),(3,6,3,1,NULL,'2012-02-17 03:37:38','我就多收他的钱，怎么滴',700,'Delete',NULL,NULL,'2013-02-17 07:04:13',NULL),(4,3,3,2,NULL,'2012-06-17 03:37:38','',34,'Active',NULL,NULL,'2013-02-17 07:04:13',NULL),(5,6,3,2,NULL,'2012-07-17 03:37:38','',1111,'Active',NULL,NULL,'2013-02-17 07:04:13',NULL),(6,4,3,2,NULL,'2013-02-17 03:37:38','',1111,'Active',NULL,NULL,'2013-02-17 03:39:41',NULL),(7,2,3,2,NULL,'2013-02-17 03:37:38','',22,'Active',NULL,NULL,'2013-02-17 03:39:41',NULL),(8,4,3,3,NULL,'2013-02-17 03:37:38','',21,'Active',NULL,NULL,'2013-02-17 03:39:41',NULL),(9,6,3,3,NULL,'2013-02-17 03:37:38','',324,'Active',NULL,NULL,'2013-02-17 03:39:41',NULL),(10,2,3,3,NULL,'2013-02-17 03:37:38','',200,'Active',NULL,NULL,'2013-02-17 03:39:41',NULL),(11,4,3,1,NULL,'2013-02-17 03:37:38','',250,'Active',NULL,NULL,'2013-02-17 03:39:41',NULL),(12,8,3,1,NULL,'2013-02-17 03:37:38','',2134,'Active',NULL,NULL,'2013-02-17 03:39:41',NULL),(13,12,3,15,NULL,'2013-02-17 03:37:38','',1300,'Active',NULL,NULL,'2013-02-17 03:39:41',NULL),(14,6,3,4,NULL,'2013-02-17 03:37:38','',1244,'Active',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `order_message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -568,7 +571,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (2,'张','@126.com',11,'TYUIOPKJJ','Active','2013-01-31 08:43:37',NULL,'年级','13610101010','1999-11-11',NULL,NULL),(3,'张2','2@126.com',13,'TYUIOPKJJ','Active','2013-01-31 08:43:37',NULL,'2年级','13610101010','1998-06-06',NULL,NULL),(4,'张3','3@126.com',14,'TYUIOPKJJ','Active','2013-01-31 08:43:37',NULL,'3年级','13610101010','1992-09-16',NULL,NULL),(5,'张4','4@126.com',15,'TYUIOPKJJ','Active','2013-01-31 08:43:37',NULL,'4年级','13610101010','1988-05-05',NULL,NULL),(6,'张5','5@126.com',16,'TYUIOPKJJ','Active','2013-01-31 08:43:37',NULL,'5年级','13610101010','1983-01-18',NULL,NULL),(7,'王1',NULL,15,NULL,'Delete','2013-01-31 08:48:34','2013-02-01 01:53:31',NULL,'18615555555','1998-01-07',NULL,NULL),(8,'李里',NULL,18,NULL,'Delete','2013-01-31 08:48:34',NULL,NULL,'15815444444','1995-01-18',NULL,NULL),(12,'赵一一','',15,'阿斯顿呜呜呜','Active','2013-02-01 03:00:44',NULL,'','15122222222','1997-02-11','撒啊啊啊啊啊啊啊啊啊啊啊啊啊','女');
+INSERT INTO `student` VALUES (2,'张r','22@126.com',13,'TYUIOPKJJ','Active','2013-02-19 02:41:31',NULL,'年级','13610101010','1999-11-11','','女'),(3,'张2','333@126.com',14,'xxxxxxxxxxxxxxx','Active','2013-02-19 02:41:31',NULL,'3年级','13610101010','1998-06-06','','女'),(4,'张3','3@126.com',14,'TYUIOPKJJ','Active','2013-02-19 02:41:31',NULL,'3年级','13610101010','1992-09-16',NULL,'女'),(5,'张4','4@126.com',15,'TYUIOPKJJ','Active','2013-02-19 02:41:31',NULL,'4年级','13610101010','1988-05-05',NULL,'女'),(6,'张5','5@126.com',16,'TYUIOPKJJ','Active','2013-02-19 02:41:31',NULL,'5年级','13610101010','1983-01-18',NULL,'女'),(7,'王1',NULL,15,NULL,'Delete','2013-02-19 02:41:31','2013-02-01 01:53:31',NULL,'18615555555','1998-01-07',NULL,'女'),(8,'李里',NULL,18,NULL,'Delete','2013-02-19 02:41:31',NULL,NULL,'15815444444','1995-01-18',NULL,'女'),(12,'赵一一','',15,'阿斯顿呜呜呜','Active','2013-02-01 03:00:44',NULL,'','15122222222','1997-02-11','撒啊啊啊啊啊啊啊啊啊啊啊啊啊','女');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -780,4 +783,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-17 18:16:59
+-- Dump completed on 2013-02-19 18:23:43

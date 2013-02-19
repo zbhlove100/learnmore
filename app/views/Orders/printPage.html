@@ -1,0 +1,50 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="@{Students.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
+			<div class="pageFormContent" layoutH="56" layoutW="56">
+				<div id="printDiv">
+					<p><strong>乐盟听课证</strong></p>
+					<table class="thistable" style="width: 100%;margin-top: 10px;">
+						<tr>
+							<th>学生姓名 :</th>
+							<td style="border-top: 1px solid #C1DAD7; ">${order.student.name}</td>
+						</tr>
+						<tr>
+							<th>课程 :</th>
+							<td>${order.lesson.name}</td>
+						</tr>
+						<tr>
+							<th>总课次 :</th>
+							<td>${order.lesson.times}</td>
+						</tr>
+						<tr>
+							<th>报名地点 :</th>
+							<td>${order.lesson.school.name}</td>
+						</tr>
+						
+						<tr>
+							<th>收费方式 :</th>
+							<td>现金</td>
+						</tr>
+						<tr>
+							<th>收费金额 :</th>
+							<td style="color: red;">${order.money}</td>
+						</tr>
+						<tr>
+							<th>报名时间 :</th>
+							<td>${order.createdAt.format("yyyy-MM-dd hh:mm")}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="javaScript:$.printBox('printDiv')">Save</button></div></div></li>
+					<li>
+						<div class="button"><div class="buttonContent"><button type="Button" class="close">Cancel</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

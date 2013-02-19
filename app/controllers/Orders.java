@@ -9,22 +9,26 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.google.gson.Gson;
+import com.ning.http.util.Base64;
 
 import play.db.jpa.JPA;
 import utils.MyDateUtils;
 
 import models.BaseModel;
+import models.CurrentUser;
 import models.Department;
 import models.Lesson;
 import models.Order;
 import models.Student;
 import models.Teacher;
 import models.Teacher.EM_TYPE;
+import models.User;
 import models.Where;
 
 public class Orders extends CRUD {
@@ -87,13 +91,16 @@ public class Orders extends CRUD {
                 for(String studentid : ids){
                     Student student = Student.findById(Long.parseLong(studentid));
                     Order order = new Order();
+                    order.name = student.name +"-"+ lesson.name;
                     order.money = money;
                     order.description = description;
                     order.lesson = lesson;
                     order.student = student;
                     order.teacher = lesson.teacher;
                     order.state = BaseModel.ACTIVE;
+                    order.user = User.findById(CurrentUser.current().id);
                     order.createdAt = new Date(java.lang.System.currentTimeMillis());
+                    order.identifyNo = UUID.randomUUID().toString();
                     order.save();
                 }
                 
@@ -127,13 +134,16 @@ public class Orders extends CRUD {
             em.getTransaction().commit();
             em.getTransaction().begin();
             Order order = new Order();
+            order.name = student.name +"-"+ lesson.name;
             order.money = money;
             order.description = description;
             order.lesson = lesson;
             order.student = student;
             order.teacher = lesson.teacher;
             order.state = BaseModel.ACTIVE;
+            order.user = User.findById(CurrentUser.current().id);
             order.createdAt = new Date(java.lang.System.currentTimeMillis());
+            order.identifyNo = UUID.randomUUID().toString();
             order.save();
             renderJSON(forwardJsonCloseDailog("lessonDetail"+id,"/lessons/detail/"+id,"添加报名信息成功！"));
         } catch (Exception e) {
@@ -148,11 +158,21 @@ public class Orders extends CRUD {
             order.state = BaseModel.DELETE;
             order.save();
         }
-        //renderJSON(forwardJson("lessonDetail"+id,"/lessons/detail/"+id,"添加报名信息成功！"));
+        renderJSON(forwardJson("ordersList", "/orders/list", "删除成功！"));
     }
     
     public static void detail(long id){
-        
+        Order order = Order.findById(id);
+        renderArgs.put("order", order);
+        renderArgs.put("lesson", order.lesson);
+        renderArgs.put("student", order.student);
+        render();
+    }
+    
+    public static void printPage(long id){
+        Order order = Order.findById(id);
+        renderArgs.put("order", order);
+        render();
     }
     
     public static void deletesInLesson(){

@@ -104,7 +104,7 @@ public class Students extends CRUD {
             em.getTransaction().commit();
             em.getTransaction().begin();
             ImgDetail imgDetail = new ImgDetail();
-            imgDetail.basicImg = "/student/"+uploadFileName;
+            imgDetail.basicImg = uploadFileName;
             imgDetail.student = student;
             imgDetail.save();
             
@@ -138,13 +138,106 @@ public class Students extends CRUD {
         
     }
     
+    public static void edit(long id,String type){
+        Student student = Student.findById(id);
+        renderArgs.put("type", type);
+        renderArgs.put("student", student);
+        render();
+    }
+    
+    public static void save(){
+        long id = params.get("id",Long.class);
+        String type = params.get("type");
+        Student student = Student.findById(id);
+        try {
+            
+            File picture = params.get("picture",File.class);
+            String studentname = params.get("studentname");
+            String studentbirthday = params.get("studentbirthday");
+            String studenttel = params.get("studenttel");
+            String studentemail = params.get("studentemail");
+            String address = params.get("address");
+            String grade = params.get("grade");
+            String description = params.get("description");
+            String sex = params.get("sex");
+            
+            MyDateUtils mdu = new MyDateUtils();
+            student.name = studentname;
+            student.birthday =studentbirthday;
+            student.tel = studenttel;
+            student.email = studentemail;
+            student.location = address;
+            student.grade = grade;
+            student.sex = sex;
+            student.age = mdu.getAgeForBirthday(studentbirthday, "yyyy-MM-dd");
+            student.description = description;
+            student.state = BaseModel.ACTIVE;
+            student.save();
+            
+            if(picture !=null&&picture.length()!=0){
+                ImgDetail imgDetail = ImgDetail.find("student = ? and state !=?", student,BaseModel.DELETE).first();
+                String uploadFileName = picture.getName();
+                String uploadpath = Setting.value("uploadpath", "/public/images/student/");
+                if(imgDetail != null){
+                    File file = new File(Play.applicationPath.getPath()+uploadpath+imgDetail.basicImg);
+                    file.delete();
+                }else{
+                    imgDetail = new ImgDetail();
+                    imgDetail.student = student;
+                    imgDetail.state = BaseModel.ACTIVE;
+                }
+                
+                
+                File file = new File(Play.applicationPath.getPath()+uploadpath+uploadFileName);
+                
+                FileInputStream is = null;
+                FileOutputStream os = null;
+                try {
+                    is = new FileInputStream(picture);
+                    os = new FileOutputStream(file);
+                    int read;
+                    byte[] buffer = new byte[1024*1024*8];
+                    while ((read = is.read(buffer)) > 0) {
+                        os.write(buffer, 0, read);
+                        os.flush();
+                    }
+                    
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    try {
+                        is.close();
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        os.close();
+                    } catch (Exception ignored) {
+                    }
+                }
+                imgDetail.basicImg = uploadFileName;
+                imgDetail.save();
+            }
+            if(type.equals("detail")){
+                renderJSON(forwardJsonCloseDailog("studentDetail"+id, "/students/detail/"+id, "修改成功！"));
+            }else if(type.equals("list")){
+                renderJSON(forwardJsonCloseDailog("studentList", "/students/list", "修改成功！"));
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+    }
+            
     public static void deletes(String ids){
         String where = String.format("id in (%s)", ids);
         List<Student> students = Student.find(where).fetch();
         for(Student s : students){
             s.state = BaseModel.DELETE;
             s.save();
+            ImgDetail imgDetail = ImgDetail.find("student = ? and state !=?", s,BaseModel.DELETE).first();
+            imgDetail.state = BaseModel.DELETE;
+            imgDetail.save();
         }
-        renderJSON(forwardJson("studentList", "/sutdents/list", "删除成功！"));
+        renderJSON(forwardJson("studentList", "/students/list", "删除成功！"));
     }
 }

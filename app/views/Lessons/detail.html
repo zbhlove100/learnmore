@@ -1,4 +1,4 @@
-<<script type="text/javascript">
+<script type="text/javascript">
 <!--
 
 //-->
@@ -21,7 +21,7 @@ function deleteOrders(){
 	
 }
 </script>
-<h2 class="contentTitle">${lesson.name}</h2>
+<h2 class="contentTitle">${lesson.name} <a href="@{Lessons.edit(lesson.id,'detail')}" target="dialog" height="600" title="修改课程信息" rel="editLesson" class="btn btn-warning" style="float: right">修改</a></h2>
 
 	
 <div class="pageContent sortDrag" selector="h1" layoutH="60">
@@ -35,14 +35,22 @@ function deleteOrders(){
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.teacher?.name}</td>
 					<th>课次 :</th>
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.times}</td>
+					<th>时长 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.duration}</td>
+				</tr>
+				<tr>
+					<th>类别 :</th>
+					<td>${lesson?.lessonType}</td>
+					<th>时间类别 :</th>
+					<td>${lesson?.lessonTimeType}</td>
 					<th>价格 :</th>
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.price}元</td>
 				</tr>
 				<tr>
-					<th>时间类别 :</th>
-					<td>${lesson?.lessonTimeType}</td>
-					<th>类别 :</th>
-					<td>${lesson?.lessonType}</td>
+					<th>课程系列 :</th>
+					<td>${lesson?.collection}</td>
+					<th>子系列 :</th>
+					<td>${lesson?.subCollection}</td>
 					<th>级别 :</th>
 					<td>${lesson?.level}</td>
 				</tr>
@@ -56,8 +64,9 @@ function deleteOrders(){
 				</tr>
 				<tr>
 					<th>地点 ：</th>
-					<td colspan="3">${lesson?.school.name}</td>
-					<td colspan="2" style="border-top: 1px solid #C1DAD7; "><button class="btn btn-block btn-warning">修改</button></td>
+					<td>${lesson?.school.name}</td>
+					<th>备注 ：</th>
+					<td colspan="3">${lesson?.description}</td>
 				</tr>
 			</table>
 		</div>
