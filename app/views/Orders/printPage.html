@@ -4,42 +4,55 @@
 			<div class="pageFormContent" layoutH="56" layoutW="56">
 				<div id="printDiv">
 					<p><strong>乐盟听课证</strong></p>
-					<table class="thistable" style="width: 100%;margin-top: 10px;">
+					<table class="thistable" style="width: 95%;margin-top: 10px;">
 						<tr>
-							<th>学生姓名 :</th>
-							<td style="border-top: 1px solid #C1DAD7; ">${order.student.name}</td>
+							<td colspan="4" rowspan="2" style="text-align: center;"><b>${order.identifyNo}</b></td>
+							<th>姓名 :</th>
+							<td>${order.student.name}</td>
+							<th>性别 :</th>
+							<td>${order.student.name}</td>
 						</tr>
 						<tr>
-							<th>课程 :</th>
-							<td>${order.lesson.name}</td>
+							<th>卡号 :</th>
+							<td colspan="3"></td>
 						</tr>
 						<tr>
-							<th>总课次 :</th>
-							<td>${order.lesson.times}</td>
+							<th rowspan="2">课程 :</th>
+							<td colspan="3" rowspan="2">${order.lesson.name}</td>
+							<th>授课教师 :</th>
+							<td colspan="3">${order.teacher.name}</td>
 						</tr>
 						<tr>
-							<th>报名地点 :</th>
-							<td>${order.lesson.school.name}</td>
+							<th>上课地点 :</th>
+							<td colspan="3">${order.lesson.school.name}</td>
 						</tr>
 						
 						<tr>
-							<th>收费方式 :</th>
-							<td>现金</td>
+							<th>开课时间 :</th>
+							<td colspan="3">${order.lesson.startTime.format("yyyy-MM-dd")} ~ ${order.lesson.endTime.format("yyyy-MM-dd")}</td>
+							<th>报名班次:</th>
+							<td></td>
+							<th>总课次 :</th>
+							<td>${order.lesson.times}</td>
 						</tr>
-						<tr>
-							<th>收费金额 :</th>
-							<td style="color: red;">${order.money}</td>
-						</tr>
+						
+						
 						<tr>
 							<th>报名时间 :</th>
-							<td>${order.createdAt.format("yyyy-MM-dd hh:mm")}</td>
+							<td colspan="3">${order.createdAt.format("yyyy-MM-dd hh:mm")}</td>
+							<th>收费方式 :</th>
+							<td>现金</td>
+							<th>收费金额 :</th>
+							<td>${order.money}</td>
 						</tr>
+						
+						
 					</table>
 				</div>
 			</div>
 			<div class="formBar">
 				<ul>
-					<li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="javaScript:$.printBox('printDiv')">Save</button></div></div></li>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="javaScript:printBill()">Save</button></div></div></li>
 					<li>
 						<div class="button"><div class="buttonContent"><button type="Button" class="close">Cancel</button></div></div>
 					</li>
@@ -48,3 +61,8 @@
 		</form>
 	</div>
 </div>
+<script type="text/javascript">
+function printBill(){
+	$.printBox("printDiv");
+}
+</script>
