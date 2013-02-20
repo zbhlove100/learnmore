@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -34,11 +35,12 @@ public class Student extends BaseModel {
     
     public Date removedAt;
     
-    public String grade;
-    
     public String tel;
     
     public String description;
+    
+    @ManyToOne
+    public Grade grade;
     
     @OneToOne(mappedBy="student")
     public ImgDetail imgDetail;

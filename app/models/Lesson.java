@@ -56,6 +56,9 @@ public class Lesson extends Model{
 	@ManyToOne
 	public Book book;
 	
+	@ManyToOne
+	public Grade grade;
+	
 	@OneToMany(mappedBy="lesson",fetch=FetchType.LAZY)
 	public List<LessonTable> lessonTables;
 	

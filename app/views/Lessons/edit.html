@@ -83,6 +83,17 @@ function selectPcollection(pcid){
 					</dd>
 				</dl>
 				<dl>
+					<dt>年级：</dt>
+					<dd>
+						<select class="combox"  name="grade">
+							<option value="">--请选择--</option>
+							#{list items:grades,as:'grade'}
+							<option value="${grade.level}" #{if grade.level==lesson.grade?.level}selected#{/if}>${grade.name}</option>
+							#{/list}
+						</select>
+					</dd>
+				</dl>
+				<dl>
 					<dt>地点：</dt>
 					<dd>
 						<select class="combox"  name="schoolid">

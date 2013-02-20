@@ -11,6 +11,7 @@ import java.util.Map;
 
 import models.BaseModel;
 import models.Code;
+import models.Grade;
 import models.Lesson;
 import models.LessonTable;
 import models.Order;
@@ -64,10 +65,12 @@ public class Lessons extends CRUD {
         render();
     }
     public static void blank(){
+        List<Grade> grades = Grade.findAll();
         List<Code> collections = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"collection").fetch();
         List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
         List<Code> types = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_type").fetch();
         List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
+        renderArgs.put("grades", grades);
         renderArgs.put("schools", schools);
         renderArgs.put("collections", collections);
         renderArgs.put("types", types);
@@ -106,6 +109,9 @@ public class Lessons extends CRUD {
             lesson.level = params.get("level");
             lesson.price = params.get("price",Integer.class);
             lesson.times = params.get("times",Integer.class);
+            int grade = params.get("grade",Integer.class);
+            Grade gradeObj = Grade.find("level = ?", grade).first();
+            lesson.grade = gradeObj;
             Teacher teacher = Teacher.findById(params.get("teacherid",Long.class));
             lesson.teacher = teacher;
             lesson.studentNum = 0;
@@ -208,11 +214,13 @@ public class Lessons extends CRUD {
     
     public static void edit(long id,String type){
         Lesson lesson = Lesson.findById(id);
+        List<Grade> grades = Grade.findAll();
         List<Code> collections = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"collection").fetch();
         List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
         List<Code> types = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_type").fetch();
         List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
         renderArgs.put("schools", schools);
+        renderArgs.put("grades", grades);
         renderArgs.put("collections", collections);
         renderArgs.put("types", types);
         renderArgs.put("timeTypes", timeTypes);
@@ -243,6 +251,9 @@ public class Lessons extends CRUD {
             lesson.duration = params.get("duration");
             Teacher teacher = Teacher.findById(params.get("teacherid",Long.class));
             lesson.teacher = teacher;
+            int grade = params.get("grade",Integer.class);
+            Grade gradeObj = Grade.find("level = ?", grade).first();
+            lesson.grade = gradeObj;
             lesson.studentNum = 0;
             lesson.state = BaseModel.ACTIVE;
             lesson.school = school;

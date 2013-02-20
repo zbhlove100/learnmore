@@ -78,9 +78,9 @@
 					</td>
 					<td>${student.name}</td>
 					<td>${student.age?:''}</td>
-					<td>${student.grade?:''}</td>
+					<td>${student.grade?.name?:''}</td>
 					<td>${student.tel?:''}</td>
-					<td><a href="${student?.email?:''}">${student?.email?:''}</a></td>
+					<td>${student?.email?:''}</td>
 					<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(student.id)}" target="navTab" rel="studentDetail${student.id}" title="${student.name}">Detail >>></a></td>
 				</tr>
 				#{/list} 

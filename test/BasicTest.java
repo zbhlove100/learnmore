@@ -98,9 +98,18 @@ public class BasicTest extends UnitTest {
     }
     @Test
     public void test1() throws ParseException {
-    	String sql = "SELECT convert(varchar,current_time(),110) from Teacher";
-    	Query query = JPA.em().createQuery(sql);
-        List l = query.getResultList();
+    	for(int i=1;i<7;i++){
+    	    Grade grade = new Grade();
+    	    grade.level = i;
+    	    grade.name = i+"年级";
+    	    grade.save();
+    	}
+    	for(int i=1;i<4;i++){
+            Grade grade = new Grade();
+            grade.level = 6+i;
+            grade.name = "初"+i;
+            grade.save();
+        }
     }
     
 }

@@ -17,6 +17,7 @@ import play.db.jpa.JPA;
 import utils.MyDateUtils;
 
 import models.BaseModel;
+import models.Grade;
 import models.ImgDetail;
 import models.Lesson;
 import models.Order;
@@ -42,7 +43,8 @@ public class Students extends CRUD {
         
     }
     public static void blank(){
-        render();
+        List<Grade> grades = Grade.findAll();
+        render(grades);
     }
     
     public static void create(){
@@ -52,7 +54,7 @@ public class Students extends CRUD {
         String studenttel = params.get("studenttel");
         String studentemail = params.get("studentemail");
         String address = params.get("address");
-        String grade = params.get("grade");
+        int grade = params.get("grade",Integer.class);
         String description = params.get("description");
         String sex = params.get("sex");
         
@@ -94,7 +96,8 @@ public class Students extends CRUD {
             student.tel = studenttel;
             student.email = studentemail;
             student.location = address;
-            student.grade = grade;
+            Grade gradeObj = Grade.find("level = ?", grade).first();
+            student.grade = gradeObj;
             student.sex = sex;
             student.age = mdu.getAgeForBirthday(studentbirthday, "yyyy-MM-dd");
             student.description = description;
@@ -140,8 +143,10 @@ public class Students extends CRUD {
     
     public static void edit(long id,String type){
         Student student = Student.findById(id);
+        List<Grade> grades = Grade.findAll();
         renderArgs.put("type", type);
         renderArgs.put("student", student);
+        renderArgs.put("grades", grades);
         render();
     }
     
@@ -157,7 +162,7 @@ public class Students extends CRUD {
             String studenttel = params.get("studenttel");
             String studentemail = params.get("studentemail");
             String address = params.get("address");
-            String grade = params.get("grade");
+            int grade = params.get("grade",Integer.class);
             String description = params.get("description");
             String sex = params.get("sex");
             
@@ -167,7 +172,8 @@ public class Students extends CRUD {
             student.tel = studenttel;
             student.email = studentemail;
             student.location = address;
-            student.grade = grade;
+            Grade gradeObj = Grade.find("level = ?", grade).first();
+            student.grade = gradeObj;
             student.sex = sex;
             student.age = mdu.getAgeForBirthday(studentbirthday, "yyyy-MM-dd");
             student.description = description;

@@ -3,51 +3,56 @@
 		<form method="post" action="@{Students.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
 			<div class="pageFormContent" layoutH="56" layoutW="56">
 				<div id="printDiv">
-					<p><strong>乐盟听课证</strong></p>
-					<table class="thistable" style="width: 95%;margin-top: 10px;">
-						<tr>
-							<td colspan="4" rowspan="2" style="text-align: center;"><b>${order.identifyNo}</b></td>
-							<th>姓名 :</th>
-							<td>${order.student.name}</td>
-							<th>性别 :</th>
-							<td>${order.student.name}</td>
-						</tr>
-						<tr>
-							<th>卡号 :</th>
-							<td colspan="3"></td>
-						</tr>
-						<tr>
-							<th rowspan="2">课程 :</th>
-							<td colspan="3" rowspan="2">${order.lesson.name}</td>
-							<th>授课教师 :</th>
-							<td colspan="3">${order.teacher.name}</td>
-						</tr>
-						<tr>
-							<th>上课地点 :</th>
-							<td colspan="3">${order.lesson.school.name}</td>
-						</tr>
-						
-						<tr>
-							<th>开课时间 :</th>
-							<td colspan="3">${order.lesson.startTime.format("yyyy-MM-dd")} ~ ${order.lesson.endTime.format("yyyy-MM-dd")}</td>
-							<th>报名班次:</th>
-							<td></td>
-							<th>总课次 :</th>
-							<td>${order.lesson.times}</td>
-						</tr>
-						
-						
-						<tr>
-							<th>报名时间 :</th>
-							<td colspan="3">${order.createdAt.format("yyyy-MM-dd hh:mm")}</td>
-							<th>收费方式 :</th>
-							<td>现金</td>
-							<th>收费金额 :</th>
-							<td>${order.money}</td>
-						</tr>
-						
-						
-					</table>
+					<div id="printPageTile" style="z-index: 30;">
+						<img alt="" src="@{'/public/images/abc.jpg'}" height="200px" width="100%" style="opacity: .1; filter: alpha(opacity=10);">
+					</div>
+					<div style="margin-top: -200px;">
+						<p style="font-size: 30px"><b>乐盟听课证</b></p>
+						<table class="thistable" style="width: 95%;margin-top: 10px;z-index: 1000;">
+							<tr>
+								<td colspan="4" rowspan="2" style="text-align: center;"><b>${order.identifyNo}</b></td>
+								<th>姓名 :</th>
+								<td>${order.student.name}</td>
+								<th>性别 :</th>
+								<td>${order.student.name}</td>
+							</tr>
+							<tr>
+								<th>卡号 :</th>
+								<td colspan="3"></td>
+							</tr>
+							<tr>
+								<th rowspan="2">课程 :</th>
+								<td colspan="3" rowspan="2">${order.lesson.name}</td>
+								<th>授课教师 :</th>
+								<td colspan="3">${order.teacher.name}</td>
+							</tr>
+							<tr>
+								<th>上课地点 :</th>
+								<td colspan="3">${order.lesson.school.name}</td>
+							</tr>
+							
+							<tr>
+								<th>开课时间 :</th>
+								<td colspan="3">${order.lesson.startTime.format("yyyy-MM-dd")} ~ ${order.lesson.endTime.format("yyyy-MM-dd")}</td>
+								<th>报名班次:</th>
+								<td></td>
+								<th>总课次 :</th>
+								<td>${order.lesson.times}</td>
+							</tr>
+							
+							
+							<tr>
+								<th>报名时间 :</th>
+								<td colspan="3">${order.createdAt.format("yyyy-MM-dd hh:mm")}</td>
+								<th>收费方式 :</th>
+								<td>现金</td>
+								<th>收费金额 :</th>
+								<td>${order.money}</td>
+							</tr>
+							
+							
+						</table>
+					</div>
 				</div>
 			</div>
 			<div class="formBar">

@@ -7,7 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.BaseModel;
 import models.CurrentUser;
+import models.Order;
+import models.Student;
+import models.Teacher;
 
 
 import play.Logger;
@@ -36,6 +40,7 @@ public class Application extends Controller {
 				session.put("username", LearnmoreSecurity.connected());
 			}
 		}
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~appl:"+request.url);
 		if (!CurrentUser.isAuthed()) {
 			Logger.debug("CurrentUser.isAuthed() is false");
 			String loginUrl = Router.reverse("LearnmoreSecure.login").url;
@@ -71,8 +76,14 @@ public class Application extends Controller {
 	}*/
     
 	public static void index() {
-		render();
+	    render();
 	}
-
+	
+	public static void dashboard() {
+	    long tcount =  Teacher.count("state !=?", BaseModel.DELETE);
+        long scount =  Student.count("state !=?", BaseModel.DELETE);
+        long ocount =  Order.count("state !=?", BaseModel.DELETE);
+        render(tcount,scount,ocount);
+    }
 }
 

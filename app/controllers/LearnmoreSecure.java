@@ -15,6 +15,7 @@ public class LearnmoreSecure extends Controller{
         // Authent
         if(!session.contains("username")) {
             Cache.add("url_" + session.getId(), request.method == "GET" ? request.url : "/", "10min");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~checkAccess:"+request.url);
             //flash.put("url", "GET".equals(request.method) ? request.url : "/"); // seems a good default
             login();
         }
@@ -94,6 +95,7 @@ public class LearnmoreSecure extends Controller{
     public static void redirectToOriginalURL(String username) throws Throwable {
         LearnmoreSecurity.invoke("onAuthenticated",username);
         String url = (String) Cache.get("url_" + session.getId());
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~redirectToOriginalURL:"+url);
         Cache.delete("url_" + session.getId());
         if(url == null) {
             url = "/";

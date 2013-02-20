@@ -99,9 +99,9 @@
 				<div style="margin-top:5px;display:inline;width:500px;position:absolute;floating:left;margin-left:200px;">
 				  <div id="myevents"></div>
 				</div>			
-				<a href="" target="navTab" rel="main" class="logo" >Dashboard</a>
+				<a href="@{Application.dashboard}" target="navTab" rel="main" class="logo" >首页</a>
 				<ul class="nav">
-					<li id="switchEnvBox"><span style="color:red;">Welcome: </span><a>${user?.name}</a>
+					<li id="switchEnvBox"><span style="color:red;">欢迎: </span><a>${user?.name}</a>
 					</li>
 					<li><a>Accout Type:</a></li>
 					<li><a href="" target="dialog" width="530" height="230"><span>Change Password</span></a></li>
@@ -141,7 +141,7 @@
 				<div class="tabsPageHeader">
 					<div class="tabsPageHeaderContent"><!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
 						<ul class="navTab-tab">
-							<li tabid="main" class="main"><a href="" target="navTab" rel="main"><span><span class="home_icon">Dashboard</span></span></a></li>
+							<li tabid="main" class="main"><a href="@{Application.dashboard()}" target="navTab" rel="main"><span><span class="home_icon">Dashboard</span></span></a></li>
 						</ul>
 					</div>
 					<div class="tabsLeft">left</div><!-- 禁用只需要添加一个样式 class="tabsLeft tabsLeftDisabled" -->

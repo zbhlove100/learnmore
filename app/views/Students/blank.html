@@ -13,6 +13,17 @@
 					<dd><input name="sex" type="radio" value="男" checked="checked"/>男<input name="sex" type="radio" value="女"/>女</dd>
 				</dl>
 				<dl>
+					<dt>年级：</dt>
+					<dd>
+						<select class="combox"  name="grade" class="required">
+							<option value="">--请选择--</option>
+							#{list items:grades,as:'grade'}
+							<option value="${grade.level}" >${grade.name}</option>
+							#{/list}
+						</select>
+					</dd>
+				</dl>
+				<dl>
 					<dt>生日：</dt>
 					<dd>
 						<input name="studentbirthday" class="required date" type="text" readonly="true"/>
@@ -36,12 +47,6 @@
 					<dt>地址：</dt>
 					<dd>
 						<input name="address" class="" type="text" size=""/>
-					</dd>
-				</dl>
-				<dl>
-					<dt>年级：</dt>
-					<dd>
-						<input name="grade" class="" type="text" size=""/>
 					</dd>
 				</dl>
 				<dl>

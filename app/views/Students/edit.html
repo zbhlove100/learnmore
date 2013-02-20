@@ -46,7 +46,12 @@
 				<dl>
 					<dt>年级：</dt>
 					<dd>
-						<input name="grade" class="" type="text" size="" value="${student.grade?:''}"/>
+						<select class="combox"  name="grade" class="required">
+							<option value="">--请选择--</option>
+							#{list items:grades,as:'grade'}
+							<option value="${grade.level}" #{if grade.level==student.grade?.level} selected #{/if}>${grade.name}</option>
+							#{/list}
+						</select>
 					</dd>
 				</dl>
 				<dl>
