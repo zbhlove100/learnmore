@@ -25,6 +25,8 @@ import models.CurrentUser;
 import models.Department;
 import models.Lesson;
 import models.Order;
+import models.OrderHistory;
+import models.Setting;
 import models.Student;
 import models.Teacher;
 import models.Teacher.EM_TYPE;
@@ -33,9 +35,43 @@ import models.Where;
 
 public class Orders extends CRUD {
     public static void list(){
-        List<Order> orders = Order.find("state !=?", BaseModel.DELETE).fetch();
-        renderArgs.put("orders", orders);
-        render();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+       
+            Where where = new Where(params);
+    
+            if (params.get("identifyNo") != null)
+                where.add("identifyNo", "identifyNo like");
+            if (params.get("orderName") != null)
+                where.add("orderName", "name like");
+            if (params.get("state") != null)
+                where.add("state", "state =");
+            if (params.get("lessonname") != null)
+                where.add("lessonname", "lesson.name like");
+            if (params.get("studentname") != null)
+                where.add("studentname", "student.name like");
+            if (params.get("studenttel") != null)
+                where.add("studenttel", "student.tel like");
+            if (params.get("createDate") != null && !"".equals(params.get("createDate")))
+                where.addValue("createdAt >",sdf.parse(params.get("createDate")));
+            if (params.get("modifyDate") != null && !"".equals(params.get("modifyDate")))
+            where.addValue("modifyAt >",sdf.parse(params.get("modifyDate")));
+            if (params.get("money") != null)
+                where.add("money", "money >");
+            if(params.get("orderField") != null && !"".equals(params.get("orderField"))){
+                where.addOrder();
+            }else{
+                where.addOrderByVar("modifyAt");
+            }
+            List<Order> orders = Order.find(where.where(), where.paramsarr()).fetch();
+            DWZPageAndOrder(orders);
+            renderArgs.put("orders", orders);
+            render();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        
     }
     
     public static void blank(){
@@ -44,13 +80,15 @@ public class Orders extends CRUD {
     
     public static void quickBlank(long id){
         Lesson lesson = Lesson.findById(id);
-        List<Student> students = Student.find("state !=?", BaseModel.DELETE).fetch(100);
+        List<Student> students = Student.find("state !=?", BaseModel.DELETE).fetch();
         List<Order> orders = Order.find("lesson = ? and state = ?", lesson,BaseModel.ACTIVE).fetch();
+        List<Setting> discounts = Setting.find("name = ?", "DISCOUNT_RATE").fetch();
         Map<Object,String> orderedStudents =new HashMap<Object, String>();
         for(Order order:orders){
             orderedStudents.put(order.student.id, "true");
         }
         renderArgs.put("lesson", lesson);
+        renderArgs.put("discounts", discounts);
         renderArgs.put("students", students);
         renderArgs.put("orderedStudents", orderedStudents);
         render();
@@ -65,7 +103,7 @@ public class Orders extends CRUD {
             where.add("searchtel", "tel like");
         where.add("state !=", BaseModel.DELETE);
         
-        List<Student> students = Student.find(where.where(), where.paramsarr()).fetch(100);
+        List<Student> students = Student.find(where.where(), where.paramsarr()).fetch();
         long id = params.get("lessonid",Long.class);
         Lesson lesson = Lesson.findById(id);
         List<Order> orders = Order.find("lesson = ? and state = ?", lesson,BaseModel.ACTIVE).fetch();
@@ -100,8 +138,21 @@ public class Orders extends CRUD {
                     order.state = BaseModel.ACTIVE;
                     order.user = User.findById(CurrentUser.current().id);
                     order.createdAt = new Date(java.lang.System.currentTimeMillis());
+                    order.modifyAt = new Date(java.lang.System.currentTimeMillis());
                     order.identifyNo = UUID.randomUUID().toString();
                     order.save();
+                    OrderHistory orderHistory = new OrderHistory();
+                    orderHistory.createdAt = new Date(java.lang.System.currentTimeMillis());
+                    orderHistory.name = order.name;
+                    orderHistory.money = money;
+                    orderHistory.description = description;
+                    orderHistory.user = order.user;
+                    orderHistory.optype = Setting.value("ORDER_CREATE","新建");
+                    orderHistory.order_message = order;
+                    orderHistory.student = order.student;
+                    orderHistory.save();
+                    lesson.studentNum ++;
+                    lesson.save();
                 }
                 
             }
@@ -143,8 +194,21 @@ public class Orders extends CRUD {
             order.state = BaseModel.ACTIVE;
             order.user = User.findById(CurrentUser.current().id);
             order.createdAt = new Date(java.lang.System.currentTimeMillis());
+            order.modifyAt = new Date(java.lang.System.currentTimeMillis());
             order.identifyNo = UUID.randomUUID().toString();
             order.save();
+            OrderHistory orderHistory = new OrderHistory();
+            orderHistory.createdAt = new Date(java.lang.System.currentTimeMillis());
+            orderHistory.name = order.name;
+            orderHistory.money = money;
+            orderHistory.description = description;
+            orderHistory.user = order.user;
+            orderHistory.optype = Setting.value("ORDER_CREATE","新建");
+            orderHistory.order_message = order;
+            orderHistory.student = order.student;
+            orderHistory.save();
+            lesson.studentNum ++;
+            lesson.save();
             renderJSON(forwardJsonCloseDailog("lessonDetail"+id,"/lessons/detail/"+id,"添加报名信息成功！"));
         } catch (Exception e) {
             // TODO: handle exception
@@ -156,17 +220,81 @@ public class Orders extends CRUD {
         List<Order> orders = Order.find(where).fetch();
         for(Order order:orders){
             order.state = BaseModel.DELETE;
+            order.modifyAt = new Date(java.lang.System.currentTimeMillis());
             order.save();
+            OrderHistory orderHistory = new OrderHistory();
+            orderHistory.createdAt = new Date(java.lang.System.currentTimeMillis());
+            orderHistory.name = order.name;
+            orderHistory.money = order.money;
+            orderHistory.description = order.description;
+            orderHistory.user = User.findById(CurrentUser.current().id);
+            orderHistory.optype = Setting.value("ORDER_DELETE","退费");
+            orderHistory.student = order.student;
+            orderHistory.order_message = order;
+            orderHistory.save();
+            order.lesson.studentNum--;
+            order.lesson.save();
         }
         renderJSON(forwardJson("ordersList", "/orders/list", "删除成功！"));
     }
     
+    public static void confirm(long id){
+        
+    }
+    
     public static void detail(long id){
         Order order = Order.findById(id);
+        List<OrderHistory> orderHistory = OrderHistory.find("order_message = ?", order).fetch();
         renderArgs.put("order", order);
         renderArgs.put("lesson", order.lesson);
         renderArgs.put("student", order.student);
+        renderArgs.put("orderHistory", orderHistory);
         render();
+    }
+    
+    public static void edit(long id,String type){
+        Order order = Order.findById(id);
+        Lesson lesson = order.lesson;
+        List<Student> students = Student.find("state !=?", BaseModel.DELETE).fetch();
+        List<Setting> discounts = Setting.find("name = ?", "DISCOUNT_RATE").fetch();
+        Map<Object,String> orderedStudents =new HashMap<Object, String>();
+        orderedStudents.put(order.student.id, "true");
+        renderArgs.put("lesson", lesson);
+        renderArgs.put("order", order);
+        renderArgs.put("discounts", discounts);
+        renderArgs.put("students", students);
+        renderArgs.put("orderedStudents", orderedStudents);
+        renderArgs.put("type", type);
+        render();
+    }
+    
+    public static void save(){
+        long id = params.get("id",Long.class);
+        Order order = Order.findById(id);
+        String type = params.get("rendertype");
+        Student student = Student.findById(params.get("studentids",Long.class));
+        order.student = student;
+        order.money = params.get("money",Integer.class);
+        order.description = params.get("description");
+        order.modifyAt = new Date(java.lang.System.currentTimeMillis());
+        order.save();
+        OrderHistory orderHistory = new OrderHistory();
+        orderHistory.createdAt = new Date(java.lang.System.currentTimeMillis());
+        orderHistory.name = order.name;
+        orderHistory.money = order.money;
+        orderHistory.description = order.description;
+        orderHistory.user = User.findById(CurrentUser.current().id);
+        orderHistory.optype = Setting.value("ORDER_EDIT","修改");
+        orderHistory.student = order.student;
+        orderHistory.order_message = order;
+        orderHistory.save();
+        if(type.equals("ldetail")){
+            renderJSON(forwardJsonCloseDailog("lessonDetail"+order.lesson.id, "/lessons/detail/"+order.lesson.id, "修改成功！"));
+        }else if(type.equals("list")){
+            renderJSON(forwardJsonCloseDailog("ordersList", "/orders/list", "修改成功！"));
+        }else if(type.equals("odetail")){
+            renderJSON(forwardJsonCloseDailog("orderDetail"+order.id, "/orders/detail/"+order.id, "修改成功！"));
+        }
     }
     
     public static void printPage(long id){
@@ -175,6 +303,7 @@ public class Orders extends CRUD {
         render();
     }
     
+    
     public static void deletesInLesson(){
         String ids = params.get("ids");
         String lessonid = params.get("lessonid");
@@ -182,7 +311,20 @@ public class Orders extends CRUD {
         List<Order> orders = Order.find(where).fetch();
         for(Order order:orders){
             order.state = BaseModel.DELETE;
+            order.modifyAt = new Date(java.lang.System.currentTimeMillis());
             order.save();
+            OrderHistory orderHistory = new OrderHistory();
+            orderHistory.createdAt = new Date(java.lang.System.currentTimeMillis());
+            orderHistory.name = order.name;
+            orderHistory.money = order.money;
+            orderHistory.description = order.description;
+            orderHistory.user = User.findById(CurrentUser.current().id);
+            orderHistory.optype = Setting.value("ORDER_DELETE","退费");
+            orderHistory.student = order.student;
+            orderHistory.order_message = order;
+            orderHistory.save();
+            order.lesson.studentNum--;
+            order.lesson.save();
         }
         renderJSON(forwardJson("lessonDetail"+lessonid,"/lessons/detail/"+lessonid,"删除报名信息成功！"));
     }

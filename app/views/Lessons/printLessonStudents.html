@@ -1,0 +1,77 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="@{Students.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
+			<div class="pageFormContent" layoutH="56" layoutW="56">
+				<div id="printDiv">
+					<div>
+						<table class="thistable" style="width: 95%;margin-top: 10px;z-index: 1000;">
+							<tr>
+								<th colspan="6">${lesson?.name}</th>
+							</tr>
+							<tr>
+								<th>教师 :</th>
+								<td style="border-top: 1px solid #C1DAD7; ">${lesson.teacher?.name}</td>
+								<th>课次 :</th>
+								<td style="border-top: 1px solid #C1DAD7; ">${lesson?.times}</td>
+								<th>时长 :</th>
+								<td style="border-top: 1px solid #C1DAD7; ">${lesson?.duration}</td>
+							</tr>
+							<tr>
+								<th>开课时间 :</th>
+								<td>${lesson?.startTime.format('yyyy-MM-dd')}</td>
+								<th>结课时间 :</th>
+								<td>${lesson?.endTime.format('yyyy-MM-dd')}</td>
+								<th>报名人数 :</th>
+								<td><strong>${lesson?.orders?.size()}</strong></td>
+							</tr>
+							<tr>
+								<th>地点 ：</th>
+								<td>${lesson?.school.name}</td>
+								<th>备注 ：</th>
+								<td colspan="3">${lesson?.description}</td>
+							</tr>
+						</table>
+						<p></p>
+						<div class="divider"></div>
+						<table id="studentlistTable" class="thistable" style="width: 95%">
+							<thead>
+								<tr>
+									<th width="120" class="asc">姓名</th>
+									<th width="100">年级</th>
+									<th width="120">电话</th>
+									<th width="250">备注</th>
+									<th width="250"></th>
+								</tr>
+							</thead>
+							<tbody>
+								 #{list items:orders, as:'order'}
+								<tr target="sid_user"
+									rel="${order.id}">
+									<td>${order.student.name}</td>
+									<td>${order.student.grade?:''}</td>
+									<td>${order.student.tel?:''}</td>
+									<td>${order.description?:''}</td>
+									<td></td>
+								</tr>
+								#{/list} 
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="javaScript:printBill()">打印</button></div></div></li>
+					<li>
+						<div class="button"><div class="buttonContent"><button type="Button" class="close">打印</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+function printBill(){
+	$.printBox("printDiv");
+}
+</script>

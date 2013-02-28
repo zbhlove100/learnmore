@@ -62,6 +62,7 @@ public class Lessons extends CRUD {
         renderArgs.put("collections", collections);
         renderArgs.put("types", types);
         renderArgs.put("timeTypes", timeTypes);
+        DWZPageAndOrder(lessons);
         render();
     }
     public static void blank(){
@@ -173,6 +174,42 @@ public class Lessons extends CRUD {
             renderJSON(jsonError(e.getMessage()));
         }
     }
+    
+    public static void editLessonTable(long id){
+        
+        try {
+            Lesson lesson = Lesson.findById(id);
+            List<List> lessonTables = getLessonTable(id);
+            List<List> tables = new ArrayList<List>();
+            int mark =1;
+            int index = 0;
+            for(int i=1;i<lesson.times;i+=LessonTable.CELL_PER_ROW){
+                List<HashMap> tmap = new ArrayList<HashMap>();
+                List<LessonTable> llt = lessonTables.get(index++);
+                for(int j=0;j<LessonTable.CELL_PER_ROW;j++){
+                   LessonTable lt = llt.get(j);
+                   HashMap m = new HashMap<String, String>();
+                   m.put("name", String.format("第%d课", mark));
+                   m.put("mark", mark);
+                   m.put("date", lt.lessonDate);
+                   mark++;
+                   tmap.add(m);
+                }
+                tables.add(tmap);
+               
+            }
+            renderArgs.put("lesson", lesson);
+            renderArgs.put("lessonTables", tables);
+            renderArgs.put("lessonid", id);
+            render();
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       
+        
+    }
+    
     public static void deletes(String ids){
         String where = String.format("id in (%s)", ids);
         List<Lesson> Lessons = Lesson.find(where).fetch();
@@ -209,6 +246,14 @@ public class Lessons extends CRUD {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        render();
+    }
+    
+    public static void printLessonStudents(long id){
+        Lesson lesson = Lesson.findById(id);
+        List<Order> orders = Order.find("lesson = ? and state = ?", lesson,BaseModel.ACTIVE).fetch();
+        renderArgs.put("lesson", lesson);
+        renderArgs.put("orders", orders);
         render();
     }
     

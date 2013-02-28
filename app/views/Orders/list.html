@@ -8,6 +8,7 @@
 	<input type="hidden" value="${pageNum}" name="pageNum"> 
 	<input type="hidden" value="${numPerPage}" name="numPerPage"> 
 	<input type="hidden" value="${orderField}" name="orderField">
+	<input type="hidden" value="${orderDirection}" name="orderDirection">
 </form>
 <div class="pageHeader">
 	<form rel="pagerForm" onSubmit="return navTabSearch(this);"
@@ -15,12 +16,52 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>name:</label> 
-					<input type="text" name="name" value="${params.name}"/>
+					<label>唯一码:</label> 
+					<input type="text" name="identifyNo" value="${params.identifyNo}"/>
 				</li>
 				<li>
-					<label>电话:</label> 
-					<input type="text" name="tel" value="${params.tel}"/>
+					<label>订单名:</label> 
+					<input type="text" name="orderName" value="${params.orderName}"/>
+				</li>
+				<li>
+					<label>状态:</label>
+					<select class="combox"  name="state">
+						<option value="">--请选择--</option>
+						<option value="Active" #{if params.state=="Active"}selected#{/if}>正常</option>
+						<option value="Delete" #{if params.state=="Delete"}selected#{/if}>退费</option>
+					</select>
+				</li>
+			</ul>
+			<ul class="searchContent">
+				<li>
+					<label>课程:</label> 
+					<input type="text" name="lessonname" value="${params.lessonname}"/>
+				</li>
+				<li>
+					<label>学生:</label>
+					<input type="text" name="studentname" value="${params.studentname}"/>
+				</li>
+				<li>
+					<label>学生电话:</label>
+					<input type="text" name="studenttel" value="${params.studenttel}"/>
+				</li>
+			</ul>
+			<ul class="searchContent">
+				<li>
+					<label>创建日期:</label> 
+					<input name="createDate" class="date" type="text" readonly="true" value="${params.createDate}"/>
+					<a class="inputDateButton" href="javascript:;">选择</a>
+					<span class="info">yyyy-MM-dd</span>
+				</li>
+				<li>
+					<label>修改日期:</label>
+					<input name="modifyDate" class="date" type="text" readonly="true" value="${params.modifyDate}"/>
+					<a class="inputDateButton" href="javascript:;">选择</a>
+					<span class="info">yyyy-MM-dd</span>
+				</li>
+				<li>
+					<label>金额:</label>
+					<input type="text" name="money" value="${params.money}"/>
 				</li>
 			</ul>
 			<div class="subBar">
@@ -46,6 +87,11 @@
 				</a>
 			</li>
 			<li>
+				<a class="edit" href="@{Orders.edit("\u007Bsid_user\u007D",'list')}" target="dialog" height="580" width="650" title="添加订单">
+					<span>修改订单</span> 
+				</a>
+			</li>
+			<li>
 				<a class="delete" href="@{Orders.deletes}" target="selectedTodo" postType="string" rel="ids"
 				title="确定要删除订单吗?">
 				<span>删除订单</span>
@@ -53,17 +99,20 @@
 		</ul>
 	</div>
 	<div id="OrderlistTableDiv">
-		<table id="OrderlistTable" class="table" width="100%" layouth="138">
+		<table id="OrderlistTable" class="table" width="100%" layouth="188">
 			<thead>
 				<tr>
-					<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-					<th width="150" class="asc">订单编号</th>
+					<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+					<th width="60" orderField="id" #{if orderField=="id"}class="${orderDirection}"#{/if}>订单编号</th>
+					<th width="240">唯一码</th>
 					<th width="150">课程</th>
 					<th width="150">学员</th>
 					<th width="150">老师</th>
-					<th width="200">日期</th>
-					<th width="300">金额</th>
-					<th></th>
+					<th width="150" orderField="createdAt" #{if orderField=="createdAt"}class="${orderDirection}"#{/if}>创建日期</th>
+					<th width="150" orderField="modifyAt" #{if orderField=="modifyAt"}class="${orderDirection}"#{/if}>修改日期</th>
+					<th width="60" orderField="money" #{if orderField=="money"}class="${orderDirection}"#{/if}>金额</th>
+					<th width="150">状态</th>
+					<th width="100"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -73,12 +122,20 @@
 					<td><input name="ids" value="${Order.id}" type="checkbox">
 					</td>
 					<td>${Order.id}</td>
+					<td>${Order.identifyNo}</td>
 					<td>${Order.lesson.name?:''}</td>
 					<td>${Order.student.name?:''}</td>
 					<td>${Order.teacher.name?:''}</td>
 					<td>${Order.createdAt.format('yyyy-MM-dd')?:''}</td>
+					<td>${Order.modifyAt?.format('yyyy-MM-dd hh:mm:ss')?:''}</td>
 					<td>${Order.money?:''}</td>
-					<td><a class="btn-mini btn btn-block btn-success" href="@{Orders.detail(Order.id)}" target="navTab" rel="OrderDetail" title="order${Order.id}">Detail >>></a></td>
+					#{if Order.state == "Active"}
+					<td>正常</td>
+					#{/if}
+					#{elseif Order.state=="Delete"}
+					<td>退费</td>
+					#{/elseif}
+					<td><a class="btn-mini btn btn-block btn-success" href="@{Orders.detail(Order.id)}" target="navTab" rel="orderDetail${Order.id}" title="订单${Order.id}">详细 >>></a></td>
 				</tr>
 				#{/list} 
 			</tbody>

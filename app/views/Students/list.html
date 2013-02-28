@@ -22,6 +22,16 @@
 					<label>电话:</label> 
 					<input type="text" name="tel" value="${params.tel}"/>
 				</li>
+				<li>
+					<label>状态:</label>
+					<select class="combox"  name="grade">
+						<option value="">--请选择--</option>
+						#{list items:grades, as:'grade'}
+						<option value="${grade.level}" #{if params.grade==grade.level+""}selected#{/if}>${grade.name}</option>
+						#{/list}
+					</select>
+				</li>
+				
 			</ul>
 			<div class="subBar">
 				<ul>
@@ -66,8 +76,8 @@
 					<th width="150">年龄</th>
 					<th width="150">年级</th>
 					<th width="200">电话</th>
-					<th width="300">Email</th>
-					<th></th>
+					<th >Email</th>
+					<th width="100"></th>
 				</tr>
 			</thead>
 			<tbody>

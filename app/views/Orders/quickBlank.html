@@ -33,23 +33,41 @@ function subform(){
 	var $form = $(".pageContent:visible",$.pdialog.getCurrent()).find("form");
 	$form.submit();
 }
+function countDiscountMoney(param){
+	var price = parseInt($("#hiddenPrice").val());
+	var rate = parseInt(param.rate)/100;
+	var result = Math.round(price*rate);
+	$("input[name='money']:visible").val(result);
+}
+function changeInputType(form){
+	var f = $(form);
+	var state = $("input[name='moneyInputType']",f).attr("checked");
+	if(state == 'checked'){
+		$("input[name='money']:visible").removeAttr("readonly");
+		$("div[name='discount']",f).hide();
+	}else{
+		$("input[name='money']:visible").attr("readonly","readonly");
+		$("div[name='discount']",f).show();
+	}
+}
 </script>
 <div class="page">
 	<div class="tabs">
 	  <div class="tabsHeader">
 		<div class="tabsHeaderContent">
 			<ul>
-				<li id="page1"><a href="#" onclick="tab_onclick(1)" ><span>已注册学员</span></a></li>
-				<li id="page2"><a href="#" onclick="tab_onclick(2)" ><span>未注册学员</span></a></li>
+				<li id="page1"><a href="#" onclick="" ><span>已注册学员</span></a></li>
+				<li id="page2"><a href="#" onclick="" ><span>未注册学员</span></a></li>
 			</ul>
 		</div>
 	  </div>
 	  <div class="tabsContent">
 		<div class="pageContent">
+			<input id="hiddenPrice" type="hidden" value="${lesson.price}">
 			<form name="form1" method="post" action="@{Orders.quickCreateOrder}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
 				<input name="lessonid" type="hidden" value="${lesson.id}"/>
 				<input name="allid" type="hidden" value=""/>
-				<div id="searchStudentPageContent" class="pageFormContent" layoutW="56" layoutH="290">				
+				<div id="searchStudentPageContent" class="pageFormContent" layoutW="56" layoutH="320">				
 					<p>
 						<label>姓名</label>
 						<input type="text" name="searchname" value="${params.searchname}"/>
@@ -59,7 +77,7 @@ function subform(){
 						<input type="text" name="searchtel" value="${params.searchtel}"/>
 						&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="regworkerButton" onclick="return searchServer(this.form)">Search</button>
 					</p>
-					<table id="studentlistTable" class="table" width="100%">
+					<table id="studentlistTable" class="table" width="100%" >
 						<thead>
 							<tr>
 								<th width="50"><input type="checkbox" group="studentids" class="checkboxCtrl"></th>
@@ -105,8 +123,18 @@ function subform(){
 						${lesson.price?:0}￥
 					</p>
 					<p>
+						<label>折扣 :</label>
+						<select class="combox"  name="discount" change="countDiscountMoney" param="rate">
+							<option value="100">--请选择--</option>
+							#{list items:discounts,as:'discount'}
+							<option value="${discount.value}">${discount.extvalue}</option>
+							#{/list}
+						</select>
+					</p>
+					<p>
 						<label>实收金额：</label>
-						<input name="money" class="required number" type="text" size="20"/>
+						<input name="money" class="required number" type="text" size="20" value="${lesson.price?:0}" readonly="readonly"/>
+						<input name="moneyInputType" type="checkbox" onclick="changeInputType(this.form)">手工输入
 					</p>
 					<p>
 						<label>备注：</label>
@@ -168,10 +196,18 @@ function subform(){
 							</dd>
 						</dl>
 						<dl>
-							<dt>实收金额：</dt>
-							<dd>
-								<input name="money" class="required number" type="text" size="20"/>
-							</dd>
+						<label>折扣 :</label>
+							<select class="combox"  name="discount" change="countDiscountMoney" param="rate">
+								<option value="100">--请选择--</option>
+								#{list items:discounts,as:'discount'}
+								<option value="${discount.value}">${discount.extvalue}</option>
+								#{/list}
+							</select>
+						</dl>
+						<dl>
+							<label>实收金额：</label>
+							<input name="money" class="required number" type="text" size="20" value="${lesson.price?:0}" readonly="readonly"/>
+							<input name="moneyInputType" type="checkbox" onclick="changeInputType(this.form)">手工输入
 						</dl>
 						<dl class="nowrap">
 							<dt>备注：</dt>

@@ -76,7 +76,10 @@ public class Application extends Controller {
 	}*/
     
 	public static void index() {
-	    render();
+	    long tcount =  Teacher.count("state !=?", BaseModel.DELETE);
+        long scount =  Student.count("state !=?", BaseModel.DELETE);
+        long ocount =  Order.count("state !=?", BaseModel.DELETE);
+        render(tcount,scount,ocount);
 	}
 	
 	public static void dashboard() {

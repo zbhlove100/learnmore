@@ -23,7 +23,7 @@ function selectPcollection(pcid){
 </script>
 <div class="page">
 	<div class="pageContent">
-		<form method="post" action="@{lessons.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
+		<form method="post" action="@{lessons.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return validateCallback(this, dialogAjaxDone);">
 			<div class="pageFormContent" layoutH="56" layoutW="56">
 			<fieldset>
 				<legend>课程信息</legend>
@@ -94,11 +94,11 @@ function selectPcollection(pcid){
 					<dt>地点：</dt>
 					<dd>
 						<select class="combox"  name="schoolid">
-						<option value="">--请选择--</option>
-						#{list items:schools,as:'school'}
-						<option value="${school.id}" >${school.name}</option>
-						#{/list}
-					</select>
+							<option value="">--请选择--</option>
+							#{list items:schools,as:'school'}
+							<option value="${school.id}" >${school.name}</option>
+							#{/list}
+						</select>
 					</dd>
 				</dl>
 				<dl>

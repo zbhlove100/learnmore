@@ -75,6 +75,7 @@
 				var $this = $(this).css({cursor:"pointer"}).click(function(){
 					var orderField = $this.attr("orderField");
 					var orderDirection = $this.hasClass(op.asc) ? op.desc : op.asc;
+					
 					dwzPageBreak({targetType:op.targetType, rel:op.rel, data:{orderField: orderField, orderDirection: orderDirection}});
 				});
 				

@@ -28,7 +28,7 @@ public class Where{
 		 this.request_params = request_params;
 		 if(request_params != null){
 			 orderField = request_params.get("orderField");
-			 order = request_params.get("order");
+			 order = request_params.get("orderDirection");
 		 }
 		 //设置默认的排序
 		 //orderField="createdAt";
@@ -39,7 +39,7 @@ public class Where{
 		 this.request_params = request_params;
 		 if(request_params != null){
 			 orderField = request_params.get("orderField");
-			 order = request_params.get("order");
+			 order = request_params.get("orderDirection");
 		 }		 
 	 }
 	 
@@ -194,6 +194,27 @@ public class Where{
 	 
 	 public void notin(String fieldname, List ids){
 		 listWhere(fieldname,ids,false);
+	 }
+	 public void addOrderByVar(String orderField){
+	     addOrderByVar(orderField,null);
+	 }
+	 
+	 public void addOrderByVar(String orderField,String order){
+	     this.order = order;
+	     this.orderField = orderField;
+	     addOrder();
+	 }
+	 
+	 public void addOrder(){
+	     if(!"".equals(orderField)&&orderField!=null){
+	         wherebuf.append("\n order by ");
+	         wherebuf.append(orderField);
+	         if(!"".equals(order)&&order!=null){
+	             wherebuf.append("\n"+order);
+	         }
+	     }else{
+	         wherebuf.append("\n order by id");
+	     }
 	 }
 	 
 	 public void listWhere(String fieldname, List ids, boolean isin){

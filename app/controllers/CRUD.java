@@ -42,6 +42,18 @@ public abstract class CRUD extends Application{
         renderArgs.put("type", type);
     }
     
+    protected static void DWZPageAndOrder(List l){
+        int pageNum = Integer.parseInt(params.get("pageNum")==null?"1":params.get("pageNum"));
+        int numPerPage = getPageSize();
+        String orderField = params.get("orderField");
+        String orderDirection = params.get("orderDirection");
+        int totalCount = l.size();
+        renderArgs.put("pageNum", pageNum);
+        renderArgs.put("numPerPage", numPerPage);
+        renderArgs.put("orderField", orderField);
+        renderArgs.put("orderDirection", orderDirection);
+        renderArgs.put("totalCount", totalCount);
+    }
     //for debug info
     protected static void showReqinfo(){
         StringBuffer  reqinfo = new StringBuffer();

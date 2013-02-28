@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
@@ -15,6 +16,7 @@ import play.Play;
 import play.db.jpa.JPA;
 
 import utils.MyDateUtils;
+import utils.StringUtils;
 
 import models.BaseModel;
 import models.Grade;
@@ -27,7 +29,16 @@ import models.Where;
 
 public class Students extends CRUD {
     public static void list(){
-        List<Student> students = Student.find("state !=?", BaseModel.DELETE).fetch();
+        Where where = new Where(params);
+        if (StringUtils.checkNotNull(params.get("name")))
+            where.add("name", "name like");
+        if (StringUtils.checkNotNull(params.get("tel")))
+            where.add("tel", "tel like");
+        if (StringUtils.checkNotNull(params.get("grade")))
+            where.addValue("grade.level =",Integer.parseInt(params.get("grade")));
+        where.add("state !=?", BaseModel.DELETE);
+        List<Student> students = Student.find(where.where(), where.paramsarr()).fetch();
+        List<Grade> grades = Grade.findAll();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         MyDateUtils dmu = new MyDateUtils();
         try {
@@ -35,6 +46,8 @@ public class Students extends CRUD {
                 stu.age = dmu.getAgeForBirthday(stu.birthday,"yyyy-MM-dd");
             }
             renderArgs.put("objects", students);
+            renderArgs.put("grades", grades);
+            DWZPageAndOrder(students);
             render();
         } catch (ParseException e) {
             // TODO Auto-generated catch block
@@ -58,7 +71,7 @@ public class Students extends CRUD {
         String description = params.get("description");
         String sex = params.get("sex");
         
-        String uploadFileName = picture.getName();
+        String uploadFileName = UUID.randomUUID().toString()+".jpg";
         String uploadpath = Setting.value("uploadpath", "/public/images/student/");
         
         File file = new File(Play.applicationPath.getPath()+uploadpath+uploadFileName);
@@ -182,7 +195,7 @@ public class Students extends CRUD {
             
             if(picture !=null&&picture.length()!=0){
                 ImgDetail imgDetail = ImgDetail.find("student = ? and state !=?", student,BaseModel.DELETE).first();
-                String uploadFileName = picture.getName();
+                String uploadFileName = UUID.randomUUID().toString()+".jpg";
                 String uploadpath = Setting.value("uploadpath", "/public/images/student/");
                 if(imgDetail != null){
                     File file = new File(Play.applicationPath.getPath()+uploadpath+imgDetail.basicImg);

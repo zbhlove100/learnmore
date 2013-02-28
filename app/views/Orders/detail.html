@@ -11,8 +11,12 @@
 		<div>
 			<table class="thistable" style="width: 100%;margin-top: 10px;">
 				<tr>
+					<th>唯一码 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${order.identifyNo}</td>
+				</tr>
+				<tr>
 					<th>订单名 :</th>
-					<td style="border-top: 1px solid #C1DAD7; ">${order.name}</td>
+					<td>${order.name}</td>
 				</tr>
 				<tr>
 					<th>实收金额 :</th>
@@ -34,12 +38,20 @@
 		<div>
 			<table class="thistable" style="width: 100%;margin-top: 10px;">
 				<tr>
-					<th>教师 :</th>
-					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.teacher?.name}</td>
+					<th>课程名 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.name}</td>
 					<th>课次 :</th>
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.times}</td>
 					<th>时长 :</th>
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.duration}</td>
+				</tr>
+				<tr>
+					<th>教师 :</th>
+					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.teacher?.name}</td>
+					<th>开课时间 :</th>
+					<td>${lesson?.startTime.format('yyyy-MM-dd')}</td>
+					<th>结课时间 :</th>
+					<td>${lesson?.endTime.format('yyyy-MM-dd')}</td>
 				</tr>
 				<tr>
 					<th>类别 :</th>
@@ -56,14 +68,6 @@
 					<td>${lesson?.subCollection}</td>
 					<th>级别 :</th>
 					<td>${lesson?.level}</td>
-				</tr>
-				<tr>
-					<th>开课时间 :</th>
-					<td>${lesson?.startTime.format('yyyy-MM-dd')}</td>
-					<th>结课时间 :</th>
-					<td>${lesson?.endTime.format('yyyy-MM-dd')}</td>
-					<th>报名人数 :</th>
-					<td><strong>${lesson?.orders?.size()}</strong></td>
 				</tr>
 				<tr>
 					<th>地点 ：</th>
@@ -148,5 +152,39 @@
 			</table>
 		</div>
 	</div>
-	
+	<div class="panel collapse"  defH="150">
+		<h1>操作历史记录</h1>
+		<div>
+			<table class="table" width="100%" layouth="18">
+			<thead>
+				<tr>
+					<th width="20"></th>
+					<th width="150">订单名称</th>
+					<th width="150">课程</th>
+					<th width="100">学生</th>
+					<th width="100">操作</th>
+					<th width="150">日期</th>
+					<th width="80">金额</th>
+					<th width="200">备注</th>
+					<th width="100">用户</th>
+				</tr>
+			</thead>
+			<tbody>
+				 #{list items:orderHistory, as:'item'}
+				<tr>
+					<td>${item.id}</td>
+					<td>${item.name?:''}</td>
+					<td>${item.order_message.lesson.name?:''}</td>
+					<td>${item.student.name?:''}</td>
+					<td>${item.optype?:''}</td>
+					<td>${item.createdAt.format('yyyy-MM-dd hh:mm:ss')?:''}</td>
+					<td>${item.money?:''}</td>
+					<td>${item.description?:''}</td>
+					<td>${item.user.name?:''}</td>
+				</tr>
+				#{/list} 
+			</tbody>
+		</table>
+		</div>
+	</div>
 </div>

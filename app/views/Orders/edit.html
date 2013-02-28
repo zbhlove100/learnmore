@@ -1,0 +1,145 @@
+<script type="text/javascript">
+function searchServer(form) {
+	var url = "/Orders/searchStudent";
+	var resultDiv = "searchStudentPageContent";
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: $(form).serializeArray(),
+		dataType: "html",
+		cache: false,
+		success: function(data){
+			var $p = $('#'+resultDiv);
+			$p.html(data);
+			$("table.table", $p).jTable();
+			$('table.list', $p).cssTable();		
+			if ($.fn.combox) $("select.combox",$p).combox();
+		},
+		error: DWZ.ajaxError
+	});
+	return false;
+}
+function getIds(selectedIds){
+	var ids = "";
+	$.pdialog.getCurrent().find("input:checked").filter("[name="+selectedIds+"]").each(function(i){
+		var val = $(this).val();
+		ids += i==0 ? val : ","+val;
+	});
+	return ids;
+}
+function subform(form){
+	var ids = getIds("studentids");
+	if(ids.length==0){
+		alertMsg.error('Please select a event');
+		return false;
+	}
+	validateCallback(form, dialogAjaxDone);
+}
+function countDiscountMoney(param){
+	var price = parseInt($("#hiddenPrice").val());
+	var rate = parseInt(param.rate)/100;
+	var result = Math.round(price*rate);
+	$("input[name='money']:visible").val(result);
+}
+function changeInputType(form){
+	var f = $(form);
+	var state = $("input[name='moneyInputType']",f).attr("checked");
+	if(state == 'checked'){
+		$("input[name='money']:visible").removeAttr("readonly");
+		$("div[name='discount']",f).hide();
+	}else{
+		$("input[name='money']:visible").attr("readonly","readonly");
+		$("div[name='discount']",f).show();
+	}
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<input id="hiddenPrice" type="hidden" value="${lesson.price}">
+		<form name="form" method="post" action="@{Orders.save}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+			<input name="lessonid" type="hidden" value="${lesson.id}"/>
+			<input name="allid" type="hidden" value=""/>
+			<input name="id" type="hidden" value="${order.id}"/>
+			<input name="rendertype" type="hidden" value="${type}"/>
+			<div id="searchStudentPageContent" class="pageFormContent" layoutW="56" layoutH="320">				
+				<p>
+					<label>姓名</label>
+					<input type="text" name="searchname" value="${params.searchname}"/>
+				</p>
+				<p>
+					<label>电话</label>
+					<input type="text" name="searchtel" value="${params.searchtel}"/>
+					&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="regworkerButton" onclick="return searchServer(this.form)">Search</button>
+				</p>
+				<table id="studentlistTable" class="table" width="100%" >
+					<thead>
+						<tr>
+							<th width="50"></th>
+							<th width="150" class="asc">姓名</th>
+							<th width="150">年龄</th>
+							<th width="150">年级</th>
+							<th width="200">电话</th>
+							<th width="100"></th>
+						</tr>
+					</thead>
+					<tbody>
+						 #{list items:students, as:'student'}
+						<tr>
+							<td>
+							
+							<input type="radio" name="studentids" value="${student.id}" #{if orderedStudents[student.id]=='true'} checked #{/if}>
+							</td>
+							<td>${student.name}</td>
+							<td>${student.age?:''}</td>
+							<td>${student.grade?:''}</td>
+							<td>${student.tel?:''}</td>
+							<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(student.id)}" target="navTab" rel="studentDetail${student.id}" title="${student.name}">Detail >>></a></td>
+						</tr>
+						#{/list} 
+					</tbody>
+				</table>
+			</div>		
+			<div id="searchStudentPageContent" class="pageFormContent" layoutW="56">		
+				<p>
+					<label>课程名：</label>
+					${lesson.name}
+				</p>	
+				<p>
+					<label>教师 :</label>
+					${lesson?.teacher?.name}
+				</p>
+				<p>
+					<label>价格 :</label>
+					${lesson.price?:0}￥
+				</p>
+				<p>
+					<label>折扣 :</label>
+					<select class="combox"  name="discount" change="countDiscountMoney" param="rate">
+						<option value="100">--请选择--</option>
+						#{list items:discounts,as:'discount'}
+						<option value="${discount.value}">${discount.extvalue}</option>
+						#{/list}
+					</select>
+				</p>
+				<p>
+					<label>实收金额：</label>
+					<input name="money" class="required number" type="text" size="20" value="${order.money}" readonly="readonly"/>
+					<input name="moneyInputType" type="checkbox" onclick="changeInputType(this.form)">手工输入
+				</p>
+				<p>
+					<label>备注：</label>
+					<textarea name="orderDescription" class="">${order.description}</textarea>
+				</p>
+				<p></p>
+				<div class="formBar">
+					<ul>
+						<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+						<li>
+							<div class="button"><div class="buttonContent"><button type="Button" class="close">取消</button></div></div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

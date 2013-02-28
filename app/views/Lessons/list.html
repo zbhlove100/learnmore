@@ -149,11 +149,11 @@
 					<th width="120">时间类别</th>
 					<th width="120">类别</th>
 					<th width="120">教师</th>
-					<th width="120">级别</th>
+					<th >级别</th>
 					<th width="150">开始时间</th>
 					<th width="150">结束时间</th>
-					<th width="100">报名人数</th>
-					<th></th>
+					<th >报名人数</th>
+					<th width="100"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -168,7 +168,7 @@
 					<td>${lesson.level}</td>
 					<td>${lesson.startTime.format('yyyy-MM-dd')}</td>
 					<td>${lesson.endTime.format('yyyy-MM-dd')}</td>
-					<td><strong>${lesson.orders.size()}</strong></td>
+					<td><strong>${lesson.studentNum}</strong></td>
 					<td><a class="btn-mini btn btn-block btn-success" href="@{Lessons.detail(lesson.id)}" target="navTab" rel="lessonDetail${lesson.id}" title="${lesson.name}">Detail >>></a></td>
 				</tr>
 				#{/list} 
