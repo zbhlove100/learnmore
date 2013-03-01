@@ -331,7 +331,6 @@ public class Orders extends CRUD {
     
     public static void statisticsMonth(){
         int months = 12;
-        long monthtime = 86400000*31l;
         try {
             List<Department> departments = Department.find("type = ? and state !=?"
                                                         , Teacher.EM_TYPE.TEACHER.toString()
@@ -343,12 +342,10 @@ public class Orders extends CRUD {
                 		" where 1=1" +
                         "and o.teacher = t and t.department = d \n";
             if(toMonth==null||"".equals(toMonth)){
-                long year = 86400000;
-                long yeart = year*365;
                 Date nodate = new Date();
-                toMonth = sdf.format(nodate.getTime()+monthtime);
+                toMonth = sdf.format(nodate.getTime()+MyDateUtils.secondPerMonth);
                 long now = sdf.parse(toMonth).getTime();
-                startMonth = sdf.format(now-yeart);
+                startMonth = sdf.format(now-MyDateUtils.secondPerYear);
                 sql = sql + "and o.createdAt > '"+startMonth +"' and o.createdAt < '"+toMonth +"'";
             }else{
                 
@@ -365,7 +362,7 @@ public class Orders extends CRUD {
             	List datalist = new ArrayList<HashMap>();
             	Date tempDate = sdf.parse(startMonth);
 	            for(int j=0;j<months;j++){
-	                long td = j==0?tempDate.getTime():(tempDate.getTime() + monthtime);
+	                long td = j==0?tempDate.getTime():(tempDate.getTime() + MyDateUtils.secondPerMonth);
 	                String year = sdf.format(td);
 	                Map datamap = new HashMap<String, Object>();
 	                datamap.put("year", year.substring(0, 7));

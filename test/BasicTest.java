@@ -96,7 +96,7 @@ public class BasicTest extends UnitTest {
     	}
         
     }
-    @Test
+    //@Test
     public void test1() throws ParseException {
     	OrderHistory history = new OrderHistory();
     	history.name = "test his";
@@ -106,6 +106,18 @@ public class BasicTest extends UnitTest {
     	history.user = (User) User.findAll().get(0);
     	history.order_message = Order.findById(1l);
     	history.save();
+    }
+    @Test
+    public void test2() throws ParseException {
+        for(int i =0;i<3;i++){
+            Classroom room = new Classroom();
+            room.name = "教室"+(i+1);
+            room.size = "20平";
+            room.volume = 15;
+            room.school = School.find("state = ? ", BaseModel.ACTIVE).first();
+            room.save();
+        }
+        
     }
     
 }

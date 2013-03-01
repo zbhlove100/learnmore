@@ -4,7 +4,7 @@
 			<tr>
 			#{list items:itemlist,as:'item'}
 				<td #{if item.state == "finish"}class="finish"#{/if}>
-					${item.lessonDate} 
+					${item.lessonDate.format("yyyy-MM-dd HH:mm")} 
 					<br>
 					${item.name}
 				</td>

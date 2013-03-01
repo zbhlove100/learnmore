@@ -31,12 +31,16 @@ public class Lesson extends Model{
 	public String level;
 	
 	public String state;
+    
+    public Date createdAt;
+    
+    public Date removedAt;
 	
 	public String status;
 	
 	public int times;
 	
-	public String duration;
+	public float duration;
 	
 	public Date startTime;
 	
@@ -58,6 +62,9 @@ public class Lesson extends Model{
 	
 	@ManyToOne
 	public Grade grade;
+	
+	@ManyToOne
+	public Classroom classroom;
 	
 	@OneToMany(mappedBy="lesson",fetch=FetchType.LAZY)
 	public List<LessonTable> lessonTables;

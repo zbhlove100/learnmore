@@ -79,7 +79,7 @@ function addDate(){
 								<td class="blank" id="lessonTableTd${item.mark}" onclick="selectLessonByTable(${item.mark})" style="cursor: pointer;width: 180px;">
 									<span id="lessonName${item.mark}">${item.name}</span>
 									<br>
-									<span id="lessonDate${item.mark}">${item.date.format("yyyy-MM-dd hh:mm")}</span>
+									<span id="lessonDate${item.mark}">${item.date.format('yyyy-MM-dd HH:mm:ss')}</span>
 									<input type="hidden" name="lessonDate${item.mark}" value="${item.date}"/>
 								</td>
 							#{/list}

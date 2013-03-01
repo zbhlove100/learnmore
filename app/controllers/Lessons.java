@@ -106,7 +106,7 @@ public class Lessons extends CRUD {
             lesson.endTime = sdf.parse(params.get("stopDate"));
             lesson.lessonTimeType = params.get("stimeType");
             lesson.lessonType = params.get("type");
-            lesson.duration = params.get("duration");
+            lesson.duration = params.get("duration",Float.class);
             lesson.level = params.get("level");
             lesson.price = params.get("price",Integer.class);
             lesson.times = params.get("times",Integer.class);
@@ -152,7 +152,8 @@ public class Lessons extends CRUD {
     
     public static void saveLessonTable(long id){
         Lesson lesson = Lesson.findById(id);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        LessonTable.delete("lesson = ?", lesson);
         try {
             for(int i=1;i<=lesson.times;i++){
                 LessonTable lessonTable = new LessonTable();
@@ -293,7 +294,7 @@ public class Lessons extends CRUD {
             lesson.level = params.get("level");
             lesson.price = params.get("price",Integer.class);
             lesson.times = params.get("times",Integer.class);
-            lesson.duration = params.get("duration");
+            lesson.duration = params.get("duration",Float.class);
             Teacher teacher = Teacher.findById(params.get("teacherid",Long.class));
             lesson.teacher = teacher;
             int grade = params.get("grade",Integer.class);

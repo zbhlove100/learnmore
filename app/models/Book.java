@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -29,6 +30,10 @@ public class Book extends Model{
 	public String description;
 	
 	public String state;
+	
+    public Date createdAt;
+    
+    public Date removedAt;
 	
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinTable(name="book_student"

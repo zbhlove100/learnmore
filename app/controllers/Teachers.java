@@ -5,11 +5,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
+
+import com.google.gson.Gson;
 
 import play.Play;
 import play.db.jpa.JPA;
@@ -18,6 +23,7 @@ import utils.MyDateUtils;
 import models.BaseModel;
 import models.ImgDetail;
 import models.Lesson;
+import models.LessonTable;
 import models.School;
 import models.Setting;
 import models.Student;
@@ -131,6 +137,7 @@ public class Teachers extends CRUD {
             teacher.name = name;
             teacher.school = school;
             teacher.state = BaseModel.ACTIVE;
+            teacher.createdAt = new Date(java.lang.System.currentTimeMillis());
             teacher.save();
             
             TeacherDetail teacherDetail = new TeacherDetail();
@@ -215,6 +222,7 @@ public class Teachers extends CRUD {
             teacher.name = name;
             teacher.school = school;
             teacher.state = BaseModel.ACTIVE;
+            teacher.createdAt = new Date(java.lang.System.currentTimeMillis());
             teacher.save();
             
             TeacherDetail teacherDetail = TeacherDetail.find("teacher = ?", teacher).first();
@@ -303,6 +311,7 @@ public class Teachers extends CRUD {
         List<Teacher> teachers = Teacher.find(where).fetch();
         for(Teacher t : teachers){
             t.state = BaseModel.DELETE;
+            t.removedAt = new Date(java.lang.System.currentTimeMillis());
             t.save();
         }
         renderJSON(forwardJson("teacherlist", "/teachers/list", "删除成功！"));
@@ -316,8 +325,32 @@ public class Teachers extends CRUD {
         try {
             Teacher t = Teacher.findById(id);
             Map workdate = MyDateUtils.getYearAndMonthSinceNow(t.teacherDetail.hireDate, "yyyy-MM-dd");
-            List<Lesson> lessons = Lesson.find("teacher = ? and state != ?", t,BaseModel.DELETE).fetch(5);
+            List<Lesson> lessons = Lesson.find("teacher = ? and state != ?", t,BaseModel.DELETE).fetch();
+            List<HashMap<String, Object>> calendarSource = new ArrayList<HashMap<String,Object>>();
+            for(Lesson lesson:lessons){
+                List<LessonTable> lessonTables = LessonTable.find("lesson = ?", lesson).fetch();
+                for(LessonTable lessonTable:lessonTables){
+                    HashMap<String, Object> tmap = new HashMap<String, Object>();
+                    tmap.put("title", lesson.name+lessonTable.name);
+                    tmap.put("allDay", false);
+                    tmap.put("start", lessonTable.lessonDate);
+                    Date endDate =new Date((long) (lessonTable.lessonDate.getTime() - MyDateUtils.secondPerHour*lesson.duration));
+                    tmap.put("end", endDate);
+                    int hour = lessonTable.lessonDate.getHours();
+                    if(hour<12){
+                        tmap.put("color", "#4EE387"); 
+                    }else if(hour<18&&hour>=12){
+                        tmap.put("color", "#E15B36");
+                    }else if(hour<24&&hour>=18){
+                        tmap.put("color", "#B235E0"); 
+                    }
+                    calendarSource.add(tmap);
+                }
+                
+            }
+            Gson gson = new Gson();
             renderArgs.put("showTeacher", t);
+            renderArgs.put("calendarSource", gson.toJson(calendarSource));
             renderArgs.put("lessons", lessons);
             renderArgs.put("workdate", workdate);
             render();

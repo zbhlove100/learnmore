@@ -98,18 +98,18 @@
 		<ul class="toolBar">
 			<li>
 				<a class="add" id="ad" href="@{Teachers.blank}" target="dialog" height="650" width="850" rel="createTeacher">
-					<span>Add teacher</span> 
+					<span>添加员工</span> 
 				</a>
 			</li>
 			<li>
-				<a class="add" id="ad" href="@{Teachers.edit("\u007Bsid_user\u007D")}" target="dialog" height="650" width="850" rel="editTeacher" title="修改教师信息">
-					<span>Add teacher</span> 
+				<a class="edit" id="ad" href="@{Teachers.edit("\u007Bsid_user\u007D")}" target="dialog" height="650" width="850" rel="editTeacher" title="修改教师信息">
+					<span>修改信息</span> 
 				</a>
 			</li>
 			<li>
 				<a class="delete" href="@{Teachers.deletes}" target="selectedTodo" postType="string" rel="ids"
 				title="确定要删除这些员工信息吗?">
-				<span>Delete bucket</span>
+				<span>删除</span>
 			</a></li>
 		</ul>
 	</div>
@@ -135,7 +135,7 @@
 					<td>${teacher.employeType}</td>
 					<td>${teacher.teacherDetail?.tel?:''}</td>
 					<td><a href="${teacher.email}">${teacher.email}</a></td>
-					<td><a class="btn-mini btn btn-block btn-success" href="@{Teachers.detail(teacher.id)}" target="navTab" rel="teacherDetail" title="${teacher.name}">Detail >>></a></td>
+					<td><a class="btn-mini btn btn-block btn-success" href="@{Teachers.detail(teacher.id)}" target="navTab" rel="teacherDetail${teacher.id}" title="${teacher.name}">Detail >>></a></td>
 				</tr>
 				#{/list} 
 			</tbody>

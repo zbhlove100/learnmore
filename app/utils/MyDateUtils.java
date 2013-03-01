@@ -9,6 +9,10 @@ import java.util.Map;
 import models.Setting;
 
 public class MyDateUtils {
+    public static final long secondPerHour = 3600000l;
+    public static final long secondPerDay = 86400000l;
+    public static final long secondPerMonth = 2678400000l;
+    public static final long secondPerYear = 31536000000l;
     public static int getAgeForBirthday(String birthday,String dateFormat) throws ParseException{
         int differyear = getDaysSinceNow(birthday,dateFormat)/365;
         return differyear;

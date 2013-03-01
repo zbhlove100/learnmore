@@ -39,7 +39,7 @@ public class SimpleTest {
         System.out.println(sdf.parse("2012-02").getTime());
         System.out.print(sdf.format(d));
     }
-    @Test
+    //@Test
     public void test2() throws ParseException {
     	String startMonth = null;
         String toMonth = null;
@@ -66,5 +66,12 @@ public class SimpleTest {
               System.out.println(td);
               System.out.println(year);
         }
+    }
+    @Test
+    public void test3() throws ParseException{
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date d = (Date) sdf.parseObject("2012-03-01 05:30");
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        System.out.print(sdf1.format(d));
     }
 }

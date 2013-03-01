@@ -127,7 +127,7 @@
 					<td>${Order.student.name?:''}</td>
 					<td>${Order.teacher.name?:''}</td>
 					<td>${Order.createdAt.format('yyyy-MM-dd')?:''}</td>
-					<td>${Order.modifyAt?.format('yyyy-MM-dd hh:mm:ss')?:''}</td>
+					<td>${Order.modifyAt?.format('yyyy-MM-dd HH:mm:ss')?:''}</td>
 					<td>${Order.money?:''}</td>
 					#{if Order.state == "Active"}
 					<td>正常</td>

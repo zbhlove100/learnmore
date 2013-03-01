@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +116,7 @@ public class Students extends CRUD {
             student.age = mdu.getAgeForBirthday(studentbirthday, "yyyy-MM-dd");
             student.description = description;
             student.state = BaseModel.ACTIVE;
+            student.createdAt = new Date(java.lang.System.currentTimeMillis());
             student.save();
             
             em.getTransaction().commit();
@@ -191,6 +193,7 @@ public class Students extends CRUD {
             student.age = mdu.getAgeForBirthday(studentbirthday, "yyyy-MM-dd");
             student.description = description;
             student.state = BaseModel.ACTIVE;
+            student.createdAt = new Date(java.lang.System.currentTimeMillis());
             student.save();
             
             if(picture !=null&&picture.length()!=0){
@@ -252,6 +255,7 @@ public class Students extends CRUD {
         List<Student> students = Student.find(where).fetch();
         for(Student s : students){
             s.state = BaseModel.DELETE;
+            s.removedAt = new Date(java.lang.System.currentTimeMillis());
             s.save();
             ImgDetail imgDetail = ImgDetail.find("student = ? and state !=?", s,BaseModel.DELETE).first();
             imgDetail.state = BaseModel.DELETE;
