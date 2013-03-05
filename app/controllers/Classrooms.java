@@ -34,7 +34,23 @@ public class Classrooms extends CRUD{
     }
     
     public static void blank(){
-        
+        List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
+        renderArgs.put("schools", schools);
+        render();
+    }
+    
+    public static void create(){
+        Classroom classroom = new Classroom();
+        classroom.name = params.get("name");
+        classroom.size = params.get("size");
+        classroom.volume = params.get("volume",Integer.class);
+        classroom.description = params.get("description");
+        classroom.state = BaseModel.ACTIVE;
+        classroom.createdAt = new Date(java.lang.System.currentTimeMillis());
+        School school = School.findById(params.get("schoolid",Long.class));
+        classroom.school = school;
+        classroom.save();
+        renderJSON(forwardJsonCloseDailog("classroomsList","/classroomsList/list","添加教室信息成功！"));
     }
     
     public static void detail(long id){
@@ -73,7 +89,13 @@ public class Classrooms extends CRUD{
         
     }
     
-    public static void delete(String ids){
-        
+    public static void deletes(String ids){
+        String where = String.format("id in (%s)", ids);
+        List<Classroom> classrooms = Classroom.find(where).fetch();
+        for(Classroom s : classrooms){
+            s.state = BaseModel.DELETE;
+            s.save();
+        }
+        renderJSON(forwardJson("classroomsList", "/classrooms/list", "删除成功！"));
     }
 }

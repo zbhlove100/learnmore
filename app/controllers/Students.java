@@ -20,12 +20,15 @@ import utils.MyDateUtils;
 import utils.StringUtils;
 
 import models.BaseModel;
+import models.CurrentUser;
 import models.Grade;
 import models.ImgDetail;
 import models.Lesson;
 import models.Order;
+import models.OrderHistory;
 import models.Setting;
 import models.Student;
+import models.User;
 import models.Where;
 
 public class Students extends CRUD {
@@ -37,7 +40,8 @@ public class Students extends CRUD {
             where.add("tel", "tel like");
         if (StringUtils.checkNotNull(params.get("grade")))
             where.addValue("grade.level =",Integer.parseInt(params.get("grade")));
-        where.add("state !=?", BaseModel.DELETE);
+        
+        where.addValue("state !=", BaseModel.DELETE);
         List<Student> students = Student.find(where.where(), where.paramsarr()).fetch();
         List<Grade> grades = Grade.findAll();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -257,9 +261,33 @@ public class Students extends CRUD {
             s.state = BaseModel.DELETE;
             s.removedAt = new Date(java.lang.System.currentTimeMillis());
             s.save();
+            List<Order> orders = Order.find("student = ?", s).fetch();
+            for(Order order :orders){
+                System.out.println("state======================================>"+order.state);
+                if(order.state.equals(BaseModel.ACTIVE)){
+                    
+                    order.lesson.studentNum--;
+                    order.lesson.save(); 
+                }
+                order.state = BaseModel.DELETE;
+                order.save();
+                OrderHistory orderHistory = new OrderHistory();
+                orderHistory.createdAt = new Date(java.lang.System.currentTimeMillis());
+                orderHistory.name = order.name;
+                orderHistory.money = order.money;
+                orderHistory.description = "删除学生";
+                orderHistory.user = User.findById(CurrentUser.current().id);
+                orderHistory.optype = Setting.value("ORDER_DELETE","删除");
+                orderHistory.student = order.student;
+                orderHistory.order_message = order;
+                orderHistory.save();
+                
+            }
             ImgDetail imgDetail = ImgDetail.find("student = ? and state !=?", s,BaseModel.DELETE).first();
-            imgDetail.state = BaseModel.DELETE;
-            imgDetail.save();
+            if(imgDetail!=null){
+                imgDetail.state = BaseModel.DELETE;
+                imgDetail.save();
+            }
         }
         renderJSON(forwardJson("studentList", "/students/list", "删除成功！"));
     }

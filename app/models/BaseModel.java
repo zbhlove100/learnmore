@@ -15,6 +15,7 @@ public class BaseModel extends Model {
 	 public static String DELETE = "Delete";
 	 public static String FINISH = "finish";
 	 public static String REVIEW = "review";
+	 public static String RETIRE = "Retire";
 	 public static List<String> getBaseStates(){
 		 List<String> ss = new ArrayList<String>();
 		 ss.add(ACTIVE);

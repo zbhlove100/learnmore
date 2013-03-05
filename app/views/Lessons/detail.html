@@ -26,7 +26,7 @@ function deleteOrders(){
 	
 <div class="pageContent sortDrag" selector="h1" layoutH="60">
 	<input type="hidden" name="relid" value="lessonDetail${lesson.id}">
-	<div class="panel collapse"  defH="150">
+	<div class="panel collapse"  defH="170">
 		<h1>课程基本信息</h1>
 		<div>
 			<table class="thistable" style="width: 100%;margin-top: 10px;">
@@ -65,8 +65,13 @@ function deleteOrders(){
 				<tr>
 					<th>地点 ：</th>
 					<td>${lesson?.school.name}</td>
+					<th>教室 ：</th>
+					<td>${lesson?.classroom.name}</td>
+					
+				</tr>
+				<tr>
 					<th>备注 ：</th>
-					<td colspan="3">${lesson?.description}</td>
+					<td colspan="5">${lesson?.description}</td>
 				</tr>
 			</table>
 		</div>
@@ -91,13 +96,12 @@ function deleteOrders(){
 					<tr>
 						<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 						<th width="150" class="asc">姓名</th>
-						<th width="150">年龄</th>
-						<th width="150">年级</th>
-						<th width="150">电话</th>
-						<th width="200">Email</th>
-						<th width="100">报名费用</th>
-						<th width="300">备注</th>
-						<th></th>
+						<th width="100">年级</th>
+						<th width="120">电话</th>
+						<th width="120">Email</th>
+						<th width="80">报名费用</th>
+						<th width="350">备注</th>
+						<th width="100"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -107,7 +111,6 @@ function deleteOrders(){
 						<td><input name="ids" value="${order.id}" type="checkbox">
 						</td>
 						<td>${order.student.name}</td>
-						<td>${order.student.age?:''}</td>
 						<td>${order.student.grade?:''}</td>
 						<td>${order.student.tel?:''}</td>
 						<td>${order.student?.email?:''}</td>

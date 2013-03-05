@@ -83,7 +83,7 @@
 				<ul>
 					<li><div class="buttonActive">
 							<div class="buttonContent">
-								<button type="submit">Search</button>
+								<button type="submit">搜索</button>
 							</div>
 						</div>
 					</li>
@@ -118,11 +118,11 @@
 			<thead>
 				<tr>
 					<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-					<th width="150" class="asc">Name</th>
-					<th width="150">Type</th>
-					<th width="200">Telephone</th>
-					<th width="300">Email</th>
-					<th></th>
+					<th width="150" class="asc">名字</th>
+					<th width="150">员工类型</th>
+					<th width="200">电话</th>
+					<th width="300">电子邮箱</th>
+					<th width="150"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -132,7 +132,11 @@
 					<td><input name="ids" value="${teacher.id}" type="checkbox">
 					</td>
 					<td>${teacher.name}</td>
-					<td>${teacher.employeType}</td>
+					<td>
+						#{if teacher.employeType=="TEACHER"}老师#{/if}
+						#{if teacher.employeType=="ASSISTANT"}助教#{/if}
+						#{if teacher.employeType=="MARKETER"}市场#{/if}
+					</td>
 					<td>${teacher.teacherDetail?.tel?:''}</td>
 					<td><a href="${teacher.email}">${teacher.email}</a></td>
 					<td><a class="btn-mini btn btn-block btn-success" href="@{Teachers.detail(teacher.id)}" target="navTab" rel="teacherDetail${teacher.id}" title="${teacher.name}">Detail >>></a></td>
@@ -142,14 +146,14 @@
 		</table>
 		<div class="panelBar">
 			<div class="pages">
-				<span>List</span> 
+				<span>每页显示</span> 
 				<select name="numPerPage" onchange="navTabPageBreak({'numPerPage':this.value})">
 					<option value="20" #{if numPerPage==20}selected#{/if}>20</option>
 					<option value="50" #{if numPerPage==50}selected#{/if}>50</option>
 					<option value="100" #{if numPerPage==100}selected#{/if}>100</option>
 					<option value="200" #{if numPerPage==200}selected#{/if}>200</option>
 				</select> 
-				<span>Total:${totalCount}</span>
+				<span>总计:${totalCount}</span>
 			</div>
 
 			<div currentpage="${pageNum}" pagenumshown="10"

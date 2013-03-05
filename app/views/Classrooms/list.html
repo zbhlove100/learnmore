@@ -45,19 +45,19 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li>
-				<a class="add" id="ad" href="@{classrooms.blank}" target="dialog" height="650" width="850" rel="createClassroom">
+				<a class="add" id="ad" href="@{classrooms.blank}" target="dialog" height="650" width="450" rel="createClassroom">
 					<span>添加教室</span> 
 				</a>
 			</li>
-			<li>
+			<!-- <li>
 				<a class="add" id="ad" href="@{Classrooms.edit("\u007Bsid_user\u007D")}" target="dialog" height="650" width="850" rel="editClassroom" title="修改教师信息">
 					<span>修改教室信息</span> 
 				</a>
-			</li>
+			</li> -->
 			<li>
 				<a class="delete" href="@{Classrooms.deletes}" target="selectedTodo" postType="string" rel="ids"
 				title="确定要删除这些教室信息吗?">
-				<span>Delete bucket</span>
+				<span>删除教室</span>
 			</a></li>
 		</ul>
 	</div>
@@ -90,14 +90,14 @@
 		</table>
 		<div class="panelBar">
 			<div class="pages">
-				<span>List</span> 
+				<span>每页显示</span> 
 				<select name="numPerPage" onchange="navTabPageBreak({'numPerPage':this.value})">
 					<option value="20" #{if numPerPage==20}selected#{/if}>20</option>
 					<option value="50" #{if numPerPage==50}selected#{/if}>50</option>
 					<option value="100" #{if numPerPage==100}selected#{/if}>100</option>
 					<option value="200" #{if numPerPage==200}selected#{/if}>200</option>
 				</select> 
-				<span>Total:${totalCount}</span>
+				<span>总计:${totalCount}</span>
 			</div>
 
 			<div currentpage="${pageNum}" pagenumshown="10"

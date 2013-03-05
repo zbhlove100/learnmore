@@ -1,0 +1,49 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="@{Classrooms.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
+			<div class="pageFormContent" layoutH="56" layoutW="56">
+			<fieldset>
+				<legend>教室信息</legend>
+				<dl>
+					<dt>名称：</dt>
+					<dd><input name="name" class="required" type="text" size="10"/></dd>
+				</dl>
+				<dl>
+					<dt>面积：</dt>
+					<dd><input name="size" class="" type="text" size="10"/></dd>
+				</dl>
+				<dl>
+					<dt>容纳人数：</dt>
+					<dd><input name="volume" class="" type="text" size="10"/></dd>
+				</dl>
+				<dl>
+					<dt>地点：</dt>
+					<dd>
+						<select class="combox"  name="schoolid">
+							<option value="">--请选择--</option>
+							#{list items:schools,as:'school'}
+							<option value="${school.id}" >${school.name}</option>
+							#{/list}
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt>备注：</dt>
+					<dd>
+						<textarea name="description" />
+					</dd>
+				</dl>
+				<dl></dl>
+			</fieldset>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+					<li>
+						<div class="button"><div class="buttonContent"><button type="Button" class="close">取消</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

@@ -114,33 +114,6 @@
     	    });
      })
 </script>
-<div class="pageHeader">
-	<form  onSubmit="return navTabSearch(this);" action="@{Orders.list}" method="post">
-		<div class="searchBar">
-			<ul class="searchContent">
-				<li>
-					<label>name:</label> 
-					<input type="text" name="name" value="${params.name}"/>
-				</li>
-				<li>
-					<label>电话:</label> 
-					<input type="text" name="tel" value="${params.tel}"/>
-				</li>
-			</ul>
-			
-			<div class="subBar">
-				<ul>
-					<li><div class="buttonActive">
-							<div class="buttonContent">
-								<button type="submit">Search</button>
-							</div>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</form>
-</div>
 
 <div class="pageContent" layoutH="60">
 	<input id="hiddenSticSource" type="hidden" value="${sResult}">

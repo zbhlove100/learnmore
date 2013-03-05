@@ -219,7 +219,7 @@ public class Orders extends CRUD {
         String where = String.format("id in (%s)", ids);
         List<Order> orders = Order.find(where).fetch();
         for(Order order:orders){
-            order.state = BaseModel.DELETE;
+            order.state = BaseModel.RETIRE;
             order.modifyAt = new Date(java.lang.System.currentTimeMillis());
             order.save();
             OrderHistory orderHistory = new OrderHistory();
@@ -228,7 +228,7 @@ public class Orders extends CRUD {
             orderHistory.money = order.money;
             orderHistory.description = order.description;
             orderHistory.user = User.findById(CurrentUser.current().id);
-            orderHistory.optype = Setting.value("ORDER_DELETE","退费");
+            orderHistory.optype = Setting.value("ORDER_RETIRE","退费");
             orderHistory.student = order.student;
             orderHistory.order_message = order;
             orderHistory.save();
@@ -310,7 +310,7 @@ public class Orders extends CRUD {
         String where = String.format("id in (%s)", ids);
         List<Order> orders = Order.find(where).fetch();
         for(Order order:orders){
-            order.state = BaseModel.DELETE;
+            order.state = BaseModel.RETIRE;
             order.modifyAt = new Date(java.lang.System.currentTimeMillis());
             order.save();
             OrderHistory orderHistory = new OrderHistory();
@@ -319,7 +319,7 @@ public class Orders extends CRUD {
             orderHistory.money = order.money;
             orderHistory.description = order.description;
             orderHistory.user = User.findById(CurrentUser.current().id);
-            orderHistory.optype = Setting.value("ORDER_DELETE","退费");
+            orderHistory.optype = Setting.value("ORDER_RETIRE","退费");
             orderHistory.student = order.student;
             orderHistory.order_message = order;
             orderHistory.save();

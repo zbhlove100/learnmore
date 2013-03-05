@@ -28,7 +28,8 @@
 					<select class="combox"  name="state">
 						<option value="">--请选择--</option>
 						<option value="Active" #{if params.state=="Active"}selected#{/if}>正常</option>
-						<option value="Delete" #{if params.state=="Delete"}selected#{/if}>退费</option>
+						<option value="Delete" #{if params.state=="Delete"}selected#{/if}>删除</option>
+						<option value="Retire" #{if params.state=="Retire"}selected#{/if}>退费</option>
 					</select>
 				</li>
 			</ul>
@@ -94,7 +95,7 @@
 			<li>
 				<a class="delete" href="@{Orders.deletes}" target="selectedTodo" postType="string" rel="ids"
 				title="确定要删除订单吗?">
-				<span>删除订单</span>
+				<span>退费</span>
 			</a></li>
 		</ul>
 	</div>
@@ -132,8 +133,11 @@
 					#{if Order.state == "Active"}
 					<td>正常</td>
 					#{/if}
-					#{elseif Order.state=="Delete"}
+					#{elseif Order.state=="Retire"}
 					<td>退费</td>
+					#{/elseif}
+					#{elseif Order.state=="Delete"}
+					<td>删除</td>
 					#{/elseif}
 					<td><a class="btn-mini btn btn-block btn-success" href="@{Orders.detail(Order.id)}" target="navTab" rel="orderDetail${Order.id}" title="订单${Order.id}">详细 >>></a></td>
 				</tr>

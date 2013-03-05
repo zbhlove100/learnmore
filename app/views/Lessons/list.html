@@ -110,7 +110,7 @@
 				<ul>
 					<li><div class="buttonActive">
 							<div class="buttonContent">
-								<button type="submit">Search</button>
+								<button type="submit">搜索</button>
 							</div>
 						</div>
 					</li>
@@ -145,14 +145,14 @@
 			<thead>
 				<tr>
 					<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-					<th width="200" class="asc">课名</th>
+					<th width="180" class="asc">课名</th>
 					<th width="120">时间类别</th>
 					<th width="120">类别</th>
 					<th width="120">教师</th>
-					<th >级别</th>
-					<th width="150">开始时间</th>
-					<th width="150">结束时间</th>
-					<th >报名人数</th>
+					<th width="100">级别</th>
+					<th width="120">开始时间</th>
+					<th width="120">结束时间</th>
+					<th width="50">报名人数</th>
 					<th width="100"></th>
 				</tr>
 			</thead>
@@ -176,14 +176,14 @@
 		</table>
 		<div class="panelBar">
 			<div class="pages">
-				<span>List</span> 
+				<span>每页显示</span> 
 				<select name="numPerPage" onchange="navTabPageBreak({'numPerPage':this.value})">
 					<option value="20" #{if numPerPage==20}selected#{/if}>20</option>
 					<option value="50" #{if numPerPage==50}selected#{/if}>50</option>
 					<option value="100" #{if numPerPage==100}selected#{/if}>100</option>
 					<option value="200" #{if numPerPage==200}selected#{/if}>200</option>
 				</select> 
-				<span>Total:${totalCount}</span>
+				<span>总计:${totalCount}</span>
 			</div>
 
 			<div currentpage="${pageNum}" pagenumshown="10"
@@ -196,7 +196,7 @@
 		<div class="tabsHeader">
 			<div class="tabsHeaderContent">
 				<ul>
-					<li><a href="javascript:details(-1);"><span>Details</span> </a></li>
+					<li><a href="javascript:details(-1);"><span>课表</span> </a></li>
 				</ul>
 			</div>
 		</div>
