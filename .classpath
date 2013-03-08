@@ -3,9 +3,8 @@
 	<classpathentry excluding="views/**" kind="src" path="app"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="secure"/>
-	
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/zhangbohan/play-1.2.2/framework/play-1.2.2.jar" sourcepath="/home/zhangbohan/play-1.2.2/framework/src" />
+	<classpathentry kind="lib" path="/home/zhangbohan/play-1.2.2/framework/play-1.2.2.jar" sourcepath="/home/zhangbohan/play-1.2.2/framework/src"/>
 	<classpathentry kind="lib" path="/home/zhangbohan/myLearn/webWrok/learnmore/lib/gson-1.7.1.jar"/>
 	<classpathentry kind="lib" path="/home/zhangbohan/myLearn/webWrok/learnmore/lib/json-lib-2.4-jdk15.jar"/>
 	<classpathentry kind="lib" path="/home/zhangbohan/myLearn/webWrok/learnmore/lib/junit-4.8.1.jar"/>
@@ -83,6 +82,6 @@
 			<attribute name="javadoc_location" value="http://docs.jboss.org/hibernate/core/3.6/javadocs/"/>
 		</attributes>
 	</classpathentry>
-	
+	<classpathentry kind="lib" path="lib/jxl.jar"/>
 	<classpathentry kind="output" path="eclipse/classes"/>
 </classpath>

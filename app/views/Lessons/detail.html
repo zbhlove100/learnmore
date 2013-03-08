@@ -86,7 +86,7 @@ function deleteOrders(){
 						<a href="@{Orders.quickBlank(lesson.id)}" target="dialog" height="600" width="650" class="btn btn-primary" rel="quickBlankOrder">添加</button>
 						<a href="@{Orders.edit("\u007Bsid_user\u007D",'ldetail')}" target="dialog" height="600" width="650" class="btn" title="修改订单信息" rel="editorder">修改</a>
 						<button onclick="deleteOrders()" class="btn btn-danger">退费</button>
-						<a href="@{Lessons.printLessonStudents(lesson.id)}" target="navTab" class="btn btn-success" rel="printLessonStudents">打印名单</a>
+						<a href="@{Lessons.saveLessonStudentsToexl(lesson.id)}" class="btn btn-success" >打印名单</a>
 					</li>
 				</ul>
 			</div>

@@ -1,6 +1,12 @@
 package controllers;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +14,24 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.codec.net.URLCodec;
+
+import jxl.*;
+import jxl.format.Alignment;
+import jxl.format.Border;
+import jxl.format.BorderLineStyle;
+import jxl.format.Colour;
+import jxl.read.biff.BiffException;
+import jxl.write.Label;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+
+import play.Play;
+import play.libs.MimeTypes;
+import play.mvc.Http;
 
 import models.BaseModel;
 import models.Code;
@@ -22,6 +46,12 @@ import models.Teacher;
 import com.google.gson.Gson;
 
 public class Lessons extends CRUD {
+    private static final String ATTACHMENT_DISPOSITION_TYPE = "attachment";
+    
+    private static final String INLINE_DISPOSITION_TYPE = "inline";
+    
+    private static URLCodec encoder = new URLCodec();
+    
     public static void list(){
         StringBuffer bf = new StringBuffer("state != '"+ BaseModel.DELETE+"'");
         if (params.get("sname") != null && !"".equals(params.get("sname")))
@@ -256,6 +286,103 @@ public class Lessons extends CRUD {
         renderArgs.put("lesson", lesson);
         renderArgs.put("orders", orders);
         render();
+    }
+    
+    public static void saveLessonStudentsToexl(long id){
+        Lesson lesson = Lesson.findById(id);
+        List<Order> orders = Order.find("lesson = ? and state = ?", lesson,BaseModel.ACTIVE).fetch();
+        try {
+            WritableWorkbook workbook = Workbook.createWorkbook(new File(Play.applicationPath.getPath()+"/public/upload/myfile.xls"));
+            WritableSheet sheet = workbook.createSheet("First Sheet", 0);
+            WritableFont twf = new WritableFont(WritableFont.ARIAL, 16,WritableFont.BOLD); 
+            WritableCellFormat twcf = new WritableCellFormat(twf);
+            twcf.setAlignment(Alignment.CENTRE);
+            Label tlabel = new Label(3, 0, lesson.name,twcf); 
+            sheet.addCell(tlabel);
+            sheet.setRowView(0, 50);
+            int rowMark = 5;
+            for(int i=0;i<lesson.times;i++){
+                WritableCellFormat wcf = new WritableCellFormat();
+                if((i%2)==0){
+                    wcf.setBackground(Colour.WHITE);
+                }else{
+                    wcf.setBackground(Colour.GREY_50_PERCENT);
+                }
+                
+                wcf.setBorder(Border.ALL, BorderLineStyle.MEDIUM);
+                wcf.setWrap(true);
+                Label label2 = new Label(i%rowMark+1,i/rowMark+4 , "                      ",wcf);
+                sheet.addCell(label2);
+            }
+            
+            int dividerLine = lesson.times/rowMark +5;
+            WritableCellFormat dwcf = new WritableCellFormat();
+            dwcf.setBorder(Border.BOTTOM, BorderLineStyle.MEDIUM_DASH_DOT);
+            Label label = new Label(0, dividerLine, "名单",dwcf); 
+            sheet.addCell(label); 
+            sheet.mergeCells(0, dividerLine, rowMark, dividerLine);
+            WritableCellFormat wcf = new WritableCellFormat();
+            wcf.setBorder(Border.BOTTOM, BorderLineStyle.THIN);
+            for(int i=0;i<orders.size();i++){
+                Order o = orders.get(i);
+                Label olabel = new Label(1, dividerLine+1+i, o.student.name,wcf);
+                sheet.addCell(olabel);
+                Label olabel1 = new Label(2, dividerLine+1+i, o.student.tel,wcf);
+                sheet.addCell(olabel1);
+                Label olabel2 = new Label(3, dividerLine+1+i, "",wcf);
+                sheet.addCell(olabel2);
+            }
+            for(int i=0;i<rowMark;i++){
+                
+                sheet.setColumnView(i+1, 100);
+            }
+            int widthLine = lesson.times%rowMark==0?lesson.times/rowMark:lesson.times/rowMark+1;
+            for(int i=0;i<widthLine;i++){
+                
+                sheet.setRowView(i+4, 15);
+            }
+            
+            workbook.write();
+            workbook.close();
+            
+            File file = new File(Play.applicationPath.getPath()+"/public/upload/myfile.xls");
+            response.setContentTypeIfNotSet(MimeTypes.getContentType(file.getName()));
+            
+            String dispositionType = ATTACHMENT_DISPOSITION_TYPE;
+            String name = lesson.name+"学生名单.xls";
+            if(canAsciiEncode(name)) {
+                String contentDisposition = "%s; filename=\"%s\"";
+                response.setHeader("Content-Disposition", String.format(contentDisposition, dispositionType, name));
+            } else {
+                final String encoding = Http.Response.current().encoding;
+                String contentDisposition = "%1$s; filename*="+encoding+"''%2$s; filename=\"%2$s\"";
+                try {
+                    response.setHeader("Content-Disposition", String.format(contentDisposition, dispositionType, encoder.encode(name, encoding)));
+                } catch (UnsupportedEncodingException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            BufferedInputStream is = null;
+            FileInputStream fis = null;
+            fis = new FileInputStream(file);
+            is =  new BufferedInputStream(fis);
+            byte[] buffer = new byte[1024*2];
+            int count = 0;
+            while ((count = is.read(buffer)) > 0) {
+                response.out.write(buffer, 0, count);
+                response.out.flush();
+            }
+            fis.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    private static boolean canAsciiEncode(String string) {
+        CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder();
+        return asciiEncoder.canEncode(string);
     }
     
     public static void edit(long id,String type){

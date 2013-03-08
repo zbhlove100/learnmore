@@ -1,11 +1,25 @@
 import org.junit.*;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.persistence.Query;
 
+import jxl.CellView;
+import jxl.Workbook;
+import jxl.format.Alignment;
+import jxl.format.Border;
+import jxl.format.BorderLineStyle;
+import jxl.format.Colour;
+import jxl.write.Label;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+
+import play.Play;
 import play.db.jpa.JPA;
 import play.test.*;
 import utils.Base64Util;
@@ -109,15 +123,65 @@ public class BasicTest extends UnitTest {
     }
     @Test
     public void test2() throws ParseException {
-        for(int i =0;i<3;i++){
-            Classroom room = new Classroom();
-            room.name = "教室"+(i+1);
-            room.size = "20平";
-            room.volume = 15;
-            room.school = School.find("state = ? ", BaseModel.ACTIVE).first();
-            room.save();
+        Lesson lesson = Lesson.findById(1l);
+        List<Order> orders = Order.find("lesson = ? and state = ?", lesson,BaseModel.ACTIVE).fetch();
+        try {
+            WritableWorkbook workbook = Workbook.createWorkbook(new File(Play.applicationPath.getPath()+"/public/upload/myfile.xls"));
+            WritableSheet sheet = workbook.createSheet("First Sheet", 0);
+            WritableFont twf = new WritableFont(WritableFont.ARIAL, 16,WritableFont.BOLD); 
+            WritableCellFormat twcf = new WritableCellFormat(twf);
+            twcf.setAlignment(Alignment.CENTRE);
+            Label tlabel = new Label(3, 0, lesson.name,twcf); 
+            sheet.addCell(tlabel);
+            sheet.setRowView(0, 500);
+            int rowMark = 5;
+            for(int i=0;i<lesson.times;i++){
+                WritableCellFormat wcf = new WritableCellFormat();
+                if((i%2)==0){
+                    wcf.setBackground(Colour.WHITE);
+                }else{
+                    wcf.setBackground(Colour.GREY_50_PERCENT);
+                }
+                
+                wcf.setBorder(Border.ALL, BorderLineStyle.MEDIUM);
+                wcf.setWrap(true);
+                Label label2 = new Label(i%rowMark+1,i/rowMark+4 , "                      ",wcf);
+                sheet.addCell(label2);
+            }
+            
+            int dividerLine = lesson.times/rowMark +5;
+            WritableCellFormat dwcf = new WritableCellFormat();
+            dwcf.setBorder(Border.BOTTOM, BorderLineStyle.MEDIUM_DASH_DOT);
+            Label label = new Label(0, dividerLine, "名单",dwcf); 
+            sheet.addCell(label); 
+            sheet.mergeCells(0, dividerLine, rowMark, dividerLine);
+            WritableCellFormat wcf = new WritableCellFormat();
+            wcf.setBorder(Border.BOTTOM, BorderLineStyle.THIN);
+            for(int i=0;i<orders.size();i++){
+                Order o = orders.get(i);
+                Label olabel = new Label(1, dividerLine+1+i, o.student.name,wcf);
+                sheet.addCell(olabel);
+                Label olabel1 = new Label(2, dividerLine+1+i, o.student.tel,wcf);
+                sheet.addCell(olabel1);
+                Label olabel2 = new Label(3, dividerLine+1+i, "",wcf);
+                sheet.addCell(olabel2);
+            }
+            for(int i=0;i<rowMark;i++){
+                
+                sheet.setColumnView(i+1, 100);
+            }
+            int widthLine = lesson.times%rowMark==0?lesson.times/rowMark:lesson.times/rowMark+1;
+            for(int i=0;i<widthLine;i++){
+                
+                sheet.setRowView(i+4, 1000);
+            }
+            
+            workbook.write();
+            workbook.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        
     }
     
 }
