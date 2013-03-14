@@ -32,7 +32,13 @@ function deleteOrders(){
 			<table class="thistable" style="width: 100%;margin-top: 10px;">
 				<tr>
 					<th>教师 :</th>
+					#{if teacher.state == 'Detele'}
+					<td style="border-top: 1px solid #C1DAD7;background-color: red;">${lesson?.teacher?.name}</td>
+					#{/if}
+					#{else}
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.teacher?.name}</td>
+					#{/else}
+					
 					<th>课次 :</th>
 					<td style="border-top: 1px solid #C1DAD7; ">${lesson?.times}</td>
 					<th>时长 :</th>
@@ -83,7 +89,10 @@ function deleteOrders(){
 			<div class="formBar">
 				<ul>
 					<li>
+						#{if teacher.state != 'Detele'}
 						<a href="@{Orders.quickBlank(lesson.id)}" target="dialog" height="600" width="650" class="btn btn-primary" rel="quickBlankOrder">添加</button>
+						#{/if}
+						
 						<a href="@{Orders.edit("\u007Bsid_user\u007D",'ldetail')}" target="dialog" height="600" width="650" class="btn" title="修改订单信息" rel="editorder">修改</a>
 						<button onclick="deleteOrders()" class="btn btn-danger">退费</button>
 						<a href="@{Lessons.saveLessonStudentsToexl(lesson.id)}" class="btn btn-success" >打印名单</a>

@@ -244,9 +244,15 @@ public class Lessons extends CRUD {
     public static void deletes(String ids){
         String where = String.format("id in (%s)", ids);
         List<Lesson> Lessons = Lesson.find(where).fetch();
+        
         for(Lesson s : Lessons){
             s.state = BaseModel.DELETE;
             s.save();
+            List<Order> orders = Order.find("lesson = ?", s).fetch();
+            for(Order o :orders){
+                o.state = BaseModel.DELETE;
+                o.save();
+            }
         }
         renderJSON(forwardJson("lessonsList", "/lessons/list", "删除成功！"));
     }

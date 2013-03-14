@@ -2,7 +2,7 @@
 
 	
 <div class="pageContent sortDrag" selector="h1" layoutH="60">
-	<div class="panel" defh="315">
+	<div class="panel collapse" defh="315">
 	<h1>详细信息</h1>
 		<div>
 			<table class="thistable" style="width: 100%;margin-top: 10px;">
@@ -219,10 +219,8 @@
 			</table>
 		</div>
 	</div>
-	<div class="panel collapse" minH="100" defH="350">
-		<input type="hidden" id="hiddenCalendarSource" value="${calendarSource}">
-		<div id="fulllcalendarDiv" style=""></div>
-	</div>
+		<input type="hidden" id="hiddenCalendarSource${showTeacher.id}" value="${calendarSource}">
+		<div id="fulllcalendarDiv${showTeacher.id}" style=""></div>
 </div>
 <script type="text/javascript">
 $(function(){
@@ -233,12 +231,13 @@ $(function(){
 	var calandarSource ;
 	var events = new Array();
 	$(document).ready(function() {
-	 
-		calandarSource = eval($("#hiddenCalendarSource").val());
+		var $calSource = $("#hiddenCalendarSource${showTeacher.id}",$.pdialog.getCurrent());
+		calandarSource = eval($calSource.val());
 		/* for(var i=0;i<calandarSource.length;i++){
 			var event = new Object();
 		} */
-		var calendar = $('#fulllcalendarDiv').fullCalendar({
+		var $calDiv = $("#fulllcalendarDiv${showTeacher.id}",$.pdialog.getCurrent());
+		var calendar = $calDiv.fullCalendar({
 			header: {
 				left: 'prev,next today',
 				center: 'title',
