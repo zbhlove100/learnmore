@@ -32,7 +32,7 @@ function deleteOrders(){
 			<table class="thistable" style="width: 100%;margin-top: 10px;">
 				<tr>
 					<th>教师 :</th>
-					#{if teacher.state == 'Detele'}
+					#{if lesson?.teacher.state == 'Detele'}
 					<td style="border-top: 1px solid #C1DAD7;background-color: red;">${lesson?.teacher?.name}</td>
 					#{/if}
 					#{else}
@@ -89,7 +89,7 @@ function deleteOrders(){
 			<div class="formBar">
 				<ul>
 					<li>
-						#{if teacher.state != 'Detele'}
+						#{if lesson?.teacher.state != 'Detele'}
 						<a href="@{Orders.quickBlank(lesson.id)}" target="dialog" height="600" width="650" class="btn btn-primary" rel="quickBlankOrder">添加</button>
 						#{/if}
 						

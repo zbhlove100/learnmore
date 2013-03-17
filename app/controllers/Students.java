@@ -79,32 +79,8 @@ public class Students extends CRUD {
         String uploadFileName = UUID.randomUUID().toString()+".jpg";
         String uploadpath = Setting.value("uploadpath", "/public/images/student/");
         
-        File file = new File(Play.applicationPath.getPath()+uploadpath+uploadFileName);
         
-        FileInputStream is = null;
-        FileOutputStream os = null;
-        try {
-            is = new FileInputStream(picture);
-            os = new FileOutputStream(file);
-            int read;
-            byte[] buffer = new byte[1024*1024*8];
-            while ((read = is.read(buffer)) > 0) {
-                os.write(buffer, 0, read);
-                os.flush();
-            }
-            
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                is.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                os.close();
-            } catch (Exception ignored) {
-            }
-        }
+        
         try {
             EntityManager em = JPA.em();
             MyDateUtils mdu = new MyDateUtils();
@@ -122,17 +98,43 @@ public class Students extends CRUD {
             student.state = BaseModel.ACTIVE;
             student.createdAt = new Date(java.lang.System.currentTimeMillis());
             student.save();
+            File file = new File(Play.applicationPath.getPath()+uploadpath+uploadFileName);
+            if(picture !=null&&picture.length()!=0){
+            	FileInputStream is = null;
+                FileOutputStream os = null;
+                try {
+                    is = new FileInputStream(picture);
+                    os = new FileOutputStream(file);
+                    int read;
+                    byte[] buffer = new byte[1024*1024*8];
+                    while ((read = is.read(buffer)) > 0) {
+                        os.write(buffer, 0, read);
+                        os.flush();
+                    }
+                    
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    try {
+                        is.close();
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        os.close();
+                    } catch (Exception ignored) {
+                    }
+                }
+                ImgDetail imgDetail = new ImgDetail();
+                imgDetail.basicImg = uploadFileName;
+                imgDetail.student = student;
+                imgDetail.save();
+            }
             
-            em.getTransaction().commit();
-            em.getTransaction().begin();
-            ImgDetail imgDetail = new ImgDetail();
-            imgDetail.basicImg = uploadFileName;
-            imgDetail.student = student;
-            imgDetail.save();
             
             renderJSON(forwardJsonCloseDailog("studentList","/students/list","添加学员信息成功！"));
         } catch (Exception e) {
             // TODO: handle exception
+        	e.printStackTrace();
         }
     }
     

@@ -100,32 +100,7 @@ public class Teachers extends CRUD {
         String uploadpath = Setting.value("uploadpath", "/public/images/teacher/");
         int age = 0;
         MyDateUtils mdu = new MyDateUtils();
-        File file = new File(Play.applicationPath.getPath()+uploadpath+uploadFileName);
         
-        FileInputStream is = null;
-        FileOutputStream os = null;
-        try {
-            is = new FileInputStream(picture);
-            os = new FileOutputStream(file);
-            int read;
-            byte[] buffer = new byte[1024*1024*8];
-            while ((read = is.read(buffer)) > 0) {
-                os.write(buffer, 0, read);
-                os.flush();
-            }
-            
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                is.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                os.close();
-            } catch (Exception ignored) {
-            }
-        }
         try {
             age = mdu.getAgeForBirthday(birthday, "yyyy-MM-dd");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -137,6 +112,7 @@ public class Teachers extends CRUD {
             teacher.name = name;
             teacher.school = school;
             teacher.state = BaseModel.ACTIVE;
+            teacher.employeType = type;
             teacher.createdAt = new Date(java.lang.System.currentTimeMillis());
             teacher.save();
             
@@ -167,16 +143,43 @@ public class Teachers extends CRUD {
             teacherDetail.weibo = weibo;
             teacherDetail.teacher = teacher;
             teacherDetail.save();
-            
-            ImgDetail imgDetail = new ImgDetail();
-            imgDetail.basicImg = "/teacher/"+uploadFileName;
-            imgDetail.teacher = teacher;
-            imgDetail.save();
+            File file = new File(Play.applicationPath.getPath()+uploadpath+uploadFileName);
+            if(picture !=null&&picture.length()!=0){
+            	FileInputStream is = null;
+                FileOutputStream os = null;
+                try {
+                    is = new FileInputStream(picture);
+                    os = new FileOutputStream(file);
+                    int read;
+                    byte[] buffer = new byte[1024*1024*8];
+                    while ((read = is.read(buffer)) > 0) {
+                        os.write(buffer, 0, read);
+                        os.flush();
+                    }
+                    
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    try {
+                        is.close();
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        os.close();
+                    } catch (Exception ignored) {
+                    }
+                }
+                ImgDetail imgDetail = new ImgDetail();
+                imgDetail.basicImg = "/teacher/"+uploadFileName;
+                imgDetail.teacher = teacher;
+                imgDetail.save();
+            }
+            renderJSON(forwardJsonCloseDailog("teacherlist", "/teachers/list", "创建成功！"));
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
         }
-        renderJSON(forwardJsonCloseDailog("createTeacher", "/teachers/list", "创建成功！"));
+        
         
     }
     
@@ -222,6 +225,7 @@ public class Teachers extends CRUD {
             teacher.name = name;
             teacher.school = school;
             teacher.state = BaseModel.ACTIVE;
+            teacher.employeType = type;
             teacher.createdAt = new Date(java.lang.System.currentTimeMillis());
             teacher.save();
             

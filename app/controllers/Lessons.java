@@ -34,6 +34,7 @@ import play.libs.MimeTypes;
 import play.mvc.Http;
 
 import models.BaseModel;
+import models.Classroom;
 import models.Code;
 import models.Grade;
 import models.Lesson;
@@ -101,10 +102,12 @@ public class Lessons extends CRUD {
         List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
         List<Code> types = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_type").fetch();
         List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
+        List<Classroom> classrooms = Classroom.find("state !=?", BaseModel.DELETE).fetch();
         renderArgs.put("grades", grades);
         renderArgs.put("schools", schools);
         renderArgs.put("collections", collections);
         renderArgs.put("types", types);
+        renderArgs.put("classrooms", classrooms);
         renderArgs.put("timeTypes", timeTypes);
         render();
     }
@@ -140,6 +143,8 @@ public class Lessons extends CRUD {
             lesson.level = params.get("level");
             lesson.price = params.get("price",Integer.class);
             lesson.times = params.get("times",Integer.class);
+            Classroom classroom = Classroom.findById(params.get("classroomid",Long.class));
+            lesson.classroom = classroom;
             int grade = params.get("grade",Integer.class);
             Grade gradeObj = Grade.find("level = ?", grade).first();
             lesson.grade = gradeObj;
@@ -398,12 +403,14 @@ public class Lessons extends CRUD {
         List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
         List<Code> types = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_type").fetch();
         List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
+        List<Classroom> classrooms = Classroom.find("state !=?", BaseModel.DELETE).fetch();
         renderArgs.put("schools", schools);
         renderArgs.put("grades", grades);
         renderArgs.put("collections", collections);
         renderArgs.put("types", types);
         renderArgs.put("timeTypes", timeTypes);
         renderArgs.put("lesson", lesson);
+        renderArgs.put("classrooms", classrooms);
         renderArgs.put("type", type);
         render();
     }
@@ -428,6 +435,8 @@ public class Lessons extends CRUD {
             lesson.price = params.get("price",Integer.class);
             lesson.times = params.get("times",Integer.class);
             lesson.duration = params.get("duration",Float.class);
+            Classroom classroom = Classroom.findById(params.get("classroomid",Long.class));
+            lesson.classroom = classroom;
             Teacher teacher = Teacher.findById(params.get("teacherid",Long.class));
             lesson.teacher = teacher;
             int grade = params.get("grade",Integer.class);

@@ -133,9 +133,9 @@
 					</td>
 					<td>${teacher.name}</td>
 					<td>
-						#{if teacher.employeType=="TEACHER"}老师#{/if}
-						#{if teacher.employeType=="ASSISTANT"}助教#{/if}
-						#{if teacher.employeType=="MARKETER"}市场#{/if}
+						#{if teacher.employeType=="teacher"}老师#{/if}
+						#{if teacher.employeType=="assistant"}助教#{/if}
+						#{if teacher.employeType=="marketer"}市场#{/if}
 					</td>
 					<td>${teacher.teacherDetail?.tel?:''}</td>
 					<td><a href="${teacher.email}">${teacher.email}</a></td>
