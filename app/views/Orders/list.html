@@ -105,10 +105,11 @@
 				<tr>
 					<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 					<th width="60" orderField="id" #{if orderField=="id"}class="${orderDirection}"#{/if}>订单编号</th>
-					<th width="240">唯一码</th>
 					<th width="150">课程</th>
+					<th width="120">时间类别</th>
+					<th width="80">时间段</th>
 					<th width="150">学员</th>
-					<th width="150">老师</th>
+					<th width="150" orderField="teacher.name" #{if orderField=="teacher.name"}class="${orderDirection}"#{/if}>老师</th>
 					<th width="150" orderField="createdAt" #{if orderField=="createdAt"}class="${orderDirection}"#{/if}>创建日期</th>
 					<th width="150" orderField="modifyAt" #{if orderField=="modifyAt"}class="${orderDirection}"#{/if}>修改日期</th>
 					<th width="60" orderField="money" #{if orderField=="money"}class="${orderDirection}"#{/if}>金额</th>
@@ -123,8 +124,9 @@
 					<td><input name="ids" value="${Order.id}" type="checkbox">
 					</td>
 					<td>${Order.id}</td>
-					<td>${Order.identifyNo}</td>
 					<td>${Order.lesson.name?:''}</td>
+					<td>${Order.lesson.lessonTimeType?:''}</td>
+					<td>${Order.lesson.periodOfDay?:''}</td>
 					<td>${Order.student.name?:''}</td>
 					<td>${Order.teacher.name?:''}</td>
 					<td>${Order.createdAt.format('yyyy-MM-dd')?:''}</td>

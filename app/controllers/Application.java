@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import models.BaseModel;
@@ -78,15 +79,23 @@ public class Application extends Controller {
 	public static void index() {
 	    long tcount =  Teacher.count("state !=?", BaseModel.DELETE);
         long scount =  Student.count("state !=?", BaseModel.DELETE);
-        long ocount =  Order.count("state !=?", BaseModel.DELETE);
-        render(tcount,scount,ocount);
+        long ocount =  Order.count("state =?", BaseModel.ACTIVE);
+        Calendar ca = Calendar.getInstance(); 
+        ca.setTime(new java.util.Date()); 
+        int month = ca.get(Calendar.MONTH);
+        List<Student> students = Student.find("MONTH(birthday) > ? and MONTH(birthday) <=? and state = ?", month,month+1,BaseModel.ACTIVE).fetch();
+        render(tcount,scount,ocount,students);
 	}
 	
 	public static void dashboard() {
 	    long tcount =  Teacher.count("state !=?", BaseModel.DELETE);
         long scount =  Student.count("state !=?", BaseModel.DELETE);
-        long ocount =  Order.count("state !=?", BaseModel.DELETE);
-        render(tcount,scount,ocount);
+        long ocount =  Order.count("state =?", BaseModel.ACTIVE);
+        Calendar ca = Calendar.getInstance(); 
+        ca.setTime(new java.util.Date()); 
+        int month = ca.get(Calendar.MONTH);
+        List<Student> students = Student.find("MONTH(birthday) > ? and MONTH(birthday) <=? and state = ?", month,month+1,BaseModel.ACTIVE).fetch();
+        render(tcount,scount,ocount,students);
     }
 }
 

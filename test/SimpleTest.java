@@ -8,6 +8,8 @@ import java.util.UUID;
 
 import org.junit.Test;
 
+import sun.security.provider.MD5;
+
 
 public class SimpleTest {
 
@@ -67,11 +69,15 @@ public class SimpleTest {
               System.out.println(year);
         }
     }
-    @Test
+    //@Test
     public void test3() throws ParseException{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date d = (Date) sdf.parseObject("2012-03-01 05:30");
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         System.out.print(sdf1.format(d));
+    }
+    @Test
+    public void test4(){
+        System.out.println(5%3);
     }
 }

@@ -101,6 +101,7 @@ public class Lessons extends CRUD {
         List<Code> collections = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"collection").fetch();
         List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
         List<Code> types = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_type").fetch();
+        List<Code> periodOfDays = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"period_of_day").fetch();
         List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
         List<Classroom> classrooms = Classroom.find("state !=?", BaseModel.DELETE).fetch();
         renderArgs.put("grades", grades);
@@ -109,6 +110,7 @@ public class Lessons extends CRUD {
         renderArgs.put("types", types);
         renderArgs.put("classrooms", classrooms);
         renderArgs.put("timeTypes", timeTypes);
+        renderArgs.put("periodOfDays", periodOfDays);
         render();
     }
     
@@ -139,6 +141,7 @@ public class Lessons extends CRUD {
             lesson.endTime = sdf.parse(params.get("stopDate"));
             lesson.lessonTimeType = params.get("stimeType");
             lesson.lessonType = params.get("type");
+            lesson.periodOfDay = params.get("periodOfDay"); 
             lesson.duration = params.get("duration",Float.class);
             lesson.level = params.get("level");
             lesson.price = params.get("price",Integer.class);
@@ -403,6 +406,7 @@ public class Lessons extends CRUD {
         List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
         List<Code> types = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_type").fetch();
         List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
+        List<Code> periodOfDays = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"period_of_day").fetch();
         List<Classroom> classrooms = Classroom.find("state !=?", BaseModel.DELETE).fetch();
         renderArgs.put("schools", schools);
         renderArgs.put("grades", grades);
@@ -412,6 +416,7 @@ public class Lessons extends CRUD {
         renderArgs.put("lesson", lesson);
         renderArgs.put("classrooms", classrooms);
         renderArgs.put("type", type);
+        renderArgs.put("periodOfDays", periodOfDays);
         render();
     }
     
@@ -431,6 +436,7 @@ public class Lessons extends CRUD {
             lesson.endTime = sdf.parse(params.get("stopDate"));
             lesson.lessonTimeType = params.get("stimeType");
             lesson.lessonType = params.get("type");
+            lesson.periodOfDay = params.get("periodOfDay"); 
             lesson.level = params.get("level");
             lesson.price = params.get("price",Integer.class);
             lesson.times = params.get("times",Integer.class);

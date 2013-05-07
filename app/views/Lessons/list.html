@@ -147,11 +147,12 @@
 					<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 					<th width="180" class="asc">课名</th>
 					<th width="120">时间类别</th>
+					<th width="80">时间段</th>
 					<th width="120">类别</th>
 					<th width="120">教师</th>
 					<th width="100">级别</th>
-					<th width="120">开始时间</th>
-					<th width="120">结束时间</th>
+					<th width="100">开始时间</th>
+					<th width="100">结束时间</th>
 					<th width="50">报名人数</th>
 					<th width="100"></th>
 				</tr>
@@ -163,6 +164,7 @@
 					</td>
 					<td>${lesson.name}</td>
 					<td>${lesson.lessonTimeType}</td>
+					<td>${lesson.periodOfDay}</td>
 					<td>${lesson.lessonType}</td>
 					<td><a href="">${lesson.teacher?.name}</a></td>
 					<td>${lesson.level}</td>

@@ -22,6 +22,8 @@ public class Lesson extends Model{
 	
 	public String lessonTimeType;
 	
+	public String periodOfDay;
+	
 	public String lessonType;
 	
 	public String collection;

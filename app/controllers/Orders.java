@@ -21,6 +21,7 @@ import play.db.jpa.JPA;
 import utils.MyDateUtils;
 
 import models.BaseModel;
+import models.Code;
 import models.CurrentUser;
 import models.Department;
 import models.Lesson;
@@ -101,7 +102,7 @@ public class Orders extends CRUD {
             where.add("searchname", "name like");
         if (params.get("searchtel") != null)
             where.add("searchtel", "tel like");
-        where.add("state !=", BaseModel.DELETE);
+        where.add("state = 'Active'");
         
         List<Student> students = Student.find(where.where(), where.paramsarr()).fetch();
         long id = params.get("lessonid",Long.class);
@@ -327,6 +328,47 @@ public class Orders extends CRUD {
             order.lesson.save();
         }
         renderJSON(forwardJson("lessonDetail"+lessonid,"/lessons/detail/"+lessonid,"删除报名信息成功！"));
+    }
+    
+    public static void statisticsMain(){
+        ArrayList<String> yearlist = new ArrayList<String>();
+        Order firstorder = Order.find("order by createdAt").first();
+        
+        
+        Calendar ca = Calendar.getInstance(); 
+        ca.setTime(new java.util.Date()); 
+        int nowyear = ca.get(Calendar.YEAR);
+        ca.setTime(firstorder.createdAt);
+        int startyear = ca.get(Calendar.YEAR);
+        for(int i=0;i<(nowyear-startyear);i++){
+            yearlist.add((nowyear-i)+"");
+        }
+        
+        List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
+        List<HashMap> staticMessage = new ArrayList<HashMap>();
+        int totalnum = 0;
+        int totalmoney = 0;
+        for(Code c:timeTypes){
+            HashMap<String, String> tmap= new HashMap<String, String>();
+            List<Order> orders = Order.find("lesson.lessonTimeType = ? and state = ?", c.codeValue,BaseModel.ACTIVE).fetch();
+            int money = 0;
+            for(Order o:orders){
+                money = money + o.money;
+            }
+            tmap.put("type", c.codeValue);
+            tmap.put("num", orders.size()+"");
+            tmap.put("money", money+"");
+            staticMessage.add(tmap);
+            totalnum += orders.size();
+            totalmoney += money;
+        }
+        HashMap<String, Integer> totalmap= new HashMap<String, Integer>();
+        totalmap.put("totalnum", totalnum);
+        totalmap.put("totalmoney", totalmoney);
+        renderArgs.put("yearlist", yearlist);
+        renderArgs.put("staticMessage", staticMessage);
+        renderArgs.put("totalmap", totalmap);
+        render();
     }
     
     public static void statisticsMonth(){

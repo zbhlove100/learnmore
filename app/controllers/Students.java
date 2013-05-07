@@ -70,6 +70,7 @@ public class Students extends CRUD {
         String studentname = params.get("studentname");
         String studentbirthday = params.get("studentbirthday");
         String studenttel = params.get("studenttel");
+        String localtel = params.get("localtel");
         String studentemail = params.get("studentemail");
         String address = params.get("address");
         int grade = params.get("grade",Integer.class);
@@ -88,6 +89,7 @@ public class Students extends CRUD {
             student.name = studentname;
             student.birthday =studentbirthday;
             student.tel = studenttel;
+            student.localtel = localtel;
             student.email = studentemail;
             student.location = address;
             Grade gradeObj = Grade.find("level = ?", grade).first();
@@ -181,6 +183,7 @@ public class Students extends CRUD {
             String studentname = params.get("studentname");
             String studentbirthday = params.get("studentbirthday");
             String studenttel = params.get("studenttel");
+            String localtel = params.get("localtel");
             String studentemail = params.get("studentemail");
             String address = params.get("address");
             int grade = params.get("grade",Integer.class);
@@ -191,6 +194,7 @@ public class Students extends CRUD {
             student.name = studentname;
             student.birthday =studentbirthday;
             student.tel = studenttel;
+            student.localtel = localtel;
             student.email = studentemail;
             student.location = address;
             Grade gradeObj = Grade.find("level = ?", grade).first();

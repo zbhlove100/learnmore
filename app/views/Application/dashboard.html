@@ -1,18 +1,34 @@
 
 <div class="pageContent">
-		<div id="iaas" style="height:1000px;">
-		<ul style="margin:10px"><li style="margin:10px">
-		<p class="dashboard_p">教师人数: ${tcount}人</p>
-		</li>
-		<div class="divider"></div>
-		<li style="margin:10px">
-		<p class="dashboard_p">学生人数: ${scount}人</p>
-		</li>
-		<div class="divider"></div>
-		<li style="margin:10px">
-		<p class="dashboard_p">总计报名次数: ${ocount}人次</p>
-		</li>
-		<div class="divider"></div>
-		
-		</div>
+	<div id="iaas" style="height:1000px;">
+	<ul style="margin:10px"><li style="margin:10px">
+	<p class="dashboard_p">教师人数: ${tcount}人</p>
+	</li>
+	<div class="divider"></div>
+	<li style="margin:10px">
+	<p class="dashboard_p">学生人数: ${scount}人</p>
+	</li>
+	<div class="divider"></div>
+	<li style="margin:10px">
+	<p class="dashboard_p">总计报名次数: ${ocount}人次</p>
+	</li>
+	<div class="divider"></div>
+	生日提醒：
+	<table class="thistable" style="width: 100%;margin-top: 10px;">
+		<tr>
+			<th>姓名 :</th>
+			<th>生日 :</th>
+			<th>电话 :</th>
+			<th>固定电话 :</th>
+		</tr>
+		#{list items:students, as:'student'}
+			<tr>
+				<td style="border-top: 1px solid #C1DAD7;background-color: red;">${student.name}</td>
+				<td>${student.birthday?:''}</td>
+				<td>${student.tel?:''}</td>
+				<td>${student.localtel?:''}</td>
+			</tr>
+		#{/list}
+	</table>
+	</div>
 </div>

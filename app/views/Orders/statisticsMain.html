@@ -1,0 +1,175 @@
+<script type="text/javascript">
+     $(function(){
+    	 var chart;
+    	 var columnchart;
+    	 var source;
+    	 var lineseries;
+    	 var months;
+    	    $(document).ready(function() {
+    	    	/* source = eval($("#hiddenSticSource").val());
+    	    	months = new Array();
+    	    	for(var i=0;i<source[0].data.length;i++){
+    	    		months.push(source[0].data[i].year);
+    	    	}
+    	    	lineseries = new Array();
+    	    	for(var i=0;i<source.length;i++){
+    	    		var inerdata = new Object();
+    	    		inerdata.name = source[i].dept;
+    	    		var inerlist = new Array();
+    	    		for(var j=0;j<source[i].data.length;j++){
+    	    			inerlist.push(source[i].data[j].con);
+    	    		}
+    	    		inerdata.data = inerlist;
+    	    		lineseries.push(inerdata);
+    	    	}
+    	    	chart = new Highcharts.Chart({
+    	            chart: {
+    	                renderTo: 'lineChartDiv',
+    	                type: 'line'
+    	            },
+    	            title: {
+    	                text: '按月统计'
+    	            },
+    	            subtitle: {
+    	                text: '按部门统计'
+    	            },
+    	            xAxis: {
+    	                categories: months
+    	            },
+    	            yAxis: {
+    	                title: {
+    	                    text: '报名人数（人）'
+    	                }
+    	            },
+    	            tooltip: {
+    	                enabled: true,
+    	                formatter: function() {
+    	                    return '<b>'+ this.series.name +'</b><br/>'+
+    	                        this.x +': '+ this.y +'人';
+    	                }
+    	            },
+    	            plotOptions: {
+    	                line: {
+    	                    dataLabels: {
+    	                        enabled: true
+    	                    },
+    	                    enableMouseTracking: false
+    	                }
+    	            },
+    	            series: lineseries
+    	        });
+    	    	 columnchart = new Highcharts.Chart({
+    	             chart: {
+    	                 renderTo: 'lineChartDiv1',
+    	                 type: 'column'
+    	             },
+    	             title: {
+    	                 text: '按月统计'
+    	             },
+    	             xAxis: {
+    	                 categories: months
+    	             },
+    	             yAxis: {
+    	                 min: 0,
+    	                 title: {
+    	                     text: '报名人数（人）'
+    	                 },
+    	                 stackLabels: {
+    	                     enabled: true,
+    	                     style: {
+    	                         fontWeight: 'bold',
+    	                         color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+    	                     }
+    	                 }
+    	             },
+    	             legend: {
+    	                 align: 'right',
+    	                 x: -100,
+    	                 verticalAlign: 'top',
+    	                 y: 20,
+    	                 floating: true,
+    	                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColorSolid) || 'white',
+    	                 borderColor: '#CCC',
+    	                 borderWidth: 1,
+    	                 shadow: false
+    	             },
+    	             tooltip: {
+    	                 formatter: function() {
+    	                     return '<b>'+ this.x +'</b><br/>'+
+    	                         this.series.name +': '+ this.y +'<br/>'+
+    	                         'Total: '+ this.point.stackTotal;
+    	                 }
+    	             },
+    	             plotOptions: {
+    	                 column: {
+    	                     stacking: 'normal',
+    	                     dataLabels: {
+    	                         enabled: true,
+    	                         color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+    	                     }
+    	                 }
+    	             },
+    	             series: lineseries
+    	         }); */
+    	    });
+     })
+</script>
+<div class="pageHeader">
+	<form onSubmit="return navTabSearch(this);"
+		action="@{Orders.statisticsMain}" method="post">
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>年份:</label> 
+					<select class="combox"  name="searchyear" change="changeSearchYear" param="year">
+						<option value="">--请选择--</option>
+						#{list items:yearlist,as:'year'}
+						<option value="${year}" #{if year==params.searchyear}selected #{/if}>${year}</option>
+						#{/list}
+					</select>
+				</li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li><div class="buttonActive">
+							<div class="buttonContent">
+								<button type="submit">Search</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="pageContent" layoutH="60">
+	<div class="panel"  defH="320">
+		<h1>缴费信息</h1>
+		<div id="lineChartDiv1" style="height: 300px;">
+			<table class="thistable" style="width: 100%;margin-top: 10px;">
+		<tr>
+			<th>时间类别 :</th>
+			<th>报名人数 :</th>
+			<th>费用 :</th>
+		</tr>
+		#{list items:staticMessage, as:'map'}
+			<tr>
+				<td>${map.type?:''}</td>
+				<td><b>${map.num?:''}</b></td>
+				<td><b>${map.money?:''}</b></td>
+			</tr>
+		#{/list}
+			<tr >
+				<td>合计</td>
+				<td style="background-color: yellow"><b>${totalmap.totalnum?:''}</b></td>
+				<td style="background-color: yellow"><b>${totalmap.totalmoney?:''}</b></td>
+			</tr>
+	</table>
+		</div>
+	</div>
+	<div class="panel"  defH="310">
+		<h1>缴费信息</h1>
+		<div id="lineChartDiv1" style="height: 300px;"></div>
+	</div>
+	
+</div>

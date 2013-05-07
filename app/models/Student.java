@@ -37,6 +37,8 @@ public class Student extends BaseModel {
     
     public String tel;
     
+    public String localtel;
+    
     public String description;
     
     @ManyToOne

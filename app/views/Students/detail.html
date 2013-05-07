@@ -8,7 +8,7 @@
 			<table class="thistable" style="width: 100%;margin-top: 10px;">
 				<tbody>
 					<tr>
-						<td rowspan="5" style="width: 300px;"><img height="200" src="@{'public/images/student'}/${student.imgDetail?.basicImg}"/></td>
+						<td rowspan="6" style="width: 300px;"><img height="200" src="@{'public/images/student'}/${student.imgDetail?.basicImg}"/></td>
 						<th>
 							姓名
 						</th>
@@ -52,6 +52,18 @@
 					</tr>
 					<tr>
 						<th>
+							固定电话
+						</th>
+						<td>
+							${student.localtel?:''}
+						</td>
+						<th>
+						</th>
+						<td>
+						</td>
+					</tr>
+					<tr>
+						<th>
 							地址
 						</th>
 						<td>
@@ -64,6 +76,7 @@
 							${student.email?:''}
 						</td>
 					</tr>
+					
 					<tr>
 						<th>
 							备注
