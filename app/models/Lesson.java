@@ -82,4 +82,8 @@ public class Lesson extends Model{
                 ,joinColumns={@JoinColumn(name="lesson_id")}
                 ,inverseJoinColumns={@JoinColumn(name="student_id")})
     public List<Student> students;
+	
+	public Long getStudents(){
+	    return Order.count("lesson = ? and state = ?", this,BaseModel.ACTIVE);
+	}
 }

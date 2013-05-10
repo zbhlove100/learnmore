@@ -23,8 +23,8 @@
 		</tr>
 		#{list items:students, as:'student'}
 			<tr>
-				<td style="border-top: 1px solid #C1DAD7;background-color: red;">${student.name}</td>
-				<td>${student.birthday?:''}</td>
+				<td >${student.name}</td>
+				<td style="border-top: 1px solid #C1DAD7;background-color: yellow;">${student.birthday?:''}</td>
 				<td>${student.tel?:''}</td>
 				<td>${student.localtel?:''}</td>
 			</tr>

@@ -3,3 +3,23 @@ alter table lesson add column period_of_day varchar(45);
 INSERT INTO `learnmore`.`code_table` (`code_name`, `code_value`, `parent_code`, `state`) VALUES ('period_of_day', '上午', 0, 'Active');
 INSERT INTO `learnmore`.`code_table` (`code_name`, `code_value`, `parent_code`, `state`) VALUES ('period_of_day', '下午', 0, 'Active');
 INSERT INTO `learnmore`.`code_table` (`code_name`, `code_value`, `parent_code`, `state`) VALUES ('period_of_day', '晚上', 0, 'Active');
+
+department问题相关数据录入
+
+CREATE TABLE `department` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `parent_code` bigint(20) DEFAULT NULL,
+  `leader_id` bigint(20) DEFAULT NULL,
+  `description` varchar(5000) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `removed_at` timestamp NULL DEFAULT NULL,
+  `state` varchar(45) DEFAULT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_department_teacher1` (`leader_id`),
+  CONSTRAINT `fk_department_teacher1` FOREIGN KEY (`leader_id`) REFERENCES `teacher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8$$
+
+
+

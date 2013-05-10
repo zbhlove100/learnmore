@@ -381,7 +381,7 @@ public class Orders extends CRUD {
             String startMonth = null;
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-01");
             String sql = "select CONCAT(CONCAT(YEAR(o.createdAt),-MONTH(o.createdAt)),'-01') as month, count(*) as con,d from Order o,Teacher t,Department d" +
-                		" where 1=1" +
+                		" where o.state = 'Active' \n" +
                         "and o.teacher = t and t.department = d \n";
             if(toMonth==null||"".equals(toMonth)){
                 Date nodate = new Date();
