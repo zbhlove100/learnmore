@@ -297,4 +297,11 @@ public class Students extends CRUD {
         }
         renderJSON(forwardJson("studentList", "/students/list", "删除成功！"));
     }
+    
+    public static void applyClass(long id){
+        Student student = Student.findById(id);
+        List<Lesson> lessons = Lesson.find("state = ? and endTime > NOW() ", BaseModel.ACTIVE).fetch();
+        System.out.println("---------------------->"+lessons.size());
+        render(student,lessons);
+    }
 }
