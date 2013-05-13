@@ -24,7 +24,18 @@
 		#{list items:students, as:'student'}
 			<tr>
 				<td >${student.name}</td>
-				<td style="border-top: 1px solid #C1DAD7;background-color: yellow;">${student.birthday?:''}</td>
+				#{if student.birthdayToNow()<0}
+				<td style="background-color: grey;">${student.birthday?:''}</td>
+				#{/if}
+				#{elseif student.birthdayToNow() == 0}
+				<td style="background-color: red;">${student.birthday?:''}</td>
+				#{/elseif}
+				#{elseif student.birthdayToNow() > 0 && student.birthdayToNow() < 5}
+				<td style="background-color: #DF4F24;">${student.birthday?:''}</td>
+				#{/elseif}
+				#{elseif student.birthdayToNow() > 5}
+				<td style="background-color: #EFAB65;">${student.birthday?:''}</td>
+				#{/elseif}
 				<td>${student.tel?:''}</td>
 				<td>${student.localtel?:''}</td>
 			</tr>

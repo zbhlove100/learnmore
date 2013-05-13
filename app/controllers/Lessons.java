@@ -83,7 +83,11 @@ public class Lessons extends CRUD {
         }else if(params.get("sstopDate") != null&& !"".equals(params.get("sstopDate"))){
             bf.append(String.format("\n and startTime < '%s'",params.get("sstopDate")));
         }
-        List<Lesson> lessons = Lesson.find(bf.toString()).fetch();
+        bf.append("order by created_at desc");
+        int pageNum = Integer.parseInt(params.get("pageNum")==null?"1":params.get("pageNum"));
+        int numPerPage = getPageSize();
+        List<Lesson> lessons = Lesson.find(bf.toString()).fetch(pageNum,numPerPage);
+        long lessonsl = Lesson.count(bf.toString());
         List<Code> collections = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"collection").fetch();
         List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
         List<Code> types = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_type").fetch();
@@ -93,7 +97,7 @@ public class Lessons extends CRUD {
         renderArgs.put("collections", collections);
         renderArgs.put("types", types);
         renderArgs.put("timeTypes", timeTypes);
-        DWZPageAndOrder(lessons);
+        DWZPageAndOrder(lessonsl);
         render();
     }
     public static void blank(){

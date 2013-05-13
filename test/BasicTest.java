@@ -1,5 +1,7 @@
 import org.junit.*;
 
+import controllers.Mails;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -121,7 +123,7 @@ public class BasicTest extends UnitTest {
     	history.order_message = Order.findById(1l);
     	history.save();
     }
-    @Test
+    //@Test
     public void test2() throws ParseException {
         Lesson lesson = Lesson.findById(1l);
         List<Order> orders = Order.find("lesson = ? and state = ?", lesson,BaseModel.ACTIVE).fetch();
@@ -183,5 +185,9 @@ public class BasicTest extends UnitTest {
             e.printStackTrace();
         }
     }
-    
+    @Test
+    public void test4() throws ParseException {
+        Order o = Order.find("order by modifyAt desc").first();
+        Mails.noticeModifyOrder(o);
+    }
 }

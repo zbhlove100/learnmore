@@ -1,5 +1,8 @@
 package models;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -53,4 +56,24 @@ public class Student extends BaseModel {
                 ,inverseJoinColumns={@JoinColumn(name="lesson_id")})
     public List<Lesson> lessons;
     
+    public int birthdayToNow(){
+        int result = 0;
+        Calendar ca = Calendar.getInstance(); 
+        ca.setTime(new java.util.Date()); 
+        int nowyear = ca.get(Calendar.YEAR);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String thisYearBirthday = nowyear + birthday.substring(4);
+        try {
+            Date d2 = sdf.parse(thisYearBirthday);
+            Calendar calendar = Calendar.getInstance();  
+            calendar.setTime(d2);  
+            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);  
+            int nowdayOfMonth = ca.get(Calendar.DAY_OF_MONTH);
+            result = dayOfMonth - nowdayOfMonth ;
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

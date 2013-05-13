@@ -1,27 +1,19 @@
 package controllers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import models.BaseModel;
 import models.CurrentUser;
+import models.Department;
 import models.Order;
+import models.OrderHistory;
 import models.Student;
 import models.Teacher;
-
-
 import play.Logger;
-import play.Play;
-import play.libs.F.Promise;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Router;
-import play.mvc.Scope;
 import play.mvc.With;
 
 
@@ -83,7 +75,7 @@ public class Application extends Controller {
         Calendar ca = Calendar.getInstance(); 
         ca.setTime(new java.util.Date()); 
         int month = ca.get(Calendar.MONTH);
-        List<Student> students = Student.find("MONTH(birthday) > ? and MONTH(birthday) <=? and state = ?", month,month+1,BaseModel.ACTIVE).fetch();
+        List<Student> students = Student.find("MONTH(birthday) > ? and MONTH(birthday) <=? and state = ? order by DAY(birthday)", month,month+1,BaseModel.ACTIVE).fetch();
         render(tcount,scount,ocount,students);
 	}
 	
@@ -94,7 +86,9 @@ public class Application extends Controller {
         Calendar ca = Calendar.getInstance(); 
         ca.setTime(new java.util.Date()); 
         int month = ca.get(Calendar.MONTH);
-        List<Student> students = Student.find("MONTH(birthday) > ? and MONTH(birthday) <=? and state = ?", month,month+1,BaseModel.ACTIVE).fetch();
+        List<Student> students = Student.find("MONTH(birthday) > ? and MONTH(birthday) <=? and state = ? order by DAY(birthday)", month,month+1,BaseModel.ACTIVE).fetch();
+        /*Order o = Order.find("order by modifyAt desc").first();
+        Mails.noticeModifyOrder(o);*/
         render(tcount,scount,ocount,students);
     }
 }

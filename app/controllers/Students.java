@@ -42,7 +42,10 @@ public class Students extends CRUD {
             where.addValue("grade.level =",Integer.parseInt(params.get("grade")));
         
         where.addValue("state !=", BaseModel.DELETE);
-        List<Student> students = Student.find(where.where(), where.paramsarr()).fetch();
+        int pageNum = Integer.parseInt(params.get("pageNum")==null?"1":params.get("pageNum"));
+        int numPerPage = getPageSize();
+        List<Student> students = Student.find(where.where(), where.paramsarr()).fetch(pageNum,numPerPage);
+        long studentsl = Student.count(where.where(), where.paramsarr());
         List<Grade> grades = Grade.findAll();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         MyDateUtils dmu = new MyDateUtils();
@@ -52,7 +55,7 @@ public class Students extends CRUD {
             }
             renderArgs.put("objects", students);
             renderArgs.put("grades", grades);
-            DWZPageAndOrder(students);
+            DWZPageAndOrder(studentsl);
             render();
         } catch (ParseException e) {
             // TODO Auto-generated catch block

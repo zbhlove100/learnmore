@@ -64,8 +64,11 @@ public class Orders extends CRUD {
             }else{
                 where.addOrderByVar("modifyAt");
             }
-            List<Order> orders = Order.find(where.where(), where.paramsarr()).fetch();
-            DWZPageAndOrder(orders);
+            int pageNum = Integer.parseInt(params.get("pageNum")==null?"1":params.get("pageNum"));
+            int numPerPage = getPageSize();
+            List<Order> orders = Order.find(where.where(), where.paramsarr()).fetch(pageNum,numPerPage);
+            long ordersl = Order.count(where.where(), where.paramsarr());
+            DWZPageAndOrder(ordersl);
             renderArgs.put("orders", orders);
             render();
         } catch (Exception e) {

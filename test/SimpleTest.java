@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+import models.Student;
+
 import org.junit.Test;
 
 import sun.security.provider.MD5;
@@ -78,6 +80,24 @@ public class SimpleTest {
     }
     @Test
     public void test4(){
-        System.out.println(5%3);
+        int result = 0;
+        Calendar ca = Calendar.getInstance(); 
+        ca.setTime(new java.util.Date()); 
+        int nowyear = ca.get(Calendar.YEAR);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String thisYearBirthday = nowyear + "1987-03-01".substring(4);
+        try {
+            Date d2 = sdf.parse(thisYearBirthday);
+            Calendar calendar = Calendar.getInstance();  
+            calendar.setTime(d2);  
+            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);  
+            int nowdayOfMonth = ca.get(Calendar.DAY_OF_MONTH);
+            result = dayOfMonth - nowdayOfMonth ;
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println(thisYearBirthday);
+        System.out.println(result);
     }
 }

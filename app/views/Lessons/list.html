@@ -34,9 +34,9 @@
     
 </script>
 <form id="pagerForm" action="@{Lessons.list}" method="post">
-	<input type="hidden" value="${pageNum}" name="pageNum"> 
-	<input type="hidden" value="${numPerPage}" name="numPerPage"> 
-	<input type="hidden" value="${orderField}" name="orderField">
+	<input type="hidden" value="${params.pageNum}" name="pageNum"> 
+	<input type="hidden" value="${params.numPerPage}" name="numPerPage"> 
+	<input type="hidden" value="${params.orderField}" name="orderField">
 </form>
 <div class="pageHeader">
 	<form rel="pagerForm" onSubmit="return navTabSearch(this);"
