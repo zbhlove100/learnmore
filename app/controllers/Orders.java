@@ -64,7 +64,7 @@ public class Orders extends CRUD {
             }else{
                 where.addOrderByVar("modifyAt");
             }
-            int pageNum = Integer.parseInt(params.get("pageNum")==null?"1":params.get("pageNum"));
+            int pageNum = Integer.parseInt((params.get("pageNum")==null||"".equals(params.get("pageNum")))?"1":params.get("pageNum"));
             int numPerPage = getPageSize();
             List<Order> orders = Order.find(where.where(), where.paramsarr()).fetch(pageNum,numPerPage);
             long ordersl = Order.count(where.where(), where.paramsarr());

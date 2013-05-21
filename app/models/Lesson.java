@@ -22,6 +22,8 @@ public class Lesson extends Model{
 	
 	public String lessonTimeType;
 	
+	public String lessonTime;
+	
 	public String periodOfDay;
 	
 	public String lessonType;
@@ -85,5 +87,9 @@ public class Lesson extends Model{
 	
 	public Long getStudents(){
 	    return Order.count("lesson = ? and state = ?", this,BaseModel.ACTIVE);
+	}
+	public String getLessonTimeName(){
+	    Setting setting = Setting.find("name = ? and value = ?","LESSON_TIME",lessonTime).first();
+	    return setting == null?"":setting.extvalue;
 	}
 }

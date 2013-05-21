@@ -34,9 +34,10 @@
     
 </script>
 <form id="pagerForm" action="@{Lessons.list}" method="post">
-	<input type="hidden" value="${params.pageNum}" name="pageNum"> 
-	<input type="hidden" value="${params.numPerPage}" name="numPerPage"> 
-	<input type="hidden" value="${params.orderField}" name="orderField">
+	<input type="hidden" value="${pageNum}" name="pageNum"> 
+	<input type="hidden" value="${numPerPage}" name="numPerPage"> 
+	<input type="hidden" value="${orderField}" name="orderField">
+	<input type="hidden" value="${orderDirection}" name="orderDirection">
 </form>
 <div class="pageHeader">
 	<form rel="pagerForm" onSubmit="return navTabSearch(this);"
@@ -147,11 +148,11 @@
 					<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 					<th width="180" class="asc">课名</th>
 					<th width="120">时间类别</th>
-					<th width="80">时间段</th>
+					<th width="100">上课时间</th>
 					<th width="120">类别</th>
-					<th width="120">教师</th>
+					<th width="120" orderField="teacher.name" #{if orderField=="teacher.name"}class="${orderDirection}"#{/if}>教师</th>
 					<th width="100">级别</th>
-					<th width="100">开始时间</th>
+					<th width="100" orderField="startTime" #{if orderField=="startTime"}class="${orderDirection}"#{/if}>开始时间</th>
 					<th width="100">结束时间</th>
 					<th width="50">报名人数</th>
 					<th width="100"></th>
@@ -164,7 +165,7 @@
 					</td>
 					<td>${lesson.name}</td>
 					<td>${lesson.lessonTimeType}</td>
-					<td>${lesson.periodOfDay}</td>
+					<td>${lesson.getLessonTimeName()}${lesson.periodOfDay}</td>
 					<td>${lesson.lessonType}</td>
 					<td><a href="">${lesson.teacher?.name}</a></td>
 					<td>${lesson.level}</td>
@@ -180,7 +181,7 @@
 			<div class="pages">
 				<span>每页显示</span> 
 				<select name="numPerPage" onchange="navTabPageBreak({'numPerPage':this.value})">
-					<option value="20" #{if numPerPage==20}selected#{/if}>20</option>
+					<option value="5" #{if numPerPage==5}selected#{/if}>5</option>
 					<option value="50" #{if numPerPage==50}selected#{/if}>50</option>
 					<option value="100" #{if numPerPage==100}selected#{/if}>100</option>
 					<option value="200" #{if numPerPage==200}selected#{/if}>200</option>

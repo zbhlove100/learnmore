@@ -23,3 +23,14 @@ CREATE TABLE `department` (
 
 
 
+insert into setting(name,value,extvalue) values('LESSON_TIME',1,'周一');
+insert into setting(name,value,extvalue) values('LESSON_TIME',2,'周二');
+insert into setting(name,value,extvalue) values('LESSON_TIME',3,'周三');
+insert into setting(name,value,extvalue) values('LESSON_TIME',4,'周四');
+insert into setting(name,value,extvalue) values('LESSON_TIME',5,'周五');
+insert into setting(name,value,extvalue) values('LESSON_TIME',6,'周六');
+insert into setting(name,value,extvalue) values('LESSON_TIME',7,'周七');
+insert into setting(name,value,extvalue) values('LESSON_TIME',8,'每天');
+
+
+alter table lesson add column lesson_time varchar(45);

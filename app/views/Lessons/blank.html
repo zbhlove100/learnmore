@@ -51,6 +51,17 @@ function selectPcollection(pcid){
 					</dd>
 				</dl>
 				<dl>
+					<dt>上课时间：</dt>
+					<dd>
+						<select class="combox"  name="lessonTime">
+						<option value="">--请选择--</option>
+						#{list items:lessontimestype,as:'code'}
+						<option value="${code.value}" >${code.extvalue}</option>
+						#{/list}
+						</select>
+					</dd>
+				</dl>
+				<dl>
 					<dt>时间段：</dt>
 					<dd>
 						<select class="combox"  name="periodOfDay">
