@@ -73,8 +73,8 @@ function deleteOrders(){
 					<td>${lesson?.school.name}</td>
 					<th>教室 ：</th>
 					<td>${lesson?.classroom.name}</td>
-					<th>时间段 ：</th>
-					<td>${lesson?.periodOfDay}</td>
+					<th>上课时间 ：</th>
+					<td>${lesson.getLessonTimeName()}${lesson?.periodOfDay}</td>
 				</tr>
 				<tr>
 					<th>备注 ：</th>
@@ -121,7 +121,7 @@ function deleteOrders(){
 						<td><input name="ids" value="${order.id}" type="checkbox">
 						</td>
 						<td>${order.student.name}</td>
-						<td>${order.student.grade?:''}</td>
+						<td>${order.student.grade?.name?:''}</td>
 						<td>${order.student.tel?:''}</td>
 						<td>${order.student?.email?:''}</td>
 						<td>${order.money?:''}</td>

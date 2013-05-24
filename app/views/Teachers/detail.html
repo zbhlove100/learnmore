@@ -204,7 +204,7 @@
 					#{list items:lessons, as:'lesson'}
 					<tr>
 						<td>
-							<a href="">${lesson.name}</a>
+							<a href="@{lessons.detail(lesson.id)}" target="navTab" rel="lessonDetail${lesson.id}" title="${lesson.name}">${lesson.name}</a>
 						</td>
 						<td >
 							${lesson.lessonType}
