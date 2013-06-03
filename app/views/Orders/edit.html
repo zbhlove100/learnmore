@@ -84,10 +84,10 @@ function changeInputType(form){
 					</thead>
 					<tbody>
 						 #{list items:students, as:'student'}
+						 #{if orderedStudents[student.id]=='true'}
 						<tr>
 							<td>
-							
-							<input type="radio" name="studentids" value="${student.id}" #{if orderedStudents[student.id]=='true'} checked #{/if}>
+							<input type="radio" name="studentids" value="${student.id}" checked >
 							</td>
 							<td>${student.name}</td>
 							<td>${student.age?:''}</td>
@@ -95,6 +95,7 @@ function changeInputType(form){
 							<td>${student.tel?:''}</td>
 							<td><a class="btn-mini btn btn-block btn-success" href="@{Students.detail(student.id)}" target="navTab" rel="studentDetail${student.id}" title="${student.name}">Detail >>></a></td>
 						</tr>
+						#{/if}
 						#{/list} 
 					</tbody>
 				</table>

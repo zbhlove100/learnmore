@@ -279,7 +279,7 @@ public class Orders extends CRUD {
         Student student = Student.findById(params.get("studentids",Long.class));
         order.student = student;
         order.money = params.get("money",Integer.class);
-        order.description = params.get("description");
+        order.description = params.get("orderDescription");
         order.modifyAt = new Date(java.lang.System.currentTimeMillis());
         order.save();
         OrderHistory orderHistory = new OrderHistory();

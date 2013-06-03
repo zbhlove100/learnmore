@@ -96,6 +96,7 @@ function deleteOrders(){
 						
 						<a href="@{Orders.edit("\u007Bsid_user\u007D",'ldetail')}" target="dialog" height="600" width="650" class="btn" title="修改订单信息" rel="editorder">修改</a>
 						<button onclick="deleteOrders()" class="btn btn-danger">退费</button>
+						<a href="@{Lessons.absence(lesson.id)}" class="btn btn-error" >考勤</a>
 						<a href="@{Lessons.saveLessonStudentsToexl(lesson.id)}" class="btn btn-success" >打印名单</a>
 					</li>
 				</ul>
@@ -104,14 +105,17 @@ function deleteOrders(){
 			<table id="studentlistTable" class="table" width="100%">
 				<thead>
 					<tr>
-						<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-						<th width="150" class="asc">姓名</th>
-						<th width="100">年级</th>
+						<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+						<th width="50">订单编号</th>
+						<th width="50" class="asc">姓名</th>
+						<th width="50">年级</th>
 						<th width="120">电话</th>
-						<th width="120">Email</th>
-						<th width="80">报名费用</th>
-						<th width="350">备注</th>
-						<th width="100"></th>
+						<th width="60">报名费用</th>
+						<th width="200">备注</th>
+						#{list items:0..lesson.times,as:'i'}
+							<th width="25">${i}</th>
+						#{/list}
+						<th width="150"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -120,12 +124,15 @@ function deleteOrders(){
 						rel="${order.id}">
 						<td><input name="ids" value="${order.id}" type="checkbox">
 						</td>
+						<td>${order.id}</td>
 						<td>${order.student.name}</td>
 						<td>${order.student.grade?.name?:''}</td>
 						<td>${order.student.tel?:''}</td>
-						<td>${order.student?.email?:''}</td>
 						<td>${order.money?:''}</td>
 						<td>${order.description?:''}</td>
+						#{list items:0..lesson.times,as:'i'}
+							<td><i class="icon-ok"></i></td>
+						#{/list}
 						<td><a class="btn-mini btn btn-block btn-success" href="@{Orders.detail(order.id)}" target="navTab" rel="orderDetail${order.id}" title="订单${order.id}">详细 >>></a></td>
 					</tr>
 					#{/list} 

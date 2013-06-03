@@ -1,0 +1,41 @@
+<script type="text/javascript">
+
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="@{lessons.create}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return validateCallback(this, dialogAjaxDone);">
+			<div class="pageFormContent" layoutH="56" layoutW="56">
+				<table id="absenceTable" class="table" width="100%">
+					<thead>
+						<tr>
+							<th width="150" class="asc">姓名</th>
+							<th width="200">电话</th>
+							#{list items:0..lesson.times,as:'i'}
+								<th width="25">${i}</th>
+							#{/list}
+						</tr>
+					</thead>
+					<tbody>
+						 #{list items:students, as:'student'}
+						<tr>
+							<td>${student.name}</td>
+							<td>${student.tel?:''}</td>
+							#{list items:0..lesson.times,as:'i'}
+								<td><i class="icon-ok"></i></td>
+							#{/list}
+						</tr>
+						#{/list} 
+					</tbody>
+				</table>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">Save</button></div></div></li>
+					<li>
+						<div class="button"><div class="buttonContent"><button type="Button" class="close">Cancel</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

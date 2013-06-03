@@ -22,6 +22,7 @@ import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.Colour;
+import jxl.format.VerticalAlignment;
 import jxl.read.biff.BiffException;
 import jxl.write.Label;
 import jxl.write.WritableCellFormat;
@@ -316,52 +317,39 @@ public class Lessons extends CRUD {
         try {
             WritableWorkbook workbook = Workbook.createWorkbook(new File(Play.applicationPath.getPath()+"/public/upload/myfile.xls"));
             WritableSheet sheet = workbook.createSheet("First Sheet", 0);
+            //sheet.setRowView(0, 50,false);
             WritableFont twf = new WritableFont(WritableFont.ARIAL, 16,WritableFont.BOLD); 
             WritableCellFormat twcf = new WritableCellFormat(twf);
+            twcf.setVerticalAlignment(VerticalAlignment.CENTRE);
             twcf.setAlignment(Alignment.CENTRE);
-            Label tlabel = new Label(3, 0, lesson.name,twcf); 
+            Label tlabel = new Label(0, 0, lesson.name,twcf); 
             sheet.addCell(tlabel);
-            sheet.setRowView(0, 50);
-            int rowMark = 5;
-            for(int i=0;i<lesson.times;i++){
-                WritableCellFormat wcf = new WritableCellFormat();
-                if((i%2)==0){
-                    wcf.setBackground(Colour.WHITE);
-                }else{
-                    wcf.setBackground(Colour.GREY_50_PERCENT);
-                }
-                
-                wcf.setBorder(Border.ALL, BorderLineStyle.MEDIUM);
-                wcf.setWrap(true);
-                Label label2 = new Label(i%rowMark+1,i/rowMark+4 , "                      ",wcf);
-                sheet.addCell(label2);
-            }
-            
-            int dividerLine = lesson.times/rowMark +5;
+            sheet.mergeCells(0, 0, 5, 0);
+            int dividerLine = 2;
             WritableCellFormat dwcf = new WritableCellFormat();
             dwcf.setBorder(Border.BOTTOM, BorderLineStyle.MEDIUM_DASH_DOT);
-            Label label = new Label(0, dividerLine, "名单",dwcf); 
+            Label label = new Label(0, 2, "名单",dwcf); 
             sheet.addCell(label); 
-            sheet.mergeCells(0, dividerLine, rowMark, dividerLine);
+            sheet.mergeCells(0, dividerLine, lesson.times+1, dividerLine);
             WritableCellFormat wcf = new WritableCellFormat();
-            wcf.setBorder(Border.BOTTOM, BorderLineStyle.THIN);
+            wcf.setBorder(Border.ALL, BorderLineStyle.THIN);
+            wcf.setShrinkToFit(true);
+            WritableCellFormat blank = new WritableCellFormat();
+            blank.setBorder(Border.ALL, BorderLineStyle.THIN);
             for(int i=0;i<orders.size();i++){
                 Order o = orders.get(i);
-                Label olabel = new Label(1, dividerLine+1+i, o.student.name,wcf);
+                Label olabel = new Label(0, dividerLine+1+i, o.student.name,wcf);
                 sheet.addCell(olabel);
-                Label olabel1 = new Label(2, dividerLine+1+i, o.student.tel,wcf);
+                Label olabel1 = new Label(1, dividerLine+1+i, o.student.tel,wcf);
                 sheet.addCell(olabel1);
-                Label olabel2 = new Label(3, dividerLine+1+i, "",wcf);
-                sheet.addCell(olabel2);
+                for(int j=0;j<lesson.times;j++){
+                    Label blabel = new Label(2+j, dividerLine+1+i, "",blank);
+                    sheet.addCell(blabel);
+                }
             }
-            for(int i=0;i<rowMark;i++){
+            for(int i=0;i<lesson.times;i++){
                 
-                sheet.setColumnView(i+1, 100);
-            }
-            int widthLine = lesson.times%rowMark==0?lesson.times/rowMark:lesson.times/rowMark+1;
-            for(int i=0;i<widthLine;i++){
-                
-                sheet.setRowView(i+4, 15);
+                sheet.setColumnView(2+i, 4);
             }
             
             workbook.write();
@@ -394,7 +382,9 @@ public class Lessons extends CRUD {
             while ((count = is.read(buffer)) > 0) {
                 response.out.write(buffer, 0, count);
                 response.out.flush();
+                response.out.close();
             }
+            is.close();
             fis.close();
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -511,5 +501,10 @@ public class Lessons extends CRUD {
             e.printStackTrace();
         }
         
+    }
+    
+    public static void absence(long id){
+        Lesson lesson = Lesson.findById(id);
+        render(lesson);
     }
 }
