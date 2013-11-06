@@ -78,26 +78,81 @@ public class SimpleTest {
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         System.out.print(sdf1.format(d));
     }
-    @Test
+   
+    static int V, E;
+    static int[] E1, E2;
+    static int AnswerN;
+    static int[] Answer;
+    //@Test
     public void test4(){
-        int result = 0;
-        Calendar ca = Calendar.getInstance(); 
-        ca.setTime(new java.util.Date()); 
-        int nowyear = ca.get(Calendar.YEAR);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String thisYearBirthday = nowyear + "1987-03-01".substring(4);
-        try {
-            Date d2 = sdf.parse(thisYearBirthday);
-            Calendar calendar = Calendar.getInstance();  
-            calendar.setTime(d2);  
-            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);  
-            int nowdayOfMonth = ca.get(Calendar.DAY_OF_MONTH);
-            result = dayOfMonth - nowdayOfMonth ;
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        int[] A1 = {6,4};
+        int[] A2 = {1,4,2,4,5,2,5,6};
+        int[] t = new int[10];
+        for(int test_case =1;test_case<10;test_case++){
+        V = A1[0];
+        E = A1[1];
+        E1 = new int[E];
+        E2 = new int[E];
+        for(int i=0;i<E;i++){
+            
+            E1[i] = A2[i*2];
+            E2[i] = A2[i*2+1];
+            
         }
-        System.out.println(thisYearBirthday);
-        System.out.println(result);
+            
+            
+            
+            AnswerN = -1;
+        Answer = new int [V];
+        int[] nodes = new int [V];
+        for(int i=0;i<V;i++){
+            if(nodes[i]!=-2){
+                nodes[i] = i+1;
+                for(int j=0;j<E;j++){
+                    if(E1[j]==nodes[i]){
+                        nodes [E2[j]-1] = -2;
+                    }
+                    if(E2[j]==nodes[i]){
+                        nodes [E1[j]-1] = -2;
+                    }               
+                }
+            }
+        }
+        int len = 0;
+        for(int i:nodes){
+            System.out.println(i);
+            if(i!=-2){
+                
+                Answer[len] = i;
+                len ++;
+            }
+        }
+        if(len>0)
+            AnswerN = len;
+        System.out.print("#" + test_case + " " + AnswerN);
+        for(int i = 0; i < AnswerN; i++)
+        {
+            System.out.print(" " + Answer[i]);
+        }
+        System.out.println();
+    }
+    }
+    //@Test
+    public void test6(){
+        int answer = 0;
+        String result = Integer.toBinaryString(29);
+        for(int i=0;i<result.length();i++){
+            char t = result.charAt(i);
+            if(t=='1')
+                answer++;
+        }
+        int[] temp = new int[5];
+        temp = null;
+        int[] temp1 = new int[V];
+        //System.out.println(result);
+        System.out.println(temp);
+    }
+    @Test
+    public void test7(){
     }
 }

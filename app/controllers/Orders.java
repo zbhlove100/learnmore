@@ -334,8 +334,10 @@ public class Orders extends CRUD {
     }
     
     public static void statisticsMain(){
+        
         ArrayList<String> yearlist = new ArrayList<String>();
-        Order firstorder = Order.find("order by createdAt").first();
+        Order firstorder = Order.find("state = ? order by createdAt",BaseModel.ACTIVE).first();
+        
         
         
         Calendar ca = Calendar.getInstance(); 
@@ -347,13 +349,22 @@ public class Orders extends CRUD {
             yearlist.add((nowyear-i)+"");
         }
         
+        String year = params.get("searchyear");
+        String strictyear = "";
+        if("".equals(year)&&null==year){
+            
+        }else{
+            String styear = year + "-01-01";
+            String endyear = year + "-12-31";
+            strictyear = "and createdAt > '"+styear+"' and createdAt <'"+endyear+"'";
+        }
         List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
         List<HashMap> staticMessage = new ArrayList<HashMap>();
         int totalnum = 0;
         int totalmoney = 0;
         for(Code c:timeTypes){
             HashMap<String, String> tmap= new HashMap<String, String>();
-            List<Order> orders = Order.find("lesson.lessonTimeType = ? and state = ?", c.codeValue,BaseModel.ACTIVE).fetch();
+            List<Order> orders = Order.find("lesson.lessonTimeType = ? and state = ?"+strictyear, c.codeValue,BaseModel.ACTIVE).fetch();
             int money = 0;
             for(Order o:orders){
                 money = money + o.money;
@@ -373,7 +384,34 @@ public class Orders extends CRUD {
         renderArgs.put("totalmap", totalmap);
         render();
     }
-    
+    public static void statisticsYear(int year){
+        List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
+        List<HashMap> staticMessage = new ArrayList<HashMap>();
+        int totalnum = 0;
+        int totalmoney = 0;
+        String styear = year + "-01-01";
+        String endyear = year + "-12-31";
+        for(Code c:timeTypes){
+            HashMap<String, String> tmap= new HashMap<String, String>();
+            List<Order> orders = Order.find("lesson.lessonTimeType = ? and state = ? and createdAt > ? and createdAt < ?", c.codeValue,BaseModel.ACTIVE,styear,endyear).fetch();
+            int money = 0;
+            for(Order o:orders){
+                money = money + o.money;
+            }
+            tmap.put("type", c.codeValue);
+            tmap.put("num", orders.size()+"");
+            tmap.put("money", money+"");
+            staticMessage.add(tmap);
+            totalnum += orders.size();
+            totalmoney += money;
+        }
+        HashMap<String, Integer> totalmap= new HashMap<String, Integer>();
+        totalmap.put("totalnum", totalnum);
+        totalmap.put("totalmoney", totalmoney);
+        renderArgs.put("staticMessage", staticMessage);
+        renderArgs.put("totalmap", totalmap);
+        render();
+    }
     public static void statisticsMonth(){
         int months = 12;
         try {

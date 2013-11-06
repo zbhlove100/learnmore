@@ -126,11 +126,10 @@ public class Lessons extends CRUD {
         int pageNum = Integer.parseInt(params.get("pageNum")==null?"1":params.get("pageNum"));
         int numPerPage = getPageSize();
         
-        List<Teacher> teachers = Teacher.find("employeType = ?", Teacher.EM_TYPE.TEACHER.toString()).fetch(pageNum,numPerPage);
-        Long totalCount =  Teacher.count("employeType = ?", Teacher.EM_TYPE.TEACHER.toString());
+        List<Teacher> teachers = Teacher.find("employeType = ? and state = ?", Teacher.EM_TYPE.TEACHER.toString(),BaseModel.ACTIVE).fetch(pageNum,numPerPage);
         renderArgs.put("pageNum", pageNum);
         renderArgs.put("numPerPage", numPerPage);
-        renderArgs.put("totalCount", totalCount);
+        renderArgs.put("totalCount", teachers.size());
         renderArgs.put("objects", teachers);
         renderArgs.put("relid", relid);
         render();
