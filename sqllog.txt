@@ -34,3 +34,41 @@ insert into setting(name,value,extvalue) values('LESSON_TIME',8,'每天');
 
 
 alter table lesson add column lesson_time varchar(45);
+
+
+#2013-12-20
+CREATE  TABLE IF NOT EXISTS `learnmore`.`publicschool` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(255) NULL DEFAULT NULL ,
+  `description` VARCHAR(5000) NULL DEFAULT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+ALTER TABLE `learnmore`.`student` ADD COLUMN `publicschool_id` BIGINT(20) NULL DEFAULT NULL  AFTER `localtel` , 
+  ADD CONSTRAINT `fk_student_publicschool1`
+  FOREIGN KEY (`publicschool_id` )
+  REFERENCES `learnmore`.`publicschool` (`id` )
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+, ADD INDEX `fk_student_publicschool1` (`publicschool_id` ASC) ;
+
+
+
+alter table lesson add column lesson_year varchar(45);
+alter table lesson drop column level;
+
+insert into setting(name,value,extvalue) values('lesson_avaliable_years',‘2013’);
+insert into setting(name,value,extvalue) values('lesson_avaliable_years',‘2014’);
+
+
+
+INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`discription`,`parent_code`,`state`,`code_group_id`)  VALUES ('lesson_time_type','VIP','',0,'Active',1);
+INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`discription`,`parent_code`,`state`,`code_group_id`)  VALUES ('lesson_time_type','十一课','',0,'Active',1);
+
+INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`parent_code`,`state`)  VALUES ('collection','口语系列',0,'Active');
+
+INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`parent_code`,`state`)  VALUES ('sub_collection','乐盟思维',16,'Active');
+INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`parent_code`,`state`)  VALUES ('sub_collection','思维口语',16,'Active');
+INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`parent_code`,`state`)  VALUES ('sub_collection','少儿词汇',16,'Active');

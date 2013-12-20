@@ -121,7 +121,7 @@
 			<ul class="searchContent">
 				<li>
 					<label>年份:</label> 
-					<select class="combox"  name="searchyear" change="changeSearchYear" param="year">
+					<select class="combox"  name="searchyear">
 						<option value="">--请选择--</option>
 						#{list items:yearlist,as:'year'}
 						<option value="${year}" #{if year==params.searchyear}selected #{/if}>${year}</option>

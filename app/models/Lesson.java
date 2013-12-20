@@ -20,6 +20,8 @@ public class Lesson extends Model{
 
 	public String name;
 	
+	public String lessonYear;
+	
 	public String lessonTimeType;
 	
 	public String lessonTime;
@@ -31,8 +33,6 @@ public class Lesson extends Model{
 	public String collection;
 	
 	public String subCollection;
-	
-	public String level;
 	
 	public String state;
     

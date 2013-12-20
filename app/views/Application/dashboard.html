@@ -13,33 +13,40 @@
 	<p class="dashboard_p">总计报名次数: ${ocount}人次</p>
 	</li>
 	<div class="divider"></div>
-	生日提醒：
-	<table class="thistable" style="width: 100%;margin-top: 10px;">
-		<tr>
-			<th>姓名 :</th>
-			<th>生日 :</th>
-			<th>电话 :</th>
-			<th>固定电话 :</th>
-		</tr>
-		#{list items:students, as:'student'}
+	<p>生日提醒：</p>
+	<div class="pageContent" selector="h1" layoutH="60">
+	<div class="panel" defh="800">
+		<h1></h1>
+		<div>
+		<table class="thistable" style="width: 100%;margin-top: 10px;">
 			<tr>
-				<td >${student.name}</td>
-				#{if student.birthdayToNow()<0}
-				<td style="background-color: grey;">${student.birthday?:''}</td>
-				#{/if}
-				#{elseif student.birthdayToNow() == 0}
-				<td style="background-color: red;">${student.birthday?:''}</td>
-				#{/elseif}
-				#{elseif student.birthdayToNow() > 0 && student.birthdayToNow() < 5}
-				<td style="background-color: #DF4F24;">${student.birthday?:''}</td>
-				#{/elseif}
-				#{elseif student.birthdayToNow() > 5}
-				<td style="background-color: #EFAB65;">${student.birthday?:''}</td>
-				#{/elseif}
-				<td>${student.tel?:''}</td>
-				<td>${student.localtel?:''}</td>
+				<th>姓名 :</th>
+				<th>生日 :</th>
+				<th>电话 :</th>
+				<th>固定电话 :</th>
 			</tr>
-		#{/list}
-	</table>
+			#{list items:students, as:'student'}
+				<tr>
+					<td >${student.name}</td>
+					#{if student.birthdayToNow()<0}
+					<td style="background-color: grey;">${student.birthday?:''}</td>
+					#{/if}
+					#{elseif student.birthdayToNow() == 0}
+					<td style="background-color: red;">${student.birthday?:''}</td>
+					#{/elseif}
+					#{elseif student.birthdayToNow() > 0 && student.birthdayToNow() < 5}
+					<td style="background-color: #DF4F24;">${student.birthday?:''}</td>
+					#{/elseif}
+					#{elseif student.birthdayToNow() > 5}
+					<td style="background-color: #EFAB65;">${student.birthday?:''}</td>
+					#{/elseif}
+					<td>${student.tel?:''}</td>
+					<td>${student.localtel?:''}</td>
+				</tr>
+			#{/list}
+		</table>
+		</div>
+	</div>
+	</div>
 	</div>
 </div>

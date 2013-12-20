@@ -10,6 +10,7 @@ import java.nio.charset.CharsetEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -29,11 +30,9 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
-
 import play.Play;
 import play.libs.MimeTypes;
 import play.mvc.Http;
-
 import models.BaseModel;
 import models.Classroom;
 import models.Code;
@@ -52,10 +51,11 @@ public class Lessons extends CRUD {
     private static final String ATTACHMENT_DISPOSITION_TYPE = "attachment";
     
     private static final String INLINE_DISPOSITION_TYPE = "inline";
-    
+    private static final String LESSON_AVALIABLE_YEARS = "lesson_avaliable_years";
     private static URLCodec encoder = new URLCodec();
     
     public static void list(){
+        List<Setting> avaliableYears = Setting.find("name=? order by value",LESSON_AVALIABLE_YEARS).fetch();
         StringBuffer bf = new StringBuffer("state != '"+ BaseModel.DELETE+"'");
         if (params.get("sname") != null && !"".equals(params.get("sname")))
             bf.append("\n and name like '%"+params.get("sname")+"%'");
@@ -73,7 +73,17 @@ public class Lessons extends CRUD {
         }
         if (params.get("subcollection") != null && !"".equals(params.get("subcollection")))
             bf.append("\n and subCollection like '"+params.get("subcollection")+"'"); 
-        if ((params.get("sstartDate") != null && !"".equals(params.get("sstartDate")))&& (params.get("sstopDate") != null&& !"".equals(params.get("sstopDate")))){
+        
+        if (params.get("syear") != null && !"".equals(params.get("syear"))){
+            
+            bf.append("\n and lesson_year = '"+params.get("syear")+"'"); 
+        }
+        if (params.get("searchteachername") != null && !"".equals(params.get("searchteachername"))){
+            
+            bf.append("\n and teacher.name like '%"+params.get("searchteachername")+"%'"); 
+        }
+        
+        /*if ((params.get("sstartDate") != null && !"".equals(params.get("sstartDate")))&& (params.get("sstopDate") != null&& !"".equals(params.get("sstopDate")))){
             String s = String.format("\n and( (startTime between '%s' and '%s') or (endTime between '%s' and '%s') )"
                                      ,params.get("sstartDate")
                                      ,params.get("sstopDate")
@@ -84,14 +94,16 @@ public class Lessons extends CRUD {
             bf.append(String.format("\n and endTime > '%s'",params.get("sstartDate")));
         }else if(params.get("sstopDate") != null&& !"".equals(params.get("sstopDate"))){
             bf.append(String.format("\n and startTime < '%s'",params.get("sstopDate")));
-        }
+        }*/
+        
         if(params.get("orderField") != null && !"".equals(params.get("orderField"))){
             bf.append(String.format("\n order by %s",params.get("orderField")));
             if(params.get("orderDirection") != null && !"".equals(params.get("orderDirection"))){
                 bf.append(String.format("  %s",params.get("orderDirection")));
             }
+            bf.append(",createdAt desc");
         }else{
-            bf.append("order by created_at desc");
+            bf.append("order by createdAt desc");
         }
         
         int pageNum = Integer.parseInt((params.get("pageNum")==null||"".equals(params.get("pageNum")))?"1":params.get("pageNum"));
@@ -107,11 +119,14 @@ public class Lessons extends CRUD {
         renderArgs.put("collections", collections);
         renderArgs.put("types", types);
         renderArgs.put("timeTypes", timeTypes);
+        renderArgs.put("yearlist", avaliableYears);
+        
         DWZPageAndOrder(lessonsl);
         render();
     }
     public static void blank(){
-        List<Grade> grades = Grade.findAll();
+        /*List<Grade> grades = Grade.findAll();*/
+        List<Setting> avaliableYears = Setting.find("name=? order by value",LESSON_AVALIABLE_YEARS).fetch();
         List<Settings> lessontimestype = Setting.find("name = ?", "LESSON_TIME").fetch();
         List<Code> collections = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"collection").fetch();
         List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
@@ -119,7 +134,7 @@ public class Lessons extends CRUD {
         List<Code> periodOfDays = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"period_of_day").fetch();
         List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
         List<Classroom> classrooms = Classroom.find("state !=?", BaseModel.DELETE).fetch();
-        render(grades,schools,collections,types,classrooms,timeTypes,periodOfDays,lessontimestype);
+        render(schools,collections,types,classrooms,timeTypes,periodOfDays,lessontimestype,avaliableYears);
     }
     
     public static void selectLessonTeacher(String relid){
@@ -150,15 +165,15 @@ public class Lessons extends CRUD {
             lesson.lessonType = params.get("type");
             lesson.periodOfDay = params.get("periodOfDay"); 
             lesson.duration = params.get("duration",Float.class);
-            lesson.level = params.get("level");
             lesson.price = params.get("price",Integer.class);
             lesson.times = params.get("times",Integer.class);
             lesson.lessonTime = params.get("lessonTime");
+            lesson.lessonYear = params.get("lessonYear");
             Classroom classroom = Classroom.findById(params.get("classroomid",Long.class));
             lesson.classroom = classroom;
-            int grade = params.get("grade",Integer.class);
+            /*int grade = params.get("grade",Integer.class);
             Grade gradeObj = Grade.find("level = ?", grade).first();
-            lesson.grade = gradeObj;
+            lesson.grade = gradeObj;*/
             Teacher teacher = Teacher.findById(params.get("teacherid",Long.class));
             lesson.teacher = teacher;
             lesson.studentNum = 0;
@@ -398,7 +413,8 @@ public class Lessons extends CRUD {
     
     public static void edit(long id,String type){
         Lesson lesson = Lesson.findById(id);
-        List<Grade> grades = Grade.findAll();
+       /* List<Grade> grades = Grade.findAll();*/
+        List<Setting> avaliableYears = Setting.find("name=?  order by value",LESSON_AVALIABLE_YEARS).fetch();
         List<Code> collections = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"collection").fetch();
         List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
         List<Code> types = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_type").fetch();
@@ -407,7 +423,7 @@ public class Lessons extends CRUD {
         List<Classroom> classrooms = Classroom.find("state !=?", BaseModel.DELETE).fetch();
         List<Settings> lessontimestype = Setting.find("name = ?", "LESSON_TIME").fetch();
         renderArgs.put("schools", schools);
-        renderArgs.put("grades", grades);
+        /*renderArgs.put("grades", grades);*/
         renderArgs.put("collections", collections);
         renderArgs.put("types", types);
         renderArgs.put("timeTypes", timeTypes);
@@ -415,7 +431,7 @@ public class Lessons extends CRUD {
         renderArgs.put("classrooms", classrooms);
         renderArgs.put("type", type);
         renderArgs.put("periodOfDays", periodOfDays);
-        render(lessontimestype);
+        render(lessontimestype,avaliableYears);
     }
     
     public static void save(){
@@ -435,18 +451,18 @@ public class Lessons extends CRUD {
             lesson.lessonTimeType = params.get("stimeType");
             lesson.lessonType = params.get("type");
             lesson.periodOfDay = params.get("periodOfDay"); 
-            lesson.level = params.get("level");
             lesson.price = params.get("price",Integer.class);
             lesson.times = params.get("times",Integer.class);
             lesson.lessonTime = params.get("lessonTime");
             lesson.duration = params.get("duration",Float.class);
+            lesson.lessonYear = params.get("lessonYear");
             Classroom classroom = Classroom.findById(params.get("classroomid",Long.class));
             lesson.classroom = classroom;
             Teacher teacher = Teacher.findById(params.get("teacherid",Long.class));
             lesson.teacher = teacher;
-            int grade = params.get("grade",Integer.class);
+           /* int grade = params.get("grade",Integer.class);
             Grade gradeObj = Grade.find("level = ?", grade).first();
-            lesson.grade = gradeObj;
+            lesson.grade = gradeObj;*/
             lesson.studentNum = 0;
             lesson.state = BaseModel.ACTIVE;
             lesson.school = school;

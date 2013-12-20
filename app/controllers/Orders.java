@@ -345,18 +345,18 @@ public class Orders extends CRUD {
         int nowyear = ca.get(Calendar.YEAR);
         ca.setTime(firstorder.createdAt);
         int startyear = ca.get(Calendar.YEAR);
-        for(int i=0;i<(nowyear-startyear);i++){
+        for(int i=0;i<=(nowyear-startyear);i++){
             yearlist.add((nowyear-i)+"");
         }
         
         String year = params.get("searchyear");
         String strictyear = "";
-        if("".equals(year)&&null==year){
+        if("".equals(year)||null==year){
             
         }else{
             String styear = year + "-01-01";
             String endyear = year + "-12-31";
-            strictyear = "and createdAt > '"+styear+"' and createdAt <'"+endyear+"'";
+            strictyear = " and createdAt > '"+styear+"' and createdAt <'"+endyear+"'";
         }
         List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
         List<HashMap> staticMessage = new ArrayList<HashMap>();
@@ -365,6 +365,8 @@ public class Orders extends CRUD {
         for(Code c:timeTypes){
             HashMap<String, String> tmap= new HashMap<String, String>();
             List<Order> orders = Order.find("lesson.lessonTimeType = ? and state = ?"+strictyear, c.codeValue,BaseModel.ACTIVE).fetch();
+            System.out.println("-------------------->"+c.codeValue);
+            System.out.println("-------------------->"+orders.size());
             int money = 0;
             for(Order o:orders){
                 money = money + o.money;

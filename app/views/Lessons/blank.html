@@ -40,6 +40,17 @@ function selectPcollection(pcid){
 					</dd>
 				</dl>
 				<dl>
+					<dt>年份：</dt>
+					<dd>
+						<select class="combox required"  name="lessonYear">
+						<option value="">--请选择--</option>
+						#{list items:avaliableYears,as:'code'}
+						<option value="${code.value}" >${code.value}</option>
+						#{/list}
+						</select>
+					</dd>
+				</dl>
+				<dl>
 					<dt>时间类别：</dt>
 					<dd>
 						<select class="combox"  name="stimeType">
@@ -101,7 +112,7 @@ function selectPcollection(pcid){
 						</select>
 					</dd>
 				</dl>
-				<dl>
+				<!-- <dl>
 					<dt>年级：</dt>
 					<dd>
 						<select class="combox"  name="grade">
@@ -111,7 +122,7 @@ function selectPcollection(pcid){
 							#{/list}
 						</select>
 					</dd>
-				</dl>
+				</dl> -->
 				<dl>
 					<dt>地点：</dt>
 					<dd>
@@ -132,12 +143,6 @@ function selectPcollection(pcid){
 							<option value="${classroom.id}" >${classroom.name}</option>
 							#{/list}
 						</select>
-					</dd>
-				</dl>
-				<dl>
-					<dt>等级：</dt>
-					<dd>
-						<input name="level" class="" type="text" size="20"/>
 					</dd>
 				</dl>
 				<dl>

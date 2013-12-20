@@ -45,7 +45,7 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li><label>课程名:</label> <input type="text" name="sname" value="${params.sname}"/></li>
-				<li>
+				<!-- <li>
 					<label>时间范围:</label>
 					<input name="sstartDate" class="date" type="text" readonly="true" value="${params.sstartDate}"/>
 					<a class="inputDateButton" href="javascript:;">不限</a>
@@ -54,6 +54,15 @@
 					<label>~</label>
 					<input name="sstopDate" class="date" type="text" readonly="true" value="${params.sstopDate}"/>
 					<a class="inputDateButton" href="javascript:;">不限</a>
+				</li> -->
+				<li>
+					<label>年份:</label> 
+					<select class="combox"  name="syear">
+						<option value="">--请选择--</option>
+						#{list items:yearlist,as:'year'}
+						<option value="${year.value}"  #{if year.value==params.syear} selected #{/if} >${year.value}</option>
+						#{/list}
+					</select>
 				</li>
 			</ul>
 			<div class="divider"></div>
@@ -98,13 +107,8 @@
 					</select>
 				</li>
 				<li>
-					<label>子系列:</label>
-					<select class="combox"  name="subcollection" id="pcollection">
-						<option value="">--请选择--</option>
-						#{list items:subcollections,as:'collection'}
-						<option value="${collection.codeValue}"  #{if collection.codeValue==params.subcollection} selected #{/if} >${collection.codeValue}</option>
-						#{/list}
-					</select>
+					<label>教师:</label>
+					<input type="text" name="searchteachername" value="${params.searchteachername}"/>
 				</li>
 			</ul>
 			<div class="subBar">
@@ -147,11 +151,11 @@
 				<tr>
 					<th width="50"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 					<th width="180" class="asc">课名</th>
+					<th width="100">年份</th>
 					<th width="120">时间类别</th>
 					<th width="100">上课时间</th>
 					<th width="120">类别</th>
 					<th width="120" orderField="teacher.name" #{if orderField=="teacher.name"}class="${orderDirection}"#{/if}>教师</th>
-					<th width="100">级别</th>
 					<th width="100" orderField="startTime" #{if orderField=="startTime"}class="${orderDirection}"#{/if}>开始时间</th>
 					<th width="100">结束时间</th>
 					<th width="50">报名人数</th>
@@ -164,11 +168,11 @@
 					<td><input name="ids" value="${lesson.id}" type="checkbox">
 					</td>
 					<td>${lesson.name}</td>
+					<td>${lesson.lessonYear}</td>
 					<td>${lesson.lessonTimeType}</td>
 					<td>${lesson.getLessonTimeName()}${lesson.periodOfDay}</td>
 					<td>${lesson.lessonType}</td>
-					<td><a href="">${lesson.teacher?.name}</a></td>
-					<td>${lesson.level}</td>
+					<td><a href="">${lesson.teacher?.name}(${lesson.teacher?.school.name})</a></td>
 					<td>${lesson.startTime.format('yyyy-MM-dd')}</td>
 					<td>${lesson.endTime.format('yyyy-MM-dd')}</td>
 					<td><strong>${lesson.getStudents()}</strong></td>
