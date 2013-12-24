@@ -37,7 +37,9 @@ public class LearnmoreSecurity extends Security {
         return false;
         
     }
-
+    public static boolean authenticate(String username, String password) {
+        return User.connect(username, password) != null;
+    }
     public static boolean onTheDisconnected() {
 		Cache.delete(Scope.Session.current().getId());
 		Scope.Session.current().clear();

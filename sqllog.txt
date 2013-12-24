@@ -59,8 +59,8 @@ ALTER TABLE `learnmore`.`student` ADD COLUMN `publicschool_id` BIGINT(20) NULL D
 alter table lesson add column lesson_year varchar(45);
 alter table lesson drop column level;
 
-insert into setting(name,value,extvalue) values('lesson_avaliable_years',‘2013’);
-insert into setting(name,value,extvalue) values('lesson_avaliable_years',‘2014’);
+insert into setting(name,value) values('lesson_avaliable_years','2013');
+insert into setting(name,value) values('lesson_avaliable_years','2014');
 
 
 

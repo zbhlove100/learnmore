@@ -334,6 +334,7 @@ public class Teachers extends CRUD {
             for(Lesson lesson:lessons){
                 List<LessonTable> lessonTables = LessonTable.find("lesson = ?", lesson).fetch();
                 for(LessonTable lessonTable:lessonTables){
+                    System.out.println("---------------->"+lessonTable.name);
                     HashMap<String, Object> tmap = new HashMap<String, Object>();
                     tmap.put("title", lesson.name+lessonTable.name);
                     tmap.put("allDay", false);
