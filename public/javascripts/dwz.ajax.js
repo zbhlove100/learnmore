@@ -61,7 +61,6 @@ function _iframeResponse(iframe, callback){
 	
 	$iframe.bind("load", function(event){
 		$iframe.unbind("load");
-		$document.trigger("ajaxStop");
 		
 		if (iframe.src == "javascript:'%3Chtml%3E%3C/html%3E';" || // For Safari
 			iframe.src == "javascript:'<html></html>';") { // For FF, IE

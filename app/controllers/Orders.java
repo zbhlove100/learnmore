@@ -185,6 +185,7 @@ public class Orders extends CRUD {
             student.tel = studenttel;
             student.age = mdu.getAgeForBirthday(studentbirthday, "yyyy-MM-dd");
             student.state = BaseModel.ACTIVE;
+            student.createdAt = new Date(java.lang.System.currentTimeMillis());
             student.save();
             em.getTransaction().commit();
             em.getTransaction().begin();

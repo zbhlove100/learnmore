@@ -154,5 +154,25 @@ public class SimpleTest {
     }
     @Test
     public void test7(){
+        String dates = "";
+        int min = 0;
+        int hour = 12;
+        for(int i=15;i<96;i++){
+            min++;
+            String mins = "";
+            if(min<10){
+                mins = "0"+min;
+            }else{
+                mins = ""+min;
+            }
+            if(min == 60){
+                hour++;
+                min = 0;
+            }
+            dates = String.format("update lesson set created_at = '2013-05-11 %s:%s:30' where id=%s;",hour,mins,i);
+            System.out.println(dates);
+        }
+        
+                
     }
 }

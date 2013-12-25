@@ -101,13 +101,14 @@ public class Lessons extends CRUD {
             if(params.get("orderDirection") != null && !"".equals(params.get("orderDirection"))){
                 bf.append(String.format("  %s",params.get("orderDirection")));
             }
-            bf.append(",createdAt desc");
+            bf.append(",id desc");
         }else{
-            bf.append("order by createdAt desc");
+            bf.append("order by id desc");
         }
         
         int pageNum = Integer.parseInt((params.get("pageNum")==null||"".equals(params.get("pageNum")))?"1":params.get("pageNum"));
         int numPerPage = getPageSize();
+        System.out.println("======================================");
         List<Lesson> lessons = Lesson.find(bf.toString()).fetch(pageNum,numPerPage);
         long lessonsl = Lesson.count(bf.toString());
         List<Code> collections = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"collection").fetch();
@@ -169,6 +170,7 @@ public class Lessons extends CRUD {
             lesson.times = params.get("times",Integer.class);
             lesson.lessonTime = params.get("lessonTime");
             lesson.lessonYear = params.get("lessonYear");
+            lesson.createdAt = new Date(java.lang.System.currentTimeMillis());
             Classroom classroom = Classroom.findById(params.get("classroomid",Long.class));
             lesson.classroom = classroom;
             /*int grade = params.get("grade",Integer.class);
