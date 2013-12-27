@@ -2,92 +2,114 @@
 <script type="text/javascript">
 $(function(){
 	$(".btn-group").button();
-})
-function selectTargetLesson(pcid){
+	  $('#external-events div.external-event').each(function() {
+		
+		// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+		// it doesn't need to have a start or end
+		var eventObject = {
+			title: $.trim($(this).text()), // use the element's text as the event title
+			period: $("#lstableperiod").val(),
+			duration: $("#lstableduration").val()
+				
+		};
+		
+		// store the Event Object in the DOM element so we can get to it later
+		$(this).data('eventObject', eventObject);
+		
+		// make the event draggable using jQuery UI
+		$(this).draggable({
+			zIndex: 999,
+			revert: true,      // will cause the event to go back to its
+			revertDuration: 0  //  original position after the drag
+		});
+		
+	}); 
+
+
+	/* initialize the calendar
+	-----------------------------------------------------------------*/
 	
-	var id = pcid.pcid;
-	var td = $("#lessonTableTd"+id);
-	var llt = $("#lastSelectTargetLt").val();
-	
-	if($(td).hasClass("blank")){
-		$(td).removeClass("blank").addClass("target");
-	}else{
-		$(td).addClass("target");
-	}
-	if(llt !=0){
-		var lastTd = $("#lessonTableTd"+llt);
-		$(lastTd).removeClass("target");
-		if($(lastTd.find("[id^='lessonDate']").html()=="未定")){
-			$(lastTd).addClass("blank");
+	var cal = $('#calendarLessonDiv${lessonid}').fullCalendar({
+		header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
+		},
+		height:500,
+		editable: true,
+		droppable: true, // this allows things to be dropped onto the calendar !!!
+		drop: function(date, allDay) { // this function is called when something is dropped
+		
+			// retrieve the dropped element's stored Event Object
+			var originalEventObject = $(this).data('eventObject');
+			
+			// we need to copy it, so that multiple events don't have a reference to the same object
+			var copiedEventObject = $.extend({}, originalEventObject);
+			
+			// assign it the date that was reported
+			var p = originalEventObject.period;
+			var du = parseFloat(originalEventObject.duration);
+			var intdu = parseInt(originalEventObject.duration);
+			var dumins = (du-intdu)*100;
+			var enddate = new Date();
+			$.extend(enddate,date);
+			var starthour = 9;
+			var startmin = 30;
+			if(p=='上午'){
+				startmin = 0;
+			}else if(p=='下午'){
+				starthour = 1;
+				startmin = 30;
+			}else if(p=='晚上'){
+				starthour = 5;
+				startmin = 30;
+			}
+			dumins = startmin+dumins;
+			if(dumins>=60){
+				intdu = intdu+1;
+				dumins = dumins -60;
+			}
+			date.setHours(starthour);
+			date.setMinutes(startmin);
+			enddate.setHours(starthour+intdu);
+			enddate.setMinutes(dumins);
+			
+			copiedEventObject.start = date;
+			copiedEventObject.allDay = false;
+			copiedEventObject.end = enddate;
+			// render the event on the calendar
+			// the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+			$('#calendarLessonDiv${lessonid}').fullCalendar('renderEvent', copiedEventObject, true);
+			
+			// if so, remove the element from the "Draggable Events" list
+			$(this).remove();
+			
 		}
-	}
-	$("#lastSelectTargetLt").val(id);
-}
-function selectLessonByTable(tid){
-	var selectId = $("div[name='targetLesson']").attr("id");
-	var tara = $("#op"+selectId).find("a[value="+tid+"]");
-	$("#"+selectId+">a").html($(tara).html());
-	$("#"+selectId+">input[type='hidden']").val($(tara).attr("value"));
-	var id = {pcid:tid}
-	selectTargetLesson(id);
-}
-function addDate(){
-	var date = $("input[name='startDate']").val();
-	var tarid = $("div[name='targetLesson']>input[type='hidden']").val();
-	$("#lessonTableTd"+tarid).find("[id^='lessonDate']").html(date);
-	$("#lessonTableTd"+tarid).find("input[name^='lessonDate']").val(date);
-}
+	});
+})
+
 </script>
 <div class="page">
 	<div class="pageContent">
 		<form method="post" action="@{lessons.saveLessonTable(lessonid)}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
 			<input type="hidden" id="lastSelectTargetLt" value="0">
 			<div class="pageFormContent" layoutH="56" layoutW="56">
-				<fieldset>
-					<legend>课表</legend>
-					<dl>
-						<dt>上课时间：</dt>
-						<dd>
-							<input name="startDate" class="date" dateFmt="yyyy-MM-dd HH:mm" type="text" readonly="true"/>
-							<a class="inputDateButton" href="javascript:;">选择</a>
-							<span class="info">yyyy-MM-dd</span>
-							
-						</dd>
-						
-					</dl>
-					<dl>
-						<dd>
-							<select class="combox"  name="targetLesson" change="selectTargetLesson" param="pcid">
-							<option value="">--请选择--</option>
-							#{list items:1..lesson.times,as:'i'}
-							<option value="${i}">第${i}课</option>
-							#{/list}
-							</select>
-							<button onclick="javaScript:addDate();return false;" class="btn btn-mini btn-primary">添加</button>
-						</dd>
-					</dl>
-				</fieldset>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<button class="btn btn-mini btn-success" onclick="return false;">列表</button>
-					<button class="btn btn-mini btn-success" onclick="return false;">图标</button>
+				<div id='external-events'>
+				<h4>${lesson.name}</h4>
+				-------------------------------------
+				<h5>上课时段: <font color="red">${lesson.periodOfDay}</font></h5>
+				<h5>时长: <font color="red">${lesson.duration}</font>小时</h5>
+				<input type="hidden" id="lstableperiod" value="${lesson.periodOfDay}">
+				<input type="hidden" id="lstableduration" value="${lesson.duration}">
+				#{list items:lessonlist,as:'item'}
+				<div class='external-event'>${item.name}</div>
+				#{/list}
+				<p>
+				</p>
 				</div>
-				<div class="lessonTable-area">
-					<table class="lessonTable-table">
-						#{list items:lessonTables,as:'itemlist'}
-							<tr>
-							#{list items:itemlist,as:'item'}
-								<td class="blank" id="lessonTableTd${item.mark}" onclick="selectLessonByTable(${item.mark})" style="cursor: pointer;width: 180px;">
-									<span id="lessonName${item.mark}">${item.name}</span>
-									<br>
-									<span id="lessonDate${item.mark}">未定</span>
-									<input type="hidden" name="lessonDate${item.mark}" value=""/>
-								</td>
-							#{/list}
-							</tr>
-						#{/list}
-					</table>
-				</div>
+				<div id="calendarLessonDiv${lessonid}" style="float: right;width: 900px;"></div>
 			</div>
+			
 			<div class="formBar">
 				<ul>
 					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>

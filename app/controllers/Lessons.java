@@ -33,6 +33,7 @@ import jxl.write.WritableWorkbook;
 import play.Play;
 import play.libs.MimeTypes;
 import play.mvc.Http;
+import utils.MyDateUtils;
 import models.BaseModel;
 import models.Classroom;
 import models.Code;
@@ -208,7 +209,17 @@ public class Lessons extends CRUD {
             tables.add(tmap);
            
         }
+        List<HashMap> lessonlist = new ArrayList<HashMap>();
+        for(int i=1;i<=lesson.times;i++){
+            HashMap tmap = new HashMap<String, String>();
+            tmap.put("name", String.format("第%d课", i));
+            tmap.put("mark", i);
+            lessonlist.add(tmap);
+        }
+        
         renderArgs.put("lessonTables", tables);
+        renderArgs.put("lessonlist", lessonlist);
+        renderArgs.put("lesson", lesson);
         renderArgs.put("lessonid", id);
         render();
     }
