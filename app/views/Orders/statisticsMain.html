@@ -124,7 +124,7 @@
 					<select class="combox"  name="searchyear">
 						<option value="">--请选择--</option>
 						#{list items:yearlist,as:'year'}
-						<option value="${year}" #{if year==params.searchyear}selected #{/if}>${year}</option>
+						<option value="${year.value}" #{if year.value==params.searchyear}selected #{/if}>${year.value}</option>
 						#{/list}
 					</select>
 				</li>
