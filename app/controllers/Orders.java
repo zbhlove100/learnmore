@@ -35,6 +35,9 @@ import models.User;
 import models.Where;
 
 public class Orders extends CRUD {
+    
+    private static final String LESSON_AVALIABLE_YEARS = "lesson_avaliable_years";
+    
     public static void list(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -336,19 +339,10 @@ public class Orders extends CRUD {
     
     public static void statisticsMain(){
         
-        ArrayList<String> yearlist = new ArrayList<String>();
         Order firstorder = Order.find("state = ? order by createdAt",BaseModel.ACTIVE).first();
         
         
-        
-        Calendar ca = Calendar.getInstance(); 
-        ca.setTime(new java.util.Date()); 
-        int nowyear = ca.get(Calendar.YEAR);
-        ca.setTime(firstorder.createdAt);
-        int startyear = ca.get(Calendar.YEAR);
-        for(int i=0;i<=(nowyear-startyear);i++){
-            yearlist.add((nowyear-i)+"");
-        }
+        List<Setting> avaliableYears = Setting.find("name=? order by value",LESSON_AVALIABLE_YEARS).fetch();
         
         String year = params.get("searchyear");
         String strictyear = "";
@@ -382,7 +376,7 @@ public class Orders extends CRUD {
         HashMap<String, Integer> totalmap= new HashMap<String, Integer>();
         totalmap.put("totalnum", totalnum);
         totalmap.put("totalmoney", totalmoney);
-        renderArgs.put("yearlist", yearlist);
+        renderArgs.put("yearlist", avaliableYears);
         renderArgs.put("staticMessage", staticMessage);
         renderArgs.put("totalmap", totalmap);
         render();
