@@ -82,15 +82,18 @@ $(function(){
 			$('#calendarLessonDiv${lessonid}').fullCalendar('renderEvent', copiedEventObject, true);
 			
 			// if so, remove the element from the "Draggable Events" list
-			
-		var url="/lessons/selectPcollection?pcid="+pcid;   
+			var lessonid = $("#lessonid").val();
+			var lessonStartDate = getISODateTime(date);
+			var lessonEndDate = getISODateTime(enddate);
+			var sendData = {"lenssonnumber":lessonnumber,"lessonStartDate":lessonStartDate,"lessonEndDate":lessonEndDate};
+		var url="/lessons/saveLessonTable?id="+lessonid;   
         $.ajax({
             url: url,   //接收页面
             type: 'post',      //POST方式发送数据
             async: false,
-            data: "lenssonnumber="+lessonnumber,
+            data: sendData,
             success: function(data) {
-            	
+            	alert(data);
             }
         });
         
@@ -113,6 +116,7 @@ $(function(){
 				<h5>时长: <font color="red">${lesson.duration}</font>小时</h5>
 				<input type="hidden" id="lstableperiod" value="${lesson.periodOfDay}">
 				<input type="hidden" id="lstableduration" value="${lesson.duration}">
+				<input type="hidden" id="lessonid" value="${lessonid}">
 				#{list items:lessonlist,as:'item'}
 				<div class='external-event'>${item.name}<input type="hidden" id="lessonnumber" value="${item.mark}"></div>
 				#{/list}

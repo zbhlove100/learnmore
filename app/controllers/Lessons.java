@@ -227,9 +227,18 @@ public class Lessons extends CRUD {
     public static void saveLessonTable(long id){
         Lesson lesson = Lesson.findById(id);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        LessonTable.delete("lesson = ?", lesson);
+        //LessonTable.delete("lesson = ?", lesson);
+        params.get("lessonStartDate");
+        System.out.println("================>"+params.get("lessonStartDate"));
         try {
-            for(int i=1;i<=lesson.times;i++){
+            int mark = params.get("lenssonnumber",Integer.class);
+            LessonTable lessonTable = new LessonTable();
+            lessonTable.lesson = lesson;
+            lessonTable.name = "第"+mark+"课";
+            lessonTable.lessonDate = sdf.parse(params.get("lessonStartDate"));
+            lessonTable.state = BaseModel.ACTIVE;
+            lessonTable.save();
+            /*for(int i=1;i<=lesson.times;i++){
                 LessonTable lessonTable = new LessonTable();
                 lessonTable.lesson = lesson;
                 lessonTable.name = "第"+i+"课";
@@ -238,12 +247,11 @@ public class Lessons extends CRUD {
                 }else{
                     lessonTable.lessonDate = new Date();
                 }
-                
                 lessonTable.state = BaseModel.ACTIVE;
                 lessonTable.save();
-            }
-            renderJSON(forwardJsonCloseDailog("lessonDetail"+id,"/lessons/detail/"+id,"添加课表成功！"));
-        } catch (ParseException e) {
+            }*/
+            //renderJSON(forwardJsonCloseDailog("lessonDetail"+id,"/lessons/detail/"+id,"添加课表成功！"));
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             renderJSON(jsonError(e.getMessage()));
