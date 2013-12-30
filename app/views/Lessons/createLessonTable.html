@@ -42,7 +42,7 @@ $(function(){
 		
 			// retrieve the dropped element's stored Event Object
 			var originalEventObject = $(this).data('eventObject');
-			
+			var lessonnumber = $(this).find("#lessonnumber").val();
 			// we need to copy it, so that multiple events don't have a reference to the same object
 			var copiedEventObject = $.extend({}, originalEventObject);
 			
@@ -51,8 +51,8 @@ $(function(){
 			var du = parseFloat(originalEventObject.duration);
 			var intdu = parseInt(originalEventObject.duration);
 			var dumins = (du-intdu)*100;
-			var enddate = new Date();
-			$.extend(enddate,date);
+			var enddate = new Date(date.getTime());
+			//$.extend(true,enddate,date);
 			var starthour = 9;
 			var startmin = 30;
 			if(p=='上午'){
@@ -82,6 +82,18 @@ $(function(){
 			$('#calendarLessonDiv${lessonid}').fullCalendar('renderEvent', copiedEventObject, true);
 			
 			// if so, remove the element from the "Draggable Events" list
+			
+		var url="/lessons/selectPcollection?pcid="+pcid;   
+        $.ajax({
+            url: url,   //接收页面
+            type: 'post',      //POST方式发送数据
+            async: false,
+            data: "lenssonnumber="+lessonnumber,
+            success: function(data) {
+            	
+            }
+        });
+        
 			$(this).remove();
 			
 		}
@@ -102,7 +114,7 @@ $(function(){
 				<input type="hidden" id="lstableperiod" value="${lesson.periodOfDay}">
 				<input type="hidden" id="lstableduration" value="${lesson.duration}">
 				#{list items:lessonlist,as:'item'}
-				<div class='external-event'>${item.name}</div>
+				<div class='external-event'>${item.name}<input type="hidden" id="lessonnumber" value="${item.mark}"></div>
 				#{/list}
 				<p>
 				</p>
