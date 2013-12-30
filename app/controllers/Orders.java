@@ -349,9 +349,7 @@ public class Orders extends CRUD {
         if("".equals(year)||null==year){
             
         }else{
-            String styear = year + "-01-01";
-            String endyear = year + "-12-31";
-            strictyear = " and createdAt > '"+styear+"' and createdAt <'"+endyear+"'";
+            strictyear = " and lesson.lessonYear = '"+year+"'";
         }
         List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
         List<HashMap> staticMessage = new ArrayList<HashMap>();
