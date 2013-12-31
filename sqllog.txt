@@ -72,3 +72,10 @@ INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`parent_code`,`sta
 INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`parent_code`,`state`)  VALUES ('sub_collection','乐盟思维',16,'Active');
 INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`parent_code`,`state`)  VALUES ('sub_collection','思维口语',16,'Active');
 INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`parent_code`,`state`)  VALUES ('sub_collection','少儿词汇',16,'Active');
+
+
+
+
+
+#
+ALTER TABLE `learnmore`.`lesson_table` ADD COLUMN `mark` INT(11) NULL DEFAULT NULL ;

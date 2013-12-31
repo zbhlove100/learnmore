@@ -16,6 +16,8 @@ public class LessonTable extends Model{
 	
 	public String state;
 	
+	public int mark;
+	
 	@ManyToOne
 	public Lesson lesson;
 	

@@ -195,20 +195,6 @@ public class Lessons extends CRUD {
     public static void createLessonTable(long id){
         Lesson lesson = Lesson.findById(id);
         renderArgs.put("lesson", lesson);
-        List<List> tables = new ArrayList<List>();
-        int mark =1;
-        for(int i=1;i<lesson.times;i+=LessonTable.CELL_PER_ROW){
-            List<HashMap> tmap = new ArrayList<HashMap>();
-            for(int j=0;j<LessonTable.CELL_PER_ROW;j++){
-               HashMap m = new HashMap<String, String>();
-               m.put("name", String.format("第%d课", mark));
-               m.put("mark", mark);
-               mark++;
-               tmap.add(m);
-            }
-            tables.add(tmap);
-           
-        }
         List<HashMap> lessonlist = new ArrayList<HashMap>();
         for(int i=1;i<=lesson.times;i++){
             HashMap tmap = new HashMap<String, String>();
@@ -217,7 +203,40 @@ public class Lessons extends CRUD {
             lessonlist.add(tmap);
         }
         
-        renderArgs.put("lessonTables", tables);
+        List<HashMap<String, Object>> calendarSource = new ArrayList<HashMap<String,Object>>();
+        List<LessonTable> lessonTables = LessonTable.find("lesson = ?", lesson).fetch();
+        for(LessonTable lessonTable:lessonTables){
+            HashMap<String, Object> tmap = new HashMap<String, Object>();
+            tmap.put("title", lesson.name+lessonTable.name);
+            tmap.put("allDay", false);
+            tmap.put("start", lessonTable.lessonDate);
+            Calendar now = Calendar.getInstance();  
+            now.setTime(lessonTable.lessonDate);  
+            
+            int mins =Integer.parseInt(lesson.duration*60+"");
+            now.set(Calendar.MINUTE, now.get(Calendar.MINUTE) + mins);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            //Date endDate =new Date((long) (lessonTable.lessonDate.getTime() + MyDateUtils.secondPerHour*lesson.duration));
+            Date endDate = sdf.format(date)
+            System.out.println("=====>"+lessonTable.lessonDate);
+            System.out.println("=====>"+endDate);
+            tmap.put("end", endDate);
+            tmap.put("mark", lessonTable.mark);
+            int hour = lessonTable.lessonDate.getHours();
+            if(hour<12){
+                tmap.put("color", "#4EE387"); 
+            }else if(hour<18&&hour>=12){
+                tmap.put("color", "#E15B36");
+            }else if(hour<24&&hour>=18){
+                tmap.put("color", "#B235E0"); 
+            }
+            calendarSource.add(tmap);
+        }
+            
+        Gson gson = new Gson();
+        renderArgs.put("calendarSource", gson.toJson(calendarSource));
+        
+        
         renderArgs.put("lessonlist", lessonlist);
         renderArgs.put("lesson", lesson);
         renderArgs.put("lessonid", id);
@@ -232,9 +251,12 @@ public class Lessons extends CRUD {
         System.out.println("================>"+params.get("lessonStartDate"));
         try {
             int mark = params.get("lenssonnumber",Integer.class);
-            LessonTable lessonTable = new LessonTable();
+            LessonTable lessonTable = LessonTable.find("lesson = ? and mark = ?", lesson,mark).first();
+            if(lessonTable == null)
+                lessonTable = new LessonTable();
             lessonTable.lesson = lesson;
             lessonTable.name = "第"+mark+"课";
+            lessonTable.mark = mark;
             lessonTable.lessonDate = sdf.parse(params.get("lessonStartDate"));
             lessonTable.state = BaseModel.ACTIVE;
             lessonTable.save();
