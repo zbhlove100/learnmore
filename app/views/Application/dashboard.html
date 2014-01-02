@@ -34,7 +34,7 @@
 					#{elseif student.birthdayToNow() == 0}
 					<td style="background-color: red;">${student.birthday?:''}</td>
 					#{/elseif}
-					#{elseif student.birthdayToNow() > 0 && student.birthdayToNow() < 5}
+					#{elseif student.birthdayToNow() > 0 && student.birthdayToNow() <=5}
 					<td style="background-color: #DF4F24;">${student.birthday?:''}</td>
 					#{/elseif}
 					#{elseif student.birthdayToNow() > 5}
