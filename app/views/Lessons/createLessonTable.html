@@ -45,6 +45,9 @@ $(function(){
 		droppable: true, // this allows things to be dropped onto the calendar !!!
 		events: calandarSource,
 		timeFormat:  'HH:mm { - HH:mm}',
+		eventRender: function(event, element, calEvent) {
+            element.find(".fc-event-title").after($("<button type=\"button\" class=\"btn btn-xs btn-info\">X</button>"));
+        },
 		drop: function(date, allDay) { // this function is called when something is dropped
 		
 			// retrieve the dropped element's stored Event Object
@@ -91,7 +94,7 @@ $(function(){
 			// if so, remove the element from the "Draggable Events" list
 			var lessonStartDate = getISODateTime(date);
 			var lessonEndDate = getISODateTime(enddate);
-			var sendData = {"lenssonnumber":lessonnumber,"lessonStartDate":lessonStartDate,"lessonEndDate":lessonEndDate};
+			var sendData = {"lenssonnumber":lessonnumber,"lessonStartDate":lessonStartDate};
 		var url="/lessons/saveLessonTable?id="+lessonid;   
         $.ajax({
             url: url,   //接收页面
@@ -108,17 +111,17 @@ $(function(){
 		},
 		eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
 			var nowdate = new Date(event.start.getTime());
-			var nowenddate = new Date(event.end.getTime());
+			//var nowenddate = new Date(event.end.getTime());
 			var day = nowdate.getDate();
 			nowdate.setDate(day+dayDelta);
-			nowenddate.setDate(day+dayDelta);
+			//nowenddate.setDate(day+dayDelta);
 			var lessonStartDate = getISODateTime(nowdate);
-			var lessonEndDate = getISODateTime(nowenddate);
+			//var lessonEndDate = getISODateTime(nowenddate);
 			var subtitle = event.title.replace(/[^0-9]/ig, "");
 			var lessonnumber = parseInt(subtitle);
-			var sendData = {"lenssonnumber":lessonnumber,"lessonStartDate":lessonStartDate,"lessonEndDate":lessonEndDate};
+			var sendData = {"lenssonnumber":lessonnumber,"lessonStartDate":lessonStartDate};
 			
-			/* var url="/lessons/saveLessonTable?id="+lessonid;
+			var url="/lessons/saveLessonTable?id="+lessonid;
 			
 	        $.ajax({
 	            url: url,   //接收页面
@@ -126,9 +129,9 @@ $(function(){
 	            async: false,
 	            data: sendData,
 	            success: function(data) {
-	            	alert(data);
+	            	//alert("成功");
 	            }
-	        }); */
+	        }); 
 		}
 	});
 	$("#testbutton").click(function(){

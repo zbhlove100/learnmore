@@ -210,14 +210,12 @@ public class Lessons extends CRUD {
             tmap.put("title", lesson.name+lessonTable.name);
             tmap.put("allDay", false);
             tmap.put("start", lessonTable.lessonDate);
-            Calendar now = Calendar.getInstance();  
-            now.setTime(lessonTable.lessonDate);  
-            
-            int mins =Integer.parseInt(lesson.duration*60+"");
-            now.set(Calendar.MINUTE, now.get(Calendar.MINUTE) + mins);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            //Date endDate =new Date((long) (lessonTable.lessonDate.getTime() + MyDateUtils.secondPerHour*lesson.duration));
-            Date endDate = sdf.format(date)
+            Float fvalue = new Float(lesson.duration*60);
+            int mins =fvalue.intValue();
+            long Time=(lessonTable.lessonDate.getTime()/1000)+60*mins;
+            System.out.println("=====>"+mins);
+            System.out.println("=====>"+Time);
+            Date endDate = new Date(Time*1000);
             System.out.println("=====>"+lessonTable.lessonDate);
             System.out.println("=====>"+endDate);
             tmap.put("end", endDate);
@@ -247,8 +245,6 @@ public class Lessons extends CRUD {
         Lesson lesson = Lesson.findById(id);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         //LessonTable.delete("lesson = ?", lesson);
-        params.get("lessonStartDate");
-        System.out.println("================>"+params.get("lessonStartDate"));
         try {
             int mark = params.get("lenssonnumber",Integer.class);
             LessonTable lessonTable = LessonTable.find("lesson = ? and mark = ?", lesson,mark).first();
