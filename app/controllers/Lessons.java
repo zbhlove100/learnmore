@@ -191,33 +191,20 @@ public class Lessons extends CRUD {
         
         
     }
-    
-    public static void createLessonTable(long id){
+    public static void getLessonTable(long id){
         Lesson lesson = Lesson.findById(id);
-        renderArgs.put("lesson", lesson);
-        List<HashMap> lessonlist = new ArrayList<HashMap>();
-        for(int i=1;i<=lesson.times;i++){
-            HashMap tmap = new HashMap<String, String>();
-            tmap.put("name", String.format("第%d课", i));
-            tmap.put("mark", i);
-            lessonlist.add(tmap);
-        }
-        
         List<HashMap<String, Object>> calendarSource = new ArrayList<HashMap<String,Object>>();
         List<LessonTable> lessonTables = LessonTable.find("lesson = ?", lesson).fetch();
         for(LessonTable lessonTable:lessonTables){
             HashMap<String, Object> tmap = new HashMap<String, Object>();
-            tmap.put("title", lesson.name+lessonTable.name);
+            tmap.put("title", lessonTable.name);
             tmap.put("allDay", false);
             tmap.put("start", lessonTable.lessonDate);
+            tmap.put("id", lessonTable.id);
             Float fvalue = new Float(lesson.duration*60);
             int mins =fvalue.intValue();
             long Time=(lessonTable.lessonDate.getTime()/1000)+60*mins;
-            System.out.println("=====>"+mins);
-            System.out.println("=====>"+Time);
             Date endDate = new Date(Time*1000);
-            System.out.println("=====>"+lessonTable.lessonDate);
-            System.out.println("=====>"+endDate);
             tmap.put("end", endDate);
             tmap.put("mark", lessonTable.mark);
             int hour = lessonTable.lessonDate.getHours();
@@ -232,8 +219,25 @@ public class Lessons extends CRUD {
         }
             
         Gson gson = new Gson();
-        renderArgs.put("calendarSource", gson.toJson(calendarSource));
-        
+        renderJSON(gson.toJson(calendarSource));
+    }
+    public static void createLessonTable(long id){
+        Lesson lesson = Lesson.findById(id);
+        renderArgs.put("lesson", lesson);
+        List<HashMap> lessonlist = new ArrayList<HashMap>();
+        List<LessonTable> lessonTables = LessonTable.find("lesson = ?", lesson).fetch();
+        for(int i=1;i<=lesson.times;i++){
+            HashMap tmap = new HashMap<String, String>();
+            tmap.put("name", String.format("第%d课", i));
+            tmap.put("mark", i);
+            boolean show = false;
+            for(LessonTable l:lessonTables){
+                if(l.mark == i)
+                    show = true;
+            }
+            tmap.put("show", show);
+            lessonlist.add(tmap);
+        }
         
         renderArgs.put("lessonlist", lessonlist);
         renderArgs.put("lesson", lesson);
@@ -253,6 +257,7 @@ public class Lessons extends CRUD {
             lessonTable.lesson = lesson;
             lessonTable.name = "第"+mark+"课";
             lessonTable.mark = mark;
+            System.out.println("123566787:+>"+sdf.parse(params.get("lessonStartDate")));
             lessonTable.lessonDate = sdf.parse(params.get("lessonStartDate"));
             lessonTable.state = BaseModel.ACTIVE;
             lessonTable.save();
@@ -276,37 +281,15 @@ public class Lessons extends CRUD {
         }
     }
     
+    public static void deleteLessonTable(long id){
+        Lesson lesson = Lesson.findById(id);
+        String name = params.get("name");
+        LessonTable lessonTable = LessonTable.find("lesson = ? and name = ?", lesson,name).first();
+        lessonTable.delete();
+    }
+    
     public static void editLessonTable(long id){
         
-        try {
-            Lesson lesson = Lesson.findById(id);
-            List<List> lessonTables = getLessonTable(id);
-            List<List> tables = new ArrayList<List>();
-            int mark =1;
-            int index = 0;
-            for(int i=1;i<lesson.times;i+=LessonTable.CELL_PER_ROW){
-                List<HashMap> tmap = new ArrayList<HashMap>();
-                List<LessonTable> llt = lessonTables.get(index++);
-                for(int j=0;j<LessonTable.CELL_PER_ROW;j++){
-                   LessonTable lt = llt.get(j);
-                   HashMap m = new HashMap<String, String>();
-                   m.put("name", String.format("第%d课", mark));
-                   m.put("mark", mark);
-                   m.put("date", lt.lessonDate);
-                   mark++;
-                   tmap.add(m);
-                }
-                tables.add(tmap);
-               
-            }
-            renderArgs.put("lesson", lesson);
-            renderArgs.put("lessonTables", tables);
-            renderArgs.put("lessonid", id);
-            render();
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
        
         
     }
@@ -329,9 +312,9 @@ public class Lessons extends CRUD {
     
     public static void listDetailMessage(long id){
         try {
-            renderArgs.put("lessonTables",getLessonTable(id));
+            //renderArgs.put("lessonTables",getLessonTable(id));
             render();
-        } catch (ParseException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -340,7 +323,7 @@ public class Lessons extends CRUD {
     public static void detail(long id){
         try {
             Lesson lesson = Lesson.findById(id);
-            List<List> lessonTables = getLessonTable(id);
+            List<List> lessonTables = new ArrayList<List>();
             List<Student> students = new ArrayList<Student>();
             List<Order> orders = Order.find("lesson = ? and state = ?", lesson,BaseModel.ACTIVE).fetch();
             for(Order order:orders){
@@ -349,7 +332,7 @@ public class Lessons extends CRUD {
             renderArgs.put("lessonTables",lessonTables);
             renderArgs.put("lesson",lesson);
             renderArgs.put("orders",orders);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -516,23 +499,6 @@ public class Lessons extends CRUD {
             e.printStackTrace();
         }
         
-    }
-    private static List<List> getLessonTable(long id) throws ParseException{
-        List<List> lessonTables = new ArrayList<List>();
-        long maxLesson = LessonTable.count("lesson.id", id);
-        new Date();
-        int mark =1;
-        for(int i=1;i<maxLesson;i+=LessonTable.CELL_PER_ROW){
-            List<LessonTable> tlessonTables = LessonTable.find("lesson.id", id).fetch(mark, LessonTable.CELL_PER_ROW);
-            for(LessonTable t:tlessonTables){
-               if(t.lessonDate.before(new Date())){
-                   t.state = BaseModel.FINISH;        
-                }
-            }
-            lessonTables.add(tlessonTables);
-            mark++;
-        }
-        return lessonTables;
     }
     
     public static void selectPcollection(String pcid){

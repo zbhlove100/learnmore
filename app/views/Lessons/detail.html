@@ -2,9 +2,10 @@
 <!--
 
 //-->
+var lessonid = ${lesson.id};
 function deleteOrders(){
 	var ids = myGetIds("ids","navTab");
-	var lessonid = ${lesson.id};
+	
 	var url = "/Orders/searchStudent";
 	var title = "确定要删除吗?";
 	alertMsg.confirm(title, {okCall: function(){
@@ -20,6 +21,33 @@ function deleteOrders(){
 	}});
 	
 }
+$(function(){
+	var cal = $('#lessonTable-area${lesson.id}').fullCalendar({
+		header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
+		},
+		height:500,
+		editable: false,
+		events: {
+	            url: '/lessons/getLessonTable?id='+lessonid,
+	            dataType: 'json',
+	            type: 'POST',
+	            data: {},
+	            error: function () {
+	                alert('there was an error while fetching events!');
+	            }
+		},
+		timeFormat:  'HH:mm { - HH:mm}',
+		eventRender: function(event, element, calEvent) {
+			var now = new Date();
+			if(event.start<now)
+	           element.find(".fc-event-time").before($("<img src=\"public/images/ico_img_05.gif\"></img>"));
+		}
+	});
+})
+
 </script>
 <h2 class="contentTitle">${lesson.name} <a href="@{Lessons.edit(lesson.id,'detail')}" target="dialog" height="600" title="修改课程信息" rel="editLesson" class="btn btn-warning" style="float: right">修改</a></h2>
 
@@ -144,27 +172,15 @@ function deleteOrders(){
 	<div class="panel collapse" minH="100" defH="250">
 		<h1>课表</h1>
 		<div class="lessonTable-area">
-			<table class="lessonTable-table">
-				#{list items:lessonTables,as:'itemlist'}
-					<tr>
-					#{list items:itemlist,as:'item'}
-						<td #{if item.state == "finish"}class="finish"#{/if}>
-							${item.lessonDate} 
-							<br>
-							${item.name}
-						</td>
-					#{/list}
-					</tr>
-				#{/list}
-			</table>
+			
 			<div class="formBar">
 				<ul>
 					<li>
-						#{if lessonTables.size()==0}<a href="@{Lessons.createLessonTable(lesson.id)}" target="dialog" width="1200" height="600" rel="createLessonTable${lesson.id}" class="btn btn-primary">新建课表</a>#{/if}
-						#{else}<a href="@{Lessons.editLessonTable(lesson.id)}" width="1200" height="600" target="dialog" rel="editLessonTable" class="btn btn-warning">修改</a>#{/else}
+						<a href="@{Lessons.createLessonTable(lesson.id)}" target="dialog" width="1200" height="560" rel="createLessonTable${lesson.id}" class="btn btn-primary">编辑课表</a>
 					</li>
 				</ul>
 			</div>
+			<div id="lessonTable-area${lesson.id}" style=""></div>
 		</div>
 	</div>
 </div>

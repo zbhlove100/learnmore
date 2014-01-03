@@ -1,20 +1,17 @@
 <script src="@{'/public/javascripts/bootstrap/js/bootstrap-button.js'}" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){
-	var calandarSource ;
-	var $calSource = $("#hiddenCalendarSource${lessonid}",$.pdialog.getCurrent());
-	calandarSource = eval($calSource.val());
-	var lessonid = $("#lessonid").val();
+	var lessonid = $("#lessonid",$.pdialog.getCurrent()).val();
 	
 	$(".btn-group").button();
-	  $('#external-events div.external-event').each(function() {
+	  $('#external-events div.external-event',$.pdialog.getCurrent()).each(function() {
 		
 		// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
 		// it doesn't need to have a start or end
 		var eventObject = {
 			title: $.trim($(this).text()), // use the element's text as the event title
-			period: $("#lstableperiod").val(),
-			duration: $("#lstableduration").val()
+			period: $("#lstableperiod",$.pdialog.getCurrent()).val(),
+			duration: $("#lstableduration",$.pdialog.getCurrent()).val()
 				
 		};
 		
@@ -43,13 +40,21 @@ $(function(){
 		height:500,
 		editable: true,
 		droppable: true, // this allows things to be dropped onto the calendar !!!
-		events: calandarSource,
+		events: {
+	            url: '/lessons/getLessonTable?id='+lessonid,
+	            dataType: 'json',
+	            type: 'POST',
+	            data: {},
+	            error: function () {
+	                alert('there was an error while fetching events!');
+	            }
+		},
 		timeFormat:  'HH:mm { - HH:mm}',
 		eventRender: function(event, element, calEvent) {
-            element.find(".fc-event-title").after($("<button type=\"button\" class=\"btn btn-xs btn-info\">X</button>"));
+            element.find(".fc-event-title").after($("<button type=\"button\" class=\"btn btn-xs btn-info\" onclick=\"removeEvent(this)\">X</button>"));
         },
 		drop: function(date, allDay) { // this function is called when something is dropped
-		
+			var dropDiv = $(this);																																	
 			// retrieve the dropped element's stored Event Object
 			var originalEventObject = $(this).data('eventObject');
 			var lessonnumber = $(this).find("#lessonnumber").val();
@@ -65,14 +70,17 @@ $(function(){
 			//$.extend(true,enddate,date);
 			var starthour = 9;
 			var startmin = 30;
+			var color = "#4EE387";
 			if(p=='上午'){
 				startmin = 0;
 			}else if(p=='下午'){
 				starthour = 13;
 				startmin = 30;
+				color = "#E15B36"
 			}else if(p=='晚上'){
 				starthour = 17;
 				startmin = 30;
+				color = "#B235E0"
 			}
 			dumins = startmin+dumins;
 			if(dumins>=60){
@@ -87,9 +95,11 @@ $(function(){
 			copiedEventObject.start = date;
 			copiedEventObject.allDay = false;
 			copiedEventObject.end = enddate;
+			copiedEventObject.color = color;
+			copiedEventObject.mark = lessonnumber;
 			// render the event on the calendar
 			// the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-			$('#calendarLessonDiv${lessonid}').fullCalendar('renderEvent', copiedEventObject, true);
+			//$('#calendarLessonDiv${lessonid}').fullCalendar('renderEvent', copiedEventObject, true);
 			
 			// if so, remove the element from the "Draggable Events" list
 			var lessonStartDate = getISODateTime(date);
@@ -102,18 +112,19 @@ $(function(){
             async: false,
             data: sendData,
             success: function(data) {
-            	
+            	dropDiv.hide();
+            	$('#calendarLessonDiv${lessonid}').fullCalendar('removeEvents');
+            	$('#calendarLessonDiv${lessonid}').fullCalendar('refetchEvents');
             }
         });
         
-			$(this).remove();
 			
 		},
 		eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
 			var nowdate = new Date(event.start.getTime());
 			//var nowenddate = new Date(event.end.getTime());
 			var day = nowdate.getDate();
-			nowdate.setDate(day+dayDelta);
+			//nowdate.setDate(day+dayDelta);
 			//nowenddate.setDate(day+dayDelta);
 			var lessonStartDate = getISODateTime(nowdate);
 			//var lessonEndDate = getISODateTime(nowenddate);
@@ -130,26 +141,54 @@ $(function(){
 	            data: sendData,
 	            success: function(data) {
 	            	//alert("成功");
+	            	$('#calendarLessonDiv${lessonid}').fullCalendar('removeEvents');
+	            	$('#calendarLessonDiv${lessonid}').fullCalendar('refetchEvents');
 	            }
 	        }); 
 		}
 	});
+	
 	$("#testbutton").click(function(){
 		var edata = $('#calendarLessonDiv${lessonid}').fullCalendar( 'clientEvents');
 		for(var key in edata){
-			alert(edata[key].end);
+			alert(edata[key].tip);
 		}
 		
 	})
 })
-
+function removeEvent(node){
+	var lessonid = $("#lessonid").val();
+	
+	var name = $(node).parent().find(".fc-event-title").text();
+	var url="/lessons/deleteLessonTable?id="+lessonid;
+    var sendData = {"name":name};
+    $.ajax({
+        url: url,   //接收页面
+        type: 'post',      //POST方式发送数据
+        async: false,
+        data: sendData,
+        success: function(data) {
+        	//alert("success");
+        	//$("#").find()
+        	var targetEvent = $('#calendarLessonDiv${lessonid}').fullCalendar('clientEvents',function(e){
+        		return e.title == name;
+        	});
+        	if(targetEvent[0].mark != 'undefined'){
+        		$("#external-events",$.pdialog.getCurrent()).find("#lessonnumber[value="+targetEvent[0].mark+"]").parent().show();
+        	}
+        	$('#calendarLessonDiv${lessonid}').fullCalendar('removeEvents');
+        	$('#calendarLessonDiv${lessonid}').fullCalendar('refetchEvents');
+        	
+        }
+    });  
+}
 </script>
 <div class="page">
 	<div class="pageContent">
 		<form method="post" action="@{lessons.saveLessonTable(lessonid)}" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
 			<input type="hidden" id="lastSelectTargetLt" value="0">
 			<input type="hidden" id="hiddenCalendarSource${lessonid}" value="${calendarSource}">
-			<div class="pageFormContent" layoutH="56" layoutW="56">
+			<div class="pageFormContent"  layoutW="56">
 				<div id='external-events'>
 				<h4>${lesson.name}</h4>
 				-------------------------------------
@@ -159,23 +198,22 @@ $(function(){
 				<input type="hidden" id="lstableduration" value="${lesson.duration}">
 				<input type="hidden" id="lessonid" value="${lessonid}">
 				#{list items:lessonlist,as:'item'}
-				<div class='external-event'>${item.name}<input type="hidden" id="lessonnumber" value="${item.mark}"></div>
+				<div class='external-event' #{if item.show}style='display: none' #{/if}>${item.name}<input type="hidden" id="lessonnumber" value="${item.mark}"></div>
 				#{/list}
-				<input id="testbutton" type="button" value="test">
 				<p>
 				</p>
 				</div>
 				<div id="calendarLessonDiv${lessonid}" style="float: right;width: 900px;"></div>
 			</div>
 			
-			<div class="formBar">
+			<!-- <div class="formBar">
 				<ul>
 					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
 					<li>
 						<div class="button"><div class="buttonContent"><button type="Button" class="close">取消</button></div></div>
 					</li>
 				</ul>
-			</div>
+			</div> -->
 		</form>
 	</div>
 </div>
