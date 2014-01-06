@@ -210,9 +210,9 @@ public class Lessons extends CRUD {
             int hour = lessonTable.lessonDate.getHours();
             if(hour<12){
                 tmap.put("color", "#4EE387"); 
-            }else if(hour<18&&hour>=12){
+            }else if(hour<17&&hour>=12){
                 tmap.put("color", "#E15B36");
-            }else if(hour<24&&hour>=18){
+            }else if(hour<24&&hour>=17){
                 tmap.put("color", "#B235E0"); 
             }
             calendarSource.add(tmap);
@@ -309,10 +309,28 @@ public class Lessons extends CRUD {
         }
         renderJSON(forwardJson("lessonsList", "/lessons/list", "删除成功！"));
     }
+    private static List<List> getlistLessonTable(long id) throws ParseException{
+        List<List> lessonTables = new ArrayList<List>();
+        Lesson lesson = Lesson.findById(id);
+        long maxLesson = LessonTable.count("lesson.id", id);
+        new Date();
+        int mark =1;
+        for(int i=1;i<maxLesson;i+=LessonTable.CELL_PER_ROW){
+            List<LessonTable> tlessonTables = LessonTable.find("lesson = ? order by lessonDate", lesson).fetch(mark, LessonTable.CELL_PER_ROW);
+            for(LessonTable t:tlessonTables){
+               if(t.lessonDate.before(new Date())){
+                   t.state = BaseModel.FINISH;        
+                }
+            }
+            lessonTables.add(tlessonTables);
+            mark++;
+        }
+        return lessonTables;
+    }
     
     public static void listDetailMessage(long id){
         try {
-            //renderArgs.put("lessonTables",getLessonTable(id));
+            renderArgs.put("lessonTables",getlistLessonTable(id));
             render();
         } catch (Exception e) {
             // TODO Auto-generated catch block

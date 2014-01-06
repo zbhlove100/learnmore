@@ -129,10 +129,20 @@ public class Teachers extends CRUD {
             teacherDetail.favoriteColor = favoriteColor;
             teacherDetail.favoritePlace = favoritePlace;
             teacherDetail.favoriteSport = favoriteSport;
-            teacherDetail.graduateDate = sdf.parse(graduateDate);
+            if(graduateDate==null||"".equals(graduateDate)){
+                teacherDetail.graduateDate = new Date(java.lang.System.currentTimeMillis());
+            }else{
+                teacherDetail.graduateDate = sdf.parse(graduateDate);
+            }
+            if(hireDate==null||"".equals(hireDate)){
+                teacherDetail.hireDate = new Date(java.lang.System.currentTimeMillis());
+            }else{
+                teacherDetail.hireDate = sdf.parse(hireDate);
+            }    
+            
             teacherDetail.graduateSchool = graduateSchool;
             teacherDetail.height = height;
-            teacherDetail.hireDate = sdf.parse(hireDate);
+            
             teacherDetail.household = household;
             teacherDetail.interest = interest;
             teacherDetail.qq = qq;
@@ -334,19 +344,23 @@ public class Teachers extends CRUD {
             for(Lesson lesson:lessons){
                 List<LessonTable> lessonTables = LessonTable.find("lesson = ?", lesson).fetch();
                 for(LessonTable lessonTable:lessonTables){
-                    System.out.println("---------------->"+lessonTable.name);
                     HashMap<String, Object> tmap = new HashMap<String, Object>();
                     tmap.put("title", lesson.name+lessonTable.name);
                     tmap.put("allDay", false);
                     tmap.put("start", lessonTable.lessonDate);
-                    Date endDate =new Date((long) (lessonTable.lessonDate.getTime() - MyDateUtils.secondPerHour*lesson.duration));
+                    tmap.put("id", lessonTable.id);
+                    Float fvalue = new Float(lesson.duration*60);
+                    int mins =fvalue.intValue();
+                    long Time=(lessonTable.lessonDate.getTime()/1000)+60*mins;
+                    Date endDate = new Date(Time*1000);
                     tmap.put("end", endDate);
+                    tmap.put("mark", lessonTable.mark);
                     int hour = lessonTable.lessonDate.getHours();
                     if(hour<12){
                         tmap.put("color", "#4EE387"); 
-                    }else if(hour<18&&hour>=12){
+                    }else if(hour<17&&hour>=12){
                         tmap.put("color", "#E15B36");
-                    }else if(hour<24&&hour>=18){
+                    }else if(hour<24&&hour>=17){
                         tmap.put("color", "#B235E0"); 
                     }
                     calendarSource.add(tmap);

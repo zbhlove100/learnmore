@@ -44,6 +44,8 @@ $(function(){
 			var now = new Date();
 			if(event.start<now)
 	           element.find(".fc-event-time").before($("<img src=\"public/images/ico_img_05.gif\"></img>"));
+			
+			element.find(".fc-event-time").parent().css({"height":"46px"});
 		}
 	});
 })
@@ -169,10 +171,9 @@ $(function(){
 			
 		</div>
 	</div>
-	<div class="panel collapse" minH="100" defH="250">
+	<div class="panel collapse" minH="100" defH="600">
 		<h1>课表</h1>
 		<div class="lessonTable-area">
-			
 			<div class="formBar">
 				<ul>
 					<li>
