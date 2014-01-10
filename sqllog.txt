@@ -79,3 +79,5 @@ INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`parent_code`,`sta
 
 #
 ALTER TABLE `learnmore`.`lesson_table` ADD COLUMN `mark` INT(11) NULL DEFAULT NULL ;
+
+INSERT INTO `learnmore`.`role`(`name`)  VALUES ('user');

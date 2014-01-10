@@ -1,0 +1,42 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="@{Users.create}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+		 <input type="hidden" name="_saveAndAddAnother">
+			<div class="pageFormContent" layoutH="56" layoutW="56">
+				<p>
+					<label>用户名：</label>
+					<input name="name" class="required" maxlength="200" maxlength="1" type="text"/>
+				</p>
+				<p>
+					<label>密码：</label>
+					<input name="password" class="required" type="password" maxlength="500" value=""/>
+				</p>
+				<p>
+					<label>邮箱：</label>
+					<input name="email" type="text" maxlength="500" />
+				</p>
+				<p>
+					<label>角色：</label>
+					<select class="combox"  name="role">
+						<option value="">--请选择--</option>
+						#{list items:rs,as:'r'}
+						<option value="${r.name}">${r.name}</option>
+						#{/list}
+					</select>
+				</p>
+				<p>
+					<label>管理员：</label>
+					<input type="checkbox" name="isSuper">
+				</p>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">Save</button></div></div></li>
+					<li>
+						<div class="button"><div class="buttonContent"><button type="Button" class="close">Cancel</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

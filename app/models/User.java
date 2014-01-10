@@ -23,6 +23,8 @@ public class User extends BaseModel{
     
 
     public void setPassword(String plainpassword) {
+        System.out.println(plainpassword);
+        System.out.println(Base64Util.encode(plainpassword));
         this.password = Base64Util.encode(plainpassword);
     }
 
@@ -30,6 +32,8 @@ public class User extends BaseModel{
         return Base64Util.decode(this.password);
     }
     public static User connect(String username,String password){
-        return User.find("email = ? and password = ? and state = ?", username,Base64Util.encode(password),BaseModel.ACTIVE).first();
+        System.out.println(password);
+        System.out.println(Base64Util.encode(password));
+        return User.find("name = ? and password = ? and state = ?", username,Base64Util.encode(password),BaseModel.ACTIVE).first();
     }
 }

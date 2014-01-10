@@ -39,12 +39,14 @@
 		</li>
 	</ul>
 </div>
+#{secure.check 'root'}
 <div class="accordionHeader">
 	<h2><span>Folder</span>系统管理</h2>
 </div>
 <div class="accordionContent">
 	<ul class="tree treeFolder">
 	    <li><a href="@{Settings.list}" target="navTab" rel="settings">管理常量设定</a></li>		
-		<!-- <li><a href="" target="navTab" rel="userlist">用户管理</a></li> -->
+		<li><a href="@{Users.list}" target="navTab" rel="userlist">用户管理</a></li>
 	</ul>
 </div>
+#{/secure.check}

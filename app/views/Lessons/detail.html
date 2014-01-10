@@ -161,7 +161,7 @@ $(function(){
 						<td>${order.money?:''}</td>
 						<td>${order.description?:''}</td>
 						#{list items:0..lesson.times,as:'i'}
-							<td><i class="icon-ok"></i></td>
+							<td><i class="icon-blankp"></i></td>
 						#{/list}
 						<td><a class="btn-mini btn btn-block btn-success" href="@{Orders.detail(order.id)}" target="navTab" rel="orderDetail${order.id}" title="订单${order.id}">详细 >>></a></td>
 					</tr>

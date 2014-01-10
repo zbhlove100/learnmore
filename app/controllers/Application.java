@@ -46,7 +46,10 @@ public class Application extends Controller {
 				redirect(logoutUrl);
 			}
 			
-			renderArgs.put("user", CurrentUser.current());
+			CurrentUser cuser = CurrentUser.current();
+            session.put("username",cuser.name);
+            renderArgs.put("user", cuser);
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~cu user:"+cuser.role);
 		}
 	}
 	

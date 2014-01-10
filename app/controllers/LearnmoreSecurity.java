@@ -26,10 +26,10 @@ public class LearnmoreSecurity extends Security {
     }
     public static boolean onAuthenticated(String username) {
                   
-        User acc = User.find("email=? and state=?", username,BaseModel.ACTIVE).first();
+        User acc = User.find("name=? and state=?", username,BaseModel.ACTIVE).first();
         CurrentUser currentuser = (CurrentUser)Cache.get(Scope.Session.current().getId());
         if(currentuser == null){
-        	 currentuser = new CurrentUser(acc.id,acc.email,acc.role.name,acc.password);
+        	 currentuser = new CurrentUser(acc.id,acc.name,acc.role.name,acc.password);
         	 Cache.set(Scope.Session.current().getId(), currentuser, "30mn");
          }else{
         	 Cache.set(Scope.Session.current().getId(), currentuser, "30mn");
@@ -38,6 +38,8 @@ public class LearnmoreSecurity extends Security {
         
     }
     public static boolean authenticate(String username, String password) {
+        System.out.println("-------------------------------------------------------");
+        System.out.println(User.connect(username, password));
         return User.connect(username, password) != null;
     }
     public static boolean onTheDisconnected() {
