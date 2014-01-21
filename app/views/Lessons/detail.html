@@ -21,6 +21,23 @@ function deleteOrders(){
 	}});
 	
 }
+function changeOrders(){
+	var ids = myGetIds("ids","navTab");
+	
+	var title = "确定要转待定吗?";
+	alertMsg.confirm(title, {okCall: function(){
+		$.ajax({
+			type:'POST', 
+			url:"/Orders/changeInLesson", 
+			dataType:'json', 
+			cache: false,
+			data: {ids: ids, lessonid: lessonid },
+			success: navTabAjaxDone,
+			error: DWZ.ajaxError
+		});
+	}});
+	
+}
 $(function(){
 	var cal = $('#lessonTable-area${lesson.id}').fullCalendar({
 		header: {
@@ -126,6 +143,7 @@ $(function(){
 						
 						<a href="@{Orders.edit("\u007Bsid_user\u007D",'ldetail')}" target="dialog" height="600" width="650" class="btn" title="修改订单信息" rel="editorder">修改</a>
 						<button onclick="deleteOrders()" class="btn btn-danger">退费</button>
+						<button onclick="changeOrders()" class="btn btn-danger">待定</button>
 						<a href="@{Lessons.absence(lesson.id)}" class="btn btn-error" >考勤</a>
 						<a href="@{Lessons.saveLessonStudentsToexl(lesson.id)}" class="btn btn-success" >打印名单</a>
 					</li>
@@ -140,6 +158,7 @@ $(function(){
 						<th width="50" class="asc">姓名</th>
 						<th width="50">年级</th>
 						<th width="120">电话</th>
+						<th width="80">状态</th>
 						<th width="60">报名费用</th>
 						<th width="200">备注</th>
 						#{list items:0..lesson.times,as:'i'}
@@ -151,13 +170,19 @@ $(function(){
 				<tbody>
 					 #{list items:orders, as:'order'}
 					<tr target="sid_user"
-						rel="${order.id}">
+						rel="${order.id}" #{if order.state=="Pending"}style="background-color: #479996"#{/if}>
 						<td><input name="ids" value="${order.id}" type="checkbox">
 						</td>
 						<td>${order.id}</td>
 						<td>${order.student.name}</td>
 						<td>${order.student.grade?.name?:''}</td>
 						<td>${order.student.tel?:''}</td>
+						#{if order.state == "Active"}
+						<td>正常</td>
+						#{/if}
+						#{elseif order.state=="Pending"}
+						<td>待定</td>
+						#{/elseif}
 						<td>${order.money?:''}</td>
 						<td>${order.description?:''}</td>
 						#{list items:0..lesson.times,as:'i'}

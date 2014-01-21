@@ -60,12 +60,12 @@ public class Orders extends CRUD {
                 where.addValue("createdAt >",sdf.parse(params.get("createDate")));
             if (params.get("modifyDate") != null && !"".equals(params.get("modifyDate")))
             where.addValue("modifyAt >",sdf.parse(params.get("modifyDate")));
-            if (params.get("money") != null)
-                where.add("money", "money >");
+            if (params.get("money") != null&& !"".equals(params.get("money")))
+                where.addValue("money >",params.get("money",Integer.class));
             if(params.get("orderField") != null && !"".equals(params.get("orderField"))){
                 where.addOrder();
             }else{
-                where.addOrderByVar("modifyAt");
+                where.addOrderByVar("modifyAt","desc");
             }
             int pageNum = Integer.parseInt((params.get("pageNum")==null||"".equals(params.get("pageNum")))?"1":params.get("pageNum"));
             int numPerPage = getPageSize();
@@ -223,8 +223,8 @@ public class Orders extends CRUD {
             renderJSON(jsonError("添加失败！"));
         }
     }
-    public static void deletes(String ids){
-        String where = String.format("id in (%s)", ids);
+    public static void deletes(String orderids){
+        String where = String.format("id in (%s)", orderids);
         List<Order> orders = Order.find(where).fetch();
         for(Order order:orders){
             order.state = BaseModel.RETIRE;
@@ -336,7 +336,53 @@ public class Orders extends CRUD {
         }
         renderJSON(forwardJson("lessonDetail"+lessonid,"/lessons/detail/"+lessonid,"删除报名信息成功！"));
     }
-    
+    public static void changeInLesson(){
+        String ids = params.get("ids");
+        String lessonid = params.get("lessonid");
+        String where = String.format("id in (%s)", ids);
+        List<Order> orders = Order.find(where).fetch();
+        for(Order order:orders){
+            order.state = BaseModel.PENDING;
+            order.modifyAt = new Date(java.lang.System.currentTimeMillis());
+            order.save();
+            OrderHistory orderHistory = new OrderHistory();
+            orderHistory.createdAt = new Date(java.lang.System.currentTimeMillis());
+            orderHistory.name = order.name;
+            orderHistory.money = order.money;
+            orderHistory.description = order.description;
+            orderHistory.user = User.findById(CurrentUser.current().id);
+            orderHistory.optype = Setting.value("ORDER_PENDING","待定");
+            orderHistory.student = order.student;
+            orderHistory.order_message = order;
+            orderHistory.save();
+            order.lesson.studentNum--;
+            order.lesson.save();
+        }
+        renderJSON(forwardJson("lessonDetail"+lessonid,"/lessons/detail/"+lessonid,"已转待定！"));
+    }
+    public static void changeToPending(String orderids){
+        String where = String.format("id in (%s)", orderids);
+        List<Order> orders = Order.find(where).fetch();
+        for(Order order:orders){
+            order.state = BaseModel.PENDING;
+            order.modifyAt = new Date(java.lang.System.currentTimeMillis());
+            order.save();
+            OrderHistory orderHistory = new OrderHistory();
+            orderHistory.createdAt = new Date(java.lang.System.currentTimeMillis());
+            orderHistory.name = order.name;
+            orderHistory.money = order.money;
+            orderHistory.description = order.description;
+            orderHistory.user = User.findById(CurrentUser.current().id);
+            orderHistory.optype = Setting.value("ORDER_PENDING","待定");
+            orderHistory.student = order.student;
+            orderHistory.order_message = order;
+            orderHistory.save();
+            order.lesson.studentNum--;
+            order.lesson.save();
+        }
+        renderJSON(forwardJson("ordersList", "/orders/list", "已转待定！"));
+        
+    }
     public static void statisticsMain(){
         
         Order firstorder = Order.find("state = ? order by createdAt",BaseModel.ACTIVE).first();
@@ -351,7 +397,7 @@ public class Orders extends CRUD {
         }else{
             strictyear = " and lesson.lessonYear = '"+year+"'";
         }
-        List<Code> timeTypes = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_time_type").fetch();
+        List<Code> timeTypes = Code.find("parentCode = ? and state =? and code_name = ?", Code.ROOT,BaseModel.ACTIVE,"lesson_time_type").fetch();
         List<HashMap> staticMessage = new ArrayList<HashMap>();
         int totalnum = 0;
         int totalmoney = 0;

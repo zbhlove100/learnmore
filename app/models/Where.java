@@ -246,6 +246,7 @@ public class Where{
 			 return "Error:the where block is open in the Where object";
 			// throw new Exception("The where block is open!");
 		 }
+		 System.out.println(wherebuf.toString());
 		 return wherebuf.toString();
 	 }
 	 
@@ -254,6 +255,8 @@ public class Where{
 	 }
 	 
 	 public Object[] paramsarr(){
+	     System.out.println("11111111111111111111111111111111111111111111111");
+	     System.out.println(params.toArray());
 		 return params.toArray();
 	 }	 
 }

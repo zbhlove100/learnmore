@@ -30,6 +30,7 @@
 						<option value="Active" #{if params.state=="Active"}selected#{/if}>正常</option>
 						<option value="Delete" #{if params.state=="Delete"}selected#{/if}>删除</option>
 						<option value="Retire" #{if params.state=="Retire"}selected#{/if}>退费</option>
+						<option value="Pending" #{if params.state=="Pending"}selected#{/if}>待定</option>
 					</select>
 				</li>
 			</ul>
@@ -93,17 +94,24 @@
 				</a>
 			</li>
 			<li>
-				<a class="delete" href="@{Orders.deletes}" target="selectedTodo" postType="string" rel="ids"
+				<a class="delete" href="@{Orders.deletes}" target="selectedTodo" postType="string" rel="orderids"
 				title="确定要删除订单吗?">
 				<span>退费</span>
-			</a></li>
+				</a>
+			</li>
+			<li>
+				<a class="delete" href="@{Orders.changeToPending}" target="selectedTodo" postType="string" rel="orderids"
+				title="确定要修改订单吗?">
+				<span>待定</span>
+				</a>
+			</li>
 		</ul>
 	</div>
 	<div id="OrderlistTableDiv">
 		<table id="OrderlistTable" class="table" width="100%" layouth="188">
 			<thead>
 				<tr>
-					<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+					<th width="30"><input type="checkbox" group="orderids" class="checkboxCtrl"></th>
 					<th width="60" orderField="id" #{if orderField=="id"}class="${orderDirection}"#{/if}>订单编号</th>
 					<th width="150">课程</th>
 					<th width="120">时间类别</th>
@@ -121,7 +129,7 @@
 				 #{list items:orders, as:'Order'}
 				<tr target="sid_user"
 					rel="${Order.id}">
-					<td><input name="ids" value="${Order.id}" type="checkbox">
+					<td><input name="orderids" value="${Order.id}" type="checkbox">
 					</td>
 					<td>${Order.id}</td>
 					<td>${Order.lesson.name?:''}</td>
@@ -140,6 +148,9 @@
 					#{/elseif}
 					#{elseif Order.state=="Delete"}
 					<td>删除</td>
+					#{/elseif}
+					#{elseif Order.state=="Pending"}
+					<td>待定</td>
 					#{/elseif}
 					<td><a class="btn-mini btn btn-block btn-success" href="@{Orders.detail(Order.id)}" target="navTab" rel="orderDetail${Order.id}" title="订单${Order.id}">详细 >>></a></td>
 				</tr>

@@ -343,7 +343,7 @@ public class Lessons extends CRUD {
             Lesson lesson = Lesson.findById(id);
             List<List> lessonTables = new ArrayList<List>();
             List<Student> students = new ArrayList<Student>();
-            List<Order> orders = Order.find("lesson = ? and state = ?", lesson,BaseModel.ACTIVE).fetch();
+            List<Order> orders = Order.find("lesson = ? and (state = ? or state = ?)", lesson,BaseModel.ACTIVE,BaseModel.PENDING).fetch();
             for(Order order:orders){
                 students.add(order.student);
             }
