@@ -12,5 +12,6 @@ Road map:
 
 	1.0 :the basic version.
 	1.1 :add the calendar to manage the lesson table.
-	1.2 :add the part of check on work attendance about the student
-	1.3 :add the user control.
+	1.2 :add the user control.
+	1.3 :add the part of check on work attendance about the student
+
