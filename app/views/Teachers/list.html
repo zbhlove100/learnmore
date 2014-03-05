@@ -121,7 +121,8 @@
 					<th width="150" class="asc">名字</th>
 					<th width="150">员工类型</th>
 					<th width="200">电话</th>
-					<th width="300">电子邮箱</th>
+					<th width="200">电子邮箱</th>
+					<th width="100"></th>
 					<th width="150"></th>
 				</tr>
 			</thead>
@@ -139,6 +140,7 @@
 					</td>
 					<td>${teacher.teacherDetail?.tel?:''}</td>
 					<td><a href="${teacher.email}">${teacher.email}</a></td>
+					<td><a class="btn-mini btn btn-block btn-warning" href="@{Teachers.teacherCalender(teacher.id)}" target="navTab" rel="teacherCalender${teacher.id}" title="${teacher.name}">日历 >>></a></td>
 					<td><a class="btn-mini btn btn-block btn-success" href="@{Teachers.detail(teacher.id)}" target="navTab" rel="teacherDetail${teacher.id}" title="${teacher.name}">Detail >>></a></td>
 				</tr>
 				#{/list} 

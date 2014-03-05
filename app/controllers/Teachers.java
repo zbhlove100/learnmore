@@ -341,7 +341,7 @@ public class Teachers extends CRUD {
             Map workdate = MyDateUtils.getYearAndMonthSinceNow(t.teacherDetail.hireDate, "yyyy-MM-dd");
             List<Lesson> lessons = Lesson.find("teacher = ? and state != ?", t,BaseModel.DELETE).fetch();
             List<HashMap<String, Object>> calendarSource = new ArrayList<HashMap<String,Object>>();
-            for(Lesson lesson:lessons){
+            /*for(Lesson lesson:lessons){
                 List<LessonTable> lessonTables = LessonTable.find("lesson = ?", lesson).fetch();
                 for(LessonTable lessonTable:lessonTables){
                     HashMap<String, Object> tmap = new HashMap<String, Object>();
@@ -366,10 +366,10 @@ public class Teachers extends CRUD {
                     calendarSource.add(tmap);
                 }
                 
-            }
+            }*/
             Gson gson = new Gson();
             renderArgs.put("showTeacher", t);
-            renderArgs.put("calendarSource", gson.toJson(calendarSource));
+            //renderArgs.put("calendarSource", gson.toJson(calendarSource));
             renderArgs.put("lessons", lessons);
             renderArgs.put("workdate", workdate);
             render();
@@ -378,6 +378,47 @@ public class Teachers extends CRUD {
             e.printStackTrace();
         }
         
+    }
+    
+    public static void teacherCalender(long id){
+        Teacher t = Teacher.findById(id);
+        renderArgs.put("showTeacher", t);
+        render();
+    }
+    
+    public static void getLessonTable(long id){
+        Teacher t = Teacher.findById(id);
+        List<Lesson> lessons = Lesson.find("teacher = ? and state != ?", t,BaseModel.DELETE).fetch();
+        List<HashMap<String, Object>> calendarSource = new ArrayList<HashMap<String,Object>>();
+        //List<LessonTable> lessonTables = LessonTable.find("lesson = ?", lesson).fetch();
+        for(Lesson lesson:lessons){
+            List<LessonTable> lessonTables = LessonTable.find("lesson = ?", lesson).fetch();
+            for(LessonTable lessonTable:lessonTables){
+                HashMap<String, Object> tmap = new HashMap<String, Object>();
+                tmap.put("title", lesson.name+lessonTable.name);
+                tmap.put("allDay", false);
+                tmap.put("start", lessonTable.lessonDate);
+                tmap.put("id", lessonTable.id);
+                Float fvalue = new Float(lesson.duration*60);
+                int mins =fvalue.intValue();
+                long Time=(lessonTable.lessonDate.getTime()/1000)+60*mins;
+                Date endDate = new Date(Time*1000);
+                tmap.put("end", endDate);
+                tmap.put("mark", lessonTable.mark);
+                int hour = lessonTable.lessonDate.getHours();
+                if(hour<12){
+                    tmap.put("color", "#4EE387"); 
+                }else if(hour<17&&hour>=12){
+                    tmap.put("color", "#E15B36");
+                }else if(hour<24&&hour>=17){
+                    tmap.put("color", "#B235E0"); 
+                }
+                calendarSource.add(tmap);
+            }
+        }
+            
+        Gson gson = new Gson();
+        renderJSON(gson.toJson(calendarSource));
     }
     
     public static void edit(long id){
