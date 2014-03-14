@@ -19,7 +19,6 @@ import com.ning.http.util.Base64;
 
 import play.db.jpa.JPA;
 import utils.MyDateUtils;
-
 import models.BaseModel;
 import models.Code;
 import models.CurrentUser;
@@ -360,6 +359,24 @@ public class Orders extends CRUD {
         }
         renderJSON(forwardJson("lessonDetail"+lessonid,"/lessons/detail/"+lessonid,"已转待定！"));
     }
+    
+    public static void changeOrderClass(){
+    	String ids = params.get("ids");
+        Long lessonid = params.get("lessonid",Long.class);
+        String where = String.format("id in (%s)", ids);
+        List<Order> orders = Order.find(where).fetch();
+        Lesson lessonNow = Lesson.findById(lessonid);
+        
+        StringBuffer bf = new StringBuffer("state != '"+ BaseModel.DELETE+"'");
+        bf.append("\n and end_time >NOW() ");
+        bf.append("\n and id !="+lessonid);
+        bf.append("\n order by id desc");
+        int pageNum = Integer.parseInt((params.get("pageNum")==null||"".equals(params.get("pageNum")))?"1":params.get("pageNum"));
+        int numPerPage = getPageSize();
+        List<Lesson> lessons = Lesson.find(bf.toString()).fetch(pageNum,numPerPage);
+        render(lessons,orders,lessonNow);
+    }
+    
     public static void changeToPending(String orderids){
         String where = String.format("id in (%s)", orderids);
         List<Order> orders = Order.find(where).fetch();

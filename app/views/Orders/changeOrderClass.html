@@ -1,0 +1,125 @@
+<script type="text/javascript">
+function searchServer(form) {
+	var url = "/Orders/searchStudent";
+	var resultDiv = "searchStudentPageContent";
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: $(form).serializeArray(),
+		dataType: "html",
+		cache: false,
+		success: function(data){
+			var $p = $('#'+resultDiv);
+			$p.html(data);
+			$("table.table", $p).jTable();
+			$('table.list', $p).cssTable();		
+			if ($.fn.combox) $("select.combox",$p).combox();
+		},
+		error: DWZ.ajaxError
+	});
+	return false;
+}
+function getIds(selectedIds){
+	var ids = "";
+	$.pdialog.getCurrent().find("input:checked").filter("[name="+selectedIds+"]").each(function(i){
+		var val = $(this).val();
+		ids += i==0 ? val : ","+val;
+	});
+	return ids;
+}
+function subform(){
+	var ids = getIds("studentids");
+	$("input[name=allid]").val(ids);
+	var $form = $(".pageContent:visible",$.pdialog.getCurrent()).find("form");
+	$form.submit();
+}
+
+</script>
+<div class="page">
+	<div class="pageContent">
+	<input id="hiddenPrice" type="hidden" value="${lessonNow.price}">
+		<form name="form1" method="post" action="@{Orders.quickCreateOrder}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+		<input name="lessonid" type="hidden" value="${lessonNow.id}"/>
+		<input name="allid" type="hidden" value=""/>
+		<div id="searchStudentPageContent" class="pageFormContent" layoutW="56" layoutH="320">				
+			<p>
+				<label>课名</label>
+				<input type="text" name="searchname" value="${params.searchname}"/>
+			</p>
+			<p>
+				<label>老师</label>
+				<input type="text" name="searchtel" value="${params.searchteacher}"/>
+				&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="regworkerButton" onclick="return searchServer(this.form)">Search</button>
+			</p>
+			<table id="lessonlistTable" class="table" width="100%" >
+				<thead>
+					<tr>
+						<th width="50"><input type="checkbox" group="lessonids" class="checkboxCtrl"></th>
+						<th width="150" class="asc">课名</th>
+						<th width="100">年份</th>
+						<th width="80">时间类别</th>
+						<th width="100">上课时间</th>
+						<th width="120">教师</th>
+						<th width="100">开始时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					 #{list items:lessons, as:'lesson'}
+					<tr>
+						<td><input name="ids" value="${lesson.id}" type="radio"></td>
+						<td>${lesson.name}</td>
+						<td>${lesson.lessonYear}</td>
+						<td>${lesson.lessonTimeType}</td>
+						<td>${lesson.getLessonTimeName()}${lesson.periodOfDay}</td>
+						<td>${lesson.teacher?.name}(${lesson.teacher?.school.name})</td>
+						<td>${lesson.startTime.format('yyyy-MM-dd')}</td>
+					</tr>
+					#{/list} 
+				</tbody>
+			</table>
+		</div>		
+		<div id="searchStudentPageContent" class="pageFormContent" layoutW="56">		
+			<p>
+				<label>转班学员：</label>
+			</p>	
+			<table id="studentlistTable" class="table" width="100%" >
+				<thead>
+					<tr>
+						<th width="150" class="asc">姓名</th>
+						<th width="150">年龄</th>
+						<th width="150">年级</th>
+						<th width="200">电话</th>
+						<th width="80">状态</th>
+					</tr>
+				</thead>
+				<tbody>
+					 #{list items:orders, as:'order'}
+					<tr>
+						<td>${order.student.name}</td>
+						<td>${order.student.age?:''}</td>
+						<td>${order.student.grade?:''}</td>
+						<td>${order.student.tel?:''}</td>
+						#{if order.state == "Active"}
+						<td>正常</td>
+						#{/if}
+						#{elseif order.state=="Pending"}
+						<td>待定</td>
+						#{/elseif}
+					</tr>
+					#{/list} 
+				</tbody>
+			</table>
+			
+			<p></p>
+			<div class="formBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="subform()">保存</button></div></div></li>
+						<li>
+							<div class="button"><div class="buttonContent"><button type="Button" class="close">取消</button></div></div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
