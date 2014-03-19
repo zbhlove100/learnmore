@@ -42,11 +42,22 @@ function changeOrderClass(){
 var ids = myGetIds("ids","navTab");
 	
 	var title = "确定要转班吗?";
-	var options = {param:{ids: ids, lessonid: lessonid }}
-	alertMsg.confirm(title, {okCall: function(){
-		var url = "/Orders/changeOrderClass"
-		$.pdialog.open(url,"changeClass","changeClass",options);
-	}});
+	
+	var options = {param:{ids: ids, lessonid: lessonid,numPerPage:5}}
+	options.width = 600;
+	options.height = 600;
+	options.resizable = "false";
+	/* options.max = "false";
+	options.mask = "false";
+	options.maxable = "true";
+	options.minable = "true";
+	options.fresh = "true";
+	options.resizable = "true";
+	options.drawable = "true";
+	options.close = ""; */
+	var url = "/Orders/changeOrderClass";
+	//$.pdialog.open(url, rel, title, options);
+	$.pdialog.open(url,"changeClass","changeClass",options);
 }
 $(function(){
 	var cal = $('#lessonTable-area${lesson.id}').fullCalendar({

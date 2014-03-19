@@ -1,0 +1,54 @@
+<input type="hidden" value="${pageNum}" name="pageNum"> 
+			<input type="hidden" value="${numPerPage}" name="numPerPage"> 
+			<input type="hidden" value="${orderField}" name="orderField">
+			<input type="hidden" value="${orderDirection}" name="orderDirection">				
+			<p>
+				<label>课名</label>
+				<input type="text" name="searchname" value="${params.searchname}"/>
+			</p>
+			<p>
+				<label>老师</label>
+				<input type="text" name="searchteacher" value="${params.searchteacher}"/>
+				&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="regworkerButton" onclick="return searchServerCS(this.form)">Search</button>
+			</p>
+			<table id="lessonlistTable" class="table" width="100%" >
+				<thead>
+					<tr>
+						<th width="50"><input type="checkbox" group="lessonids" class="checkboxCtrl"></th>
+						<th width="150" class="asc">课名</th>
+						<th width="100">年份</th>
+						<th width="80">时间类别</th>
+						<th width="100">上课时间</th>
+						<th width="120">教师</th>
+						<th width="100">开始时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					 #{list items:lessons, as:'lesson'}
+					<tr>
+						<td><input name="ids" value="${lesson.id}" type="radio"></td>
+						<td>${lesson.name}</td>
+						<td>${lesson.lessonYear}</td>
+						<td>${lesson.lessonTimeType}</td>
+						<td>${lesson.getLessonTimeName()}${lesson.periodOfDay}</td>
+						<td>${lesson.teacher?.name}(${lesson.teacher?.school.name})</td>
+						<td>${lesson.startTime.format('yyyy-MM-dd')}</td>
+					</tr>
+					#{/list} 
+				</tbody>
+			</table>
+			<div class="panelBar">
+			<div class="pages">
+				<span>List</span> 
+				<select name="numPerPage" onchange="navTabPageBreak({'numPerPage':this.value})">
+					<option value="5" #{if numPerPage==20}selected#{/if}>5</option>
+					<option value="10" #{if numPerPage==50}selected#{/if}>10</option>
+					<option value="20" #{if numPerPage==100}selected#{/if}>20</option>
+				</select> 
+				<span>Total:${totalCount}</span>
+			</div>
+
+			<div currentpage="${pageNum}" pagenumshown="10"
+				numperpage="${numPerPage}" totalcount="${totalCount}"
+				targettype="dialog" class="pagination" />
+		</div>

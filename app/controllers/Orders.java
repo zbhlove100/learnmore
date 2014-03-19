@@ -122,6 +122,26 @@ public class Orders extends CRUD {
         render();
     }
     
+    public static void searchLesson(){
+    	
+    	Long lessonid = params.get("lessonid",Long.class);
+    	StringBuffer bf = new StringBuffer("state != '"+ BaseModel.DELETE+"'");
+        bf.append("\n and end_time >NOW() ");
+        bf.append("\n and id !="+lessonid);
+        if (params.get("searchname") != null && !"".equals(params.get("searchname")))
+            bf.append("\n and name like '%"+params.get("searchname")+"%'");
+        if (params.get("searchteacher") != null && !"".equals(params.get("searchteacher"))){
+            bf.append("\n and teacher.name like '%"+params.get("searchteacher")+"%'"); 
+        }
+        bf.append("\n order by id desc");
+        int pageNum = Integer.parseInt((params.get("pageNum")==null||"".equals(params.get("pageNum")))?"1":params.get("pageNum"));
+        int numPerPage = getPageSize();
+        List<Lesson> lessons = Lesson.find(bf.toString()).fetch(pageNum,numPerPage);
+        long lessonl = Lesson.count(bf.toString());
+        DWZPageAndOrder(lessonl);
+        render(lessons);
+    }
+    
     public static void quickCreateOrder(){
         long id = params.get("lessonid",Long.class);
         String idstring = params.get("allid");
@@ -374,6 +394,8 @@ public class Orders extends CRUD {
         int pageNum = Integer.parseInt((params.get("pageNum")==null||"".equals(params.get("pageNum")))?"1":params.get("pageNum"));
         int numPerPage = getPageSize();
         List<Lesson> lessons = Lesson.find(bf.toString()).fetch(pageNum,numPerPage);
+        long lessonl = Lesson.count(bf.toString());
+        DWZPageAndOrder(lessonl);
         render(lessons,orders,lessonNow);
     }
     

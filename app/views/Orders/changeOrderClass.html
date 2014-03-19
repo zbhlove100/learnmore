@@ -1,7 +1,7 @@
 <script type="text/javascript">
-function searchServer(form) {
-	var url = "/Orders/searchStudent";
-	var resultDiv = "searchStudentPageContent";
+function searchServerCS(form) {
+	var url = "/Orders/searchLesson";
+	var resultDiv = "searchLessonPageContent";
 	$.ajax({
 		type: 'POST',
 		url: url,
@@ -38,18 +38,23 @@ function subform(){
 <div class="page">
 	<div class="pageContent">
 	<input id="hiddenPrice" type="hidden" value="${lessonNow.price}">
-		<form name="form1" method="post" action="@{Orders.quickCreateOrder}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+		
+		<form name="form1" method="post" action="@{Orders.searchLesson}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<input name="lessonid" type="hidden" value="${lessonNow.id}"/>
 		<input name="allid" type="hidden" value=""/>
-		<div id="searchStudentPageContent" class="pageFormContent" layoutW="56" layoutH="320">				
+		<div id="searchLessonPageContent" class="pageFormContent" layoutW="56" layoutH="330">
+			<input type="hidden" value="${pageNum}" name="pageNum"> 
+			<input type="hidden" value="${numPerPage}" name="numPerPage"> 
+			<input type="hidden" value="${orderField}" name="orderField">
+			<input type="hidden" value="${orderDirection}" name="orderDirection">				
 			<p>
 				<label>课名</label>
 				<input type="text" name="searchname" value="${params.searchname}"/>
 			</p>
 			<p>
 				<label>老师</label>
-				<input type="text" name="searchtel" value="${params.searchteacher}"/>
-				&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="regworkerButton" onclick="return searchServer(this.form)">Search</button>
+				<input type="text" name="searchteacher" value="${params.searchteacher}"/>
+				&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="regworkerButton" onclick="return searchServerCS(this.form)">Search</button>
 			</p>
 			<table id="lessonlistTable" class="table" width="100%" >
 				<thead>
@@ -77,8 +82,23 @@ function subform(){
 					#{/list} 
 				</tbody>
 			</table>
+			<div class="panelBar">
+			<div class="pages">
+				<span>List</span> 
+				<select name="numPerPage" onchange="navTabPageBreak({'numPerPage':this.value})">
+					<option value="5" #{if numPerPage==20}selected#{/if}>5</option>
+					<option value="10" #{if numPerPage==50}selected#{/if}>10</option>
+					<option value="20" #{if numPerPage==100}selected#{/if}>20</option>
+				</select> 
+				<span>Total:${totalCount}</span>
+			</div>
+
+			<div currentpage="${pageNum}" pagenumshown="10"
+				numperpage="${numPerPage}" totalcount="${totalCount}"
+				targettype="dialog" class="pagination" />
+		</div>
 		</div>		
-		<div id="searchStudentPageContent" class="pageFormContent" layoutW="56">		
+		<div id="searchStudentPageContent" class="pageFormContent" layoutW="56"layoutH="330">		
 			<p>
 				<label>转班学员：</label>
 			</p>	
@@ -97,7 +117,7 @@ function subform(){
 					<tr>
 						<td>${order.student.name}</td>
 						<td>${order.student.age?:''}</td>
-						<td>${order.student.grade?:''}</td>
+						<td>${order.student.grade?.name?:''}</td>
 						<td>${order.student.tel?:''}</td>
 						#{if order.state == "Active"}
 						<td>正常</td>
@@ -111,14 +131,15 @@ function subform(){
 			</table>
 			
 			<p></p>
+			
+			</div>
 			<div class="formBar">
-				<ul>
-					<li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="subform()">保存</button></div></div></li>
-						<li>
-							<div class="button"><div class="buttonContent"><button type="Button" class="close">取消</button></div></div>
-						</li>
-					</ul>
-				</div>
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="subform()">保存</button></div></div></li>
+					<li>
+						<div class="button"><div class="buttonContent"><button type="Button" class="close">取消</button></div></div>
+					</li>
+				</ul>
 			</div>
 		</form>
 	</div>
