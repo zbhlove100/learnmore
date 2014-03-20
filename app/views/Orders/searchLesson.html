@@ -1,7 +1,7 @@
-<input type="hidden" value="${pageNum}" name="pageNum"> 
+<!-- <input type="hidden" value="${pageNum}" name="pageNum"> 
 			<input type="hidden" value="${numPerPage}" name="numPerPage"> 
 			<input type="hidden" value="${orderField}" name="orderField">
-			<input type="hidden" value="${orderDirection}" name="orderDirection">				
+			<input type="hidden" value="${orderDirection}" name="orderDirection">		 -->		
 			<p>
 				<label>课名</label>
 				<input type="text" name="searchname" value="${params.searchname}"/>
@@ -50,5 +50,5 @@
 
 			<div currentpage="${pageNum}" pagenumshown="10"
 				numperpage="${numPerPage}" totalcount="${totalCount}"
-				targettype="dialog" class="pagination" />
-		</div>
+				targettype="dialog" class="pagination" rel="changelessonpageSearchlessonform"/>
+			</div>

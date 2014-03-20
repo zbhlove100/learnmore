@@ -273,7 +273,8 @@ function initUI(_box){
 			totalCount:$this.attr("totalCount"),
 			numPerPage:$this.attr("numPerPage"),
 			pageNumShown:$this.attr("pageNumShown"),
-			currentPage:$this.attr("currentPage")
+			currentPage:$this.attr("currentPage"),
+			renderHtmlto:$this.attr("renderHtmlto")
 		});
 	});
 

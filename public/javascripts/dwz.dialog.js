@@ -120,7 +120,7 @@
 				$.pdialog.attachShadow(dialog);
 				//load data
 				var jDContent = $(".dialogContent",dialog);
-				jDContent.loadUrl(url, {}, function(){
+				jDContent.loadUrl(url, options.param, function(){
 					jDContent.find("[layoutH]").layoutH(jDContent);
 					$(".pageContent", dialog).width($(dialog).width()-14);
 					$("button.close").click(function(){

@@ -188,7 +188,7 @@ var DWZ = {
 				cache: false,
 				success: function(response){
 					var json = DWZ.jsonEval(response);
-					
+					//console.log(json)
 					if (json.statusCode==DWZ.statusCode.timeout){
 						alertMsg.error(json.message || DWZ.msg("sessionTimout"), {okCall:function(){
 							if ($.pdialog) $.pdialog.checkTimeout();
@@ -201,6 +201,7 @@ var DWZ = {
 					if (json.statusCode==DWZ.statusCode.error){
 						if (json.message) alertMsg.error(json.message);
 					} else {
+						//console.log($this)
 						$this.html(response).initUI();
 						if ($.isFunction(op.callback)) op.callback(response);
 					}
