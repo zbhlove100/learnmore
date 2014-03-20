@@ -280,7 +280,7 @@ function dwzPageBreakHtml(options){
 				cache: false,
 				success: function(response){
 					
-				$targetForm.html(response);
+				$targetForm.html(response).initUI();
 				
 				},
 				error: DWZ.ajaxError

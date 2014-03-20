@@ -22,7 +22,8 @@ function searchServerCS(form) {
 					totalCount:$this.attr("totalCount"),
 					numPerPage:$this.attr("numPerPage"),
 					pageNumShown:$this.attr("pageNumShown"),
-					currentPage:$this.attr("currentPage")
+					currentPage:$this.attr("currentPage"),
+					renderHtmlto:$this.attr("renderHtmlto")
 				});
 			});
 		},
@@ -100,6 +101,7 @@ function subform(){
 			<div class="pages">
 				<span>List</span> 
 				<select name="numPerPage" onchange="navTabPageBreak({'numPerPage':this.value})">
+				<option value="5" #{if numPerPage==20}selected#{/if}>5</option>
 					<option value="10" #{if numPerPage==50}selected#{/if}>10</option>
 					<option value="20" #{if numPerPage==100}selected#{/if}>20</option>
 				</select> 

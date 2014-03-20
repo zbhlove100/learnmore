@@ -100,7 +100,7 @@
 			});
 			
 			function _bindEvent($target, pageNum, targetType, rel,renderHtmlto){
-				if(renderHtmlto){
+				if(renderHtmlto!=""){
 					$target.bind("click", {pageNum:pageNum}, function(event){
 						dwzPageBreakHtml({targetType:targetType, rel:rel, data:{pageNum:event.data.pageNum},renderHtmlto:renderHtmlto});
 						event.preventDefault();
