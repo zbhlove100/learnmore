@@ -1,20 +1,21 @@
-<!-- <input type="hidden" value="${pageNum}" name="pageNum"> 
+ <!-- 			<input type="hidden" value="${pageNum}" name="pageNum"> 
 			<input type="hidden" value="${numPerPage}" name="numPerPage"> 
 			<input type="hidden" value="${orderField}" name="orderField">
-			<input type="hidden" value="${orderDirection}" name="orderDirection">		 -->		
+			<input type="hidden" value="${orderDirection}" name="orderDirection">	 -->		
 			<p>
 				<label>课名</label>
-				<input type="text" name="searchname" value="${params.searchname}"/>
+				<input id="searchnameid" type="text" name="searchname" value="${params.searchname}"/>
+				
 			</p>
 			<p>
 				<label>老师</label>
-				<input type="text" name="searchteacher" value="${params.searchteacher}"/>
+				<input id="searchteacherid" type="text" name="searchteacher" value="${params.searchteacher}"/>
 				&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="regworkerButton" onclick="return searchServerCS(this.form)">Search</button>
 			</p>
 			<table id="lessonlistTable" class="table" width="100%" >
 				<thead>
 					<tr>
-						<th width="50"><input type="checkbox" group="lessonids" class="checkboxCtrl"></th>
+						<th width="50"></th>
 						<th width="150" class="asc">课名</th>
 						<th width="100">年份</th>
 						<th width="80">时间类别</th>
@@ -26,7 +27,7 @@
 				<tbody>
 					 #{list items:lessons, as:'lesson'}
 					<tr>
-						<td><input name="ids" value="${lesson.id}" type="radio"></td>
+						<td><input name="targetlessonid" value="${lesson.id}" type="radio"></td>
 						<td>${lesson.name}</td>
 						<td>${lesson.lessonYear}</td>
 						<td>${lesson.lessonTimeType}</td>
@@ -52,3 +53,4 @@
 				numperpage="${numPerPage}" totalcount="${totalCount}"
 				targettype="dialog" class="pagination" rel="changelessonpageSearchlessonform" renderHtmlto="searchLessonPageContent"/>
 			</div>
+			

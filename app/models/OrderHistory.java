@@ -27,4 +27,7 @@ public class OrderHistory extends BaseModel{
     
     @ManyToOne
     public Student student;
+    
+    @ManyToOne
+    public Lesson lesson;
 }

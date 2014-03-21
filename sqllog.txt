@@ -81,3 +81,9 @@ INSERT INTO `learnmore`.`code_table`(`code_name`,`code_value`,`parent_code`,`sta
 ALTER TABLE `learnmore`.`lesson_table` ADD COLUMN `mark` INT(11) NULL DEFAULT NULL ;
 
 INSERT INTO `learnmore`.`role`(`name`)  VALUES ('user');
+
+
+
+#2014-3-21
+
+ALTER TABLE `learnmore`.`order_history` ADD COLUMN `lesson_id` BIGINT(20) NULL DEFAULT NULL  AFTER `student_id`

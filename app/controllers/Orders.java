@@ -86,7 +86,7 @@ public class Orders extends CRUD {
     
     public static void quickBlank(long id){
         Lesson lesson = Lesson.findById(id);
-        List<Student> students = Student.find("state !=?", BaseModel.DELETE).fetch();
+        List<Student> students = Student.find("state =?", BaseModel.REVIEW).fetch();
         List<Order> orders = Order.find("lesson = ? and state = ?", lesson,BaseModel.ACTIVE).fetch();
         List<Setting> discounts = Setting.find("name = ?", "DISCOUNT_RATE").fetch();
         Map<Object,String> orderedStudents =new HashMap<Object, String>();
@@ -392,13 +392,43 @@ public class Orders extends CRUD {
         bf.append("\n and id !="+lessonid);
         bf.append("\n order by id desc");
         int pageNum = Integer.parseInt((params.get("pageNum")==null||"".equals(params.get("pageNum")))?"1":params.get("pageNum"));
-        int numPerPage = getPageSize();
+        int numPerPage = Integer.parseInt((params.get("numPerPage")==null||"".equals(params.get("numPerPage")))?"5":params.get("numPerPage"));
         List<Lesson> lessons = Lesson.find(bf.toString()).fetch(pageNum,numPerPage);
         long lessonl = Lesson.count(bf.toString());
-        DWZPageAndOrder(lessonl);
-        render(lessons,orders,lessonNow);
+        
+        
+        String orderField = params.get("orderField");
+        String orderDirection = params.get("orderDirection");
+        renderArgs.put("pageNum", pageNum);
+        renderArgs.put("numPerPage", numPerPage);
+        renderArgs.put("orderField", orderField);
+        renderArgs.put("orderDirection", orderDirection);
+        renderArgs.put("totalCount", lessonl);
+        render(lessons,orders,lessonNow,ids);
     }
-    
+    public static void saveChangeOrderClass(){
+    	String orderids = params.get("orderids");
+    	Long lessonid = params.get("submitlessonid",Long.class);
+    	String where = String.format("id in (%s)", orderids);
+        List<Order> orders = Order.find(where).fetch();
+        Lesson lesson = Lesson.findById(lessonid);
+        for(Order order:orders){
+        	order.lesson = lesson;
+        	order.save();
+        	OrderHistory orderHistory = new OrderHistory();
+            orderHistory.createdAt = new Date(java.lang.System.currentTimeMillis());
+            orderHistory.name = order.name;
+            orderHistory.money = order.money;
+            orderHistory.description = order.description;
+            orderHistory.user = User.findById(CurrentUser.current().id);
+            orderHistory.optype = Setting.value("ORDER_EDIT","转班");
+            orderHistory.student = order.student;
+            orderHistory.order_message = order;
+            orderHistory.lesson = lesson;
+            orderHistory.save();
+        }
+        renderJSON(forwardJsonCloseDailog("lessonDetail"+lessonid,"/lessons/detail/"+lessonid,"转班成功！"));
+    }
     public static void changeToPending(String orderids){
         String where = String.format("id in (%s)", orderids);
         List<Order> orders = Order.find(where).fetch();

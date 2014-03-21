@@ -10,10 +10,12 @@ function searchServerCS(form) {
 		cache: false,
 		success: function(data){
 			var $p = $('#'+resultDiv);
+			
 			$p.html(data);
 			$("table.table", $p).jTable();
 			$('table.list', $p).cssTable();		
 			if ($.fn.combox) $("select.combox",$p).combox();
+			
 			$("div.pagination", $p).each(function(){
 				var $this = $(this);
 				$this.pagination({
@@ -27,7 +29,18 @@ function searchServerCS(form) {
 				});
 			});
 		},
-		error: DWZ.ajaxError
+		error: DWZ.ajaxError,
+		complete:function(){
+			var $p = $('#'+resultDiv);
+			var tx = $p.find('p');
+			var pagerForm = $.pdialog.getCurrent().find("#pagerForm");
+			tx.each(function(){
+				var value = $(this).find('input').val();
+				var name = $(this).find('input').attr("name");
+				pagerForm.find("input[name='"+name+"']").val(value);
+			})
+			
+		}
 	});
 	return false;
 }
@@ -40,14 +53,18 @@ function getIds(selectedIds){
 	return ids;
 }
 function subform(){
-	var ids = getIds("studentids");
-	$("input[name=allid]").val(ids);
-	var $form = $(".pageContent:visible",$.pdialog.getCurrent()).find("form");
+	var lessonid = $.pdialog.getCurrent().find("input:checked").filter("[name=targetlessonid]").val();
+	$("input[name=submitlessonid]").val(lessonid);
+	var $form = $.pdialog.getCurrent().find("#changelessonsubmitform");
 	$form.submit();
 }
 
 </script>
 <div class="page" id="changelessonpageSearchlessonform">
+	<form id="changelessonsubmitform" name="form1" method="post" action="@{Orders.saveChangeOrderClass}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+		<input name="submitlessonid" type="hidden" value=""/>
+		<input name="orderids" type="hidden" value="${ids}"/>
+	</form>
 	<form id="pagerForm" action="@{Orders.searchLesson}" method="post">
 		<input type="hidden" value="${pageNum}" name="pageNum"> 
 		<input type="hidden" value="${numPerPage}" name="numPerPage"> 
@@ -59,22 +76,22 @@ function subform(){
 		
 		<form rel="pagerForm" id="changelessonpagetargetform" name="form1" method="post" action="@{Orders.searchLesson}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<input name="lessonid" type="hidden" value="${lessonNow.id}"/>
-		<input name="allid" type="hidden" value=""/>
+		
 		<div id="searchLessonPageContent" class="pageFormContent" layoutW="56" layoutH="330">
 				
 			<p>
 				<label>课名</label>
-				<input type="text" name="searchname" value="${params.searchname}"/>
+				<input id="searchnameid" type="text" name="searchname" value="${params.searchname}"/>
 			</p>
 			<p>
 				<label>老师</label>
-				<input type="text" name="searchteacher" value="${params.searchteacher}"/>
+				<input id="searchteacherid" type="text" name="searchteacher" value="${params.searchteacher}"/>
 				&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="regworkerButton" onclick="return searchServerCS(this.form)">Search</button>
 			</p>
 			<table id="lessonlistTable" class="table" width="100%" >
 				<thead>
 					<tr>
-						<th width="50"><input type="checkbox" group="lessonids" class="checkboxCtrl"></th>
+						<th width="50"></th>
 						<th width="150" class="asc">课名</th>
 						<th width="100">年份</th>
 						<th width="80">时间类别</th>
@@ -86,7 +103,7 @@ function subform(){
 				<tbody>
 					 #{list items:lessons, as:'lesson'}
 					<tr>
-						<td><input name="ids" value="${lesson.id}" type="radio"></td>
+						<td><input name="targetlessonid" value="${lesson.id}" type="radio"></td>
 						<td>${lesson.name}</td>
 						<td>${lesson.lessonYear}</td>
 						<td>${lesson.lessonTimeType}</td>
@@ -157,5 +174,6 @@ function subform(){
 				</ul>
 			</div>
 		</form>
+		
 	</div>
 </div>

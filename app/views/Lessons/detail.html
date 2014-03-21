@@ -5,7 +5,10 @@
 var lessonid = ${lesson.id};
 function deleteOrders(){
 	var ids = myGetIds("ids","navTab");
-	
+	if(ids.length==0){
+		alertMsg.error("请选择学生！");
+		return false;
+	}
 	var url = "/Orders/searchStudent";
 	var title = "确定要删除吗?";
 	alertMsg.confirm(title, {okCall: function(){
@@ -23,7 +26,10 @@ function deleteOrders(){
 }
 function changeOrders(){
 	var ids = myGetIds("ids","navTab");
-	
+	if(ids.length==0){
+		alertMsg.error("请选择学生！");
+		return false;
+	}
 	var title = "确定要转待定吗?";
 	alertMsg.confirm(title, {okCall: function(){
 		$.ajax({
@@ -40,7 +46,10 @@ function changeOrders(){
 }
 function changeOrderClass(){
 var ids = myGetIds("ids","navTab");
-	
+if(ids.length==0){
+	alertMsg.error("请选择学生！");
+	return false;
+}
 	var options = {param:{ids: ids, lessonid: lessonid,numPerPage:5}}
 	options.width = 600;
 	options.height = 600;

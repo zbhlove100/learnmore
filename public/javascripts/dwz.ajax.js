@@ -271,8 +271,6 @@ function dwzPageBreakHtml(options){
 		
 		if (form) {
 			var $targetForm = $parent.find("#" + op.renderHtmlto);
-			console.log($targetForm)
-			
 			$.ajax({
 				type: "POST",
 				url: $(form).attr("action"),
@@ -280,8 +278,8 @@ function dwzPageBreakHtml(options){
 				cache: false,
 				success: function(response){
 					
-				$targetForm.html(response).initUI();
-				
+				$targetForm.html(response);
+				$box.initUI();
 				},
 				error: DWZ.ajaxError
 			});
