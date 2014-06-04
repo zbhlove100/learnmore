@@ -129,7 +129,7 @@ public class Lessons extends CRUD {
     public static void blank(){
         /*List<Grade> grades = Grade.findAll();*/
         List<Setting> avaliableYears = Setting.find("name=? order by value",LESSON_AVALIABLE_YEARS).fetch();
-        List<Settings> lessontimestype = Setting.find("name = ?", "LESSON_TIME").fetch();
+        List<Setting> lessontimestype = Setting.find("name = ?", "LESSON_TIME").fetch();
         List<Code> collections = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"collection").fetch();
         List<School> schools = School.find("state !=?", BaseModel.DELETE).fetch();
         List<Code> types = Code.find("parentCode = ? and state !=? and code_name = ?", Code.ROOT,BaseModel.DELETE,"lesson_type").fetch();
