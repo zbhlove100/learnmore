@@ -171,7 +171,7 @@ public class Lessons extends CRUD {
             lesson.times = params.get("times",Integer.class);
             lesson.lessonTime = params.get("lessonTime");
             lesson.lessonYear = params.get("lessonYear");
-            lesson.createdAt = new Date(java.lang.System.currentTimeMillis());
+            lesson.createdAt = new Date(java.lang.System.currentTimeMillis());renderJSON(forwardJsonCloseDailog("lessonsList", "/lessons/list", "创建成功！"));
             Classroom classroom = Classroom.findById(params.get("classroomid",Long.class));
             lesson.classroom = classroom;
             /*int grade = params.get("grade",Integer.class);
@@ -187,6 +187,7 @@ public class Lessons extends CRUD {
         } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            renderJSON(jsonError(e.getMessage()));
         }
         
         

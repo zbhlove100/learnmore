@@ -140,6 +140,7 @@ public class Students extends CRUD {
         } catch (Exception e) {
             // TODO: handle exception
         	e.printStackTrace();
+        	renderJSON(jsonError(e.getMessage()));
         }
     }
     
