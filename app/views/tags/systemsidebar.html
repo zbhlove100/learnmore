@@ -25,6 +25,7 @@
 	    <li><a href="@{Classrooms.list}" target="navTab" rel="classroomsList">教室列表</a></li>				
 	</ul>
 </div>
+#{secure.check 'root'}
 <div class="accordionHeader">
 	<h2><span>Folder</span>订单管理</h2>
 </div>
@@ -39,6 +40,7 @@
 		</li>
 	</ul>
 </div>
+#{/secure.check}
 #{secure.check 'root'}
 <div class="accordionHeader">
 	<h2><span>Folder</span>系统管理</h2>

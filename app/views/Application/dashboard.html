@@ -1,6 +1,7 @@
 
 <div class="pageContent">
 	<div id="iaas" style="height:1000px;">
+	#{secure.check 'root'}
 	<ul style="margin:10px"><li style="margin:10px">
 	<p class="dashboard_p">教师人数: ${tcount}人</p>
 	</li>
@@ -13,6 +14,7 @@
 	<p class="dashboard_p">总计报名次数: ${ocount}人次</p>
 	</li>
 	<div class="divider"></div>
+	#{/secure.check}
 	<p>生日提醒：</p>
 	<div class="pageContent" selector="h1" layoutH="60">
 	<div class="panel" defh="800">
