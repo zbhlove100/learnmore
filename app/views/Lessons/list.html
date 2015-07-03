@@ -172,7 +172,7 @@
 					<td>${lesson.lessonTimeType}</td>
 					<td>${lesson.getLessonTimeName()}${lesson.periodOfDay}</td>
 					<td>${lesson.lessonType}</td>
-					<td><a href="">${lesson.teacher?.name}(${lesson.teacher?.school.name})</a></td>
+					<td><a href="">${lesson.teacher?.name}(${lesson?.school.name})</a></td>
 					<td>${lesson.startTime.format('yyyy-MM-dd')}</td>
 					<td>${lesson.endTime.format('yyyy-MM-dd')}</td>
 					<td><strong>${lesson.getStudents()}</strong></td>
